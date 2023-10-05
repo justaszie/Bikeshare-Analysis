@@ -8,17 +8,15 @@ The project was to analyze the ride data of a fictional bike-share service, call
 2. use these insights to make recommendations on how marketing efforts can convert casual riders into members
 
 ### Why this project?
-The project was an optional part of the certification program. However, I chose to do it for multiple reasons:
-1. I was interested in using real-world dataset and solve a realistic business problem
-2. It allowed me to improve key data analysis skills, mainly SQL and Google Sheets 
+The project was an optional part of the certification program. I chose to complete it because I was interested in using real-world dataset and solve a realistic business problem and it allowed me to brush up on my key data analysis skills.
 
-## TLDR
+## Summary
 I followed the analysis process provided by Google program and adjusted it to my preferences. The overall process I followed had 6 phases:
 1. **Ask** - refined the specific business task for the project
 2. **Prepare** - collected and evaluated the data needed for the analysis
 3. **Process** - cleaned the data using SQL to get it ready for analysis
 4. **Analyze** - defined relevant questions, ran SQL queries to answer them using the data, validated my hypotheses, and gained surprising insights
-5. **Share** - created a case study presentation to share the insights with stakeholders, including using visualizations. The stakeholders in this case were the marketing director and the executive team of the fictional company
+5. **Share** - created a business case presentation to share the insights with stakeholders, including using visualizations. The stakeholders in this case were the marketing director and the executive team of the fictional company
 6. **Act** - updated the presentation to include recommendations to solve the business problem using the insights
 
 Data Tools used: 
@@ -31,5 +29,17 @@ Data Tools used:
    - I chose Sheets over Excel as it's free and, from my past experience, it is often used by startups and scaleups. The skills built on Sheets will be easily transferrable to Excel.
 
 Deliverables:
-1. Slide presentation for the stakeholders with the business case insights and recommendations: <span style="color:orange"> **TODO**: Add link here </span>
+1. Slide presentation for the stakeholders with the business case insights and recommendations: <span style="color:orange"> **TODO: Add link here** </span>
 2. This document describing the context and the details of my analysis.
+
+## Business case 
+The final presentation that solves the business case is 
+
+**TODO: decide (1) how much info about the business case context (company, chicago etc) to include and (2) where should it be - here (if yes, which section) or the presentation itself?
+
+## DETAILS
+<details> 
+<summary> click me NOW </summary>
+## Business case 
+bla bla I did this and that and so on and so forth
+</details>
