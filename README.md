@@ -44,8 +44,25 @@ The project is to solve the business problem of a fictional company. But the dat
 - [Data License](https://divvybikes.com/data-license-agreement)
 
 ### 3.1. Loading Into Database
-The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. I chose to analyze the data from a whole year 2022 because it should represent normal activity, unaffected by Covid-19 and it would allow to analyze seasonality. To do this, I uploaded the 12 .csv files to a Google bucket and created a SQL table *rides* in BigQuery by merging all 12 files together.
+The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. I chose to analyze the data from a whole year 2022 because it should represent normal activity, unaffected by Covid-19 and it would allow to analyze seasonality. To do this, I uploaded the 12 .csv files to a Google bucket and created a SQL table *rides* in BigQuery by merging all 12 files together, since the data structure of the .csv files was the same.
 
 ### 3.2. Data Cleanup
+The dataset does not have any description or data dictionary. So, first, after observing the data, I built a data dictionary to help with cleanup and analysis later.
+
+| Column | Description (assumed) | Format | Comments |
+|---|---|---|---|
+| ride_id | Primary key | String | Alphanumeric value |
+| rideable_type | Describes the typo of the bike used in the ride | String  Possible values: electric_bike classic_bike docked_bike | I filtered for unique values in excel.  |
+| started_at | Date and time when the ride started | Date / time |  |
+| ended_at | Date and time when the ride ended | Date / time |  |
+| start_station_id | ID of the station where the ride started (bike was picked up). | String | Assuming this is the foreign key - link to stations table. Note that formats for different rows are different. Some have format “TAXXX”, others just have number value.  |
+| start_station_name | Describes the name of the station | String |  |
+| end_station_id | ID of the station where the ride started (bike was picked up). | String | Assuming this is the foreign key - link to stations table. Note that formats for different rows are different. Some have format “TAXXX”, others just have number value.  |
+| end_station_name | Describes the name of the station | String |  |
+| start_lat	 | Latitude coordinate where the ride started | Float |  |
+| start_lng	 | Longitude coordinate where the ride started | Float |  |
+| end_lat | Latitude coordinate where the ride ended | Float |  |
+| end_lng | Longitude coordinate where the ride ended | Float |  |
+| member_casual | Describes the type of the rider - either casual rider or holding annual membership | String Possible values: casual member |  |
 
 <br /><br />
