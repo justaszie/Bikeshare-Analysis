@@ -77,9 +77,6 @@ Note the format below is as per BigQuery schema definition.
 
 Note that the schema contains multiple attributes describing the station. These attributes should not be present in the rides data in a normalized relational DB structure. It creates duplication and can lead to inconsistencies.
 
-**TODO: FIND WHERE TO TALK ABOUT THE RIDEABLE TYPE VALUES ETC.** 
-
-
 ### 4.2. Data Cleanup
 
 #### 4.2.1. Process
@@ -96,7 +93,7 @@ These are the steps I took to clean the data inside the SQL table.
 
 To ensure completeness and make data cleaning easier in the future, I created a checklist framework. I created a spreadsheet with column names in columns and the types of checks (steps 2-6) in rows. I went through each type of check and ran the check on each column, where it was relevant.
 
-<span style="color:red;"> **TODO: Add the updated image of the cleanup table here** </span>
+<span style="color:red;"> **TODO: Add the updated image of the cleanup framework table (from Sheets) here** </span>
 
 ![tt](https://github.com/justaszie/Bikeshare-Analysis/blob/main/Images/Screenshot%202023-10-06%20at%2011.00.06.png)
 
@@ -107,7 +104,7 @@ Note that in case of a dataset with a large number of columns, we would need to 
 
 <span style="color:red;"> **TODO: ADD QUICK SUMMARY of the section and the rest should be in collapsed DETAILS section** </span>
 
-<span style="color:red;"> **TODO: Don't forget to list the key issues found: no station names, docked bikes, negative and extreme ride length, different lat - long for same station id, 1500 stations when divvy says there are 800 (TBD - I can't say I didn't deal with this) ** </span>
+<span style="color:red;"> **TODO: Don't forget to list the key issues found: no station names, docked bikes, negative and extreme ride length, different lat - long for same station id, 1500 stations when divvy says there are 800 (TBD - I can't say I didn't deal with this** </span>
 
 **Duplicates**
 
@@ -167,8 +164,6 @@ LIMIT 5
 **Incorrect Values**
 
 There are various checks that may be useful depending on the type of the data in the column. For example, checking if the dates are in expected range. Below I will detail the value checks I did.
-
-<span style="color:red">**TODO: just change the docked_bike values in the table**
 
 - Rideable type  
 ```sql
@@ -344,7 +339,9 @@ ROUND(AVG(ride_length),0) AS mean_ride_length,
 STDDEV(ride_length) AS std_dev_ride_length,
 FROM `phrasal-brand-398306.bikeshare_data.rides`;
 ```
-**<span style="color:red"> TODO: Image to summary results of all dataset**
+![Summary for overall dataset](GDAC_Images/Analysis - Results/res_summary_overall.png)
+![tt](https://github.com/justaszie/Bikeshare-Analysis/blob/main/Images/Screenshot%202023-10-06%20at%2011.00.06.png)
+![suspicious values](Images/ride_length_suspicious_values.png)
 
 **Broken down by rider type**
 ```sql
