@@ -387,7 +387,7 @@ ON summary.rider_type = percentiles.rider_type;
 - Thre is a 60/40 division of data by rider type, which means the data is representative of both populations (casual riders and members).
 
 ### 5.3. Rides by Month
-The below queries allow us to impact of seasonality on the rides activity
+The below queries allow us to impact of seasonality on the rides activity.
 
 **Overall Dataset**
 ```sql
@@ -421,6 +421,7 @@ ORDER BY ride_month;
 
 <img width="499" alt="res_monthly_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ca03f705-7a5f-4199-a097-3c5b0dbe2af2">
 
+![viz_Monthly rides by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/03c8d47c-b31c-424b-a30e-2b22358cc8df)
 
 **:bulb: Key Insights**
 - Overall, there's a clear peak season (May - October) when 75% of the rides happen. It's predictable given the cold winters in Chicago. 
@@ -481,6 +482,10 @@ ORDER BY t.start_day_of_week;
 
 <img width="630" alt="res_day_of_week_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/68a233ae-84bc-4f01-b990-752ee30cdcf7">
 
+![viz_Daily rides, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c54d1be2-67ac-4385-b50c-61643444408c)
+
+![viz_Average rides on a weekday and on a weekend day, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/8651fb5f-29b8-49d3-9f23-def51c408691)
+
 
 **:bulb: Key Insights**
 - Overall, the number of rides taken steadily increases as the week goes, reaching its peak on Saturday. No suprises here.
@@ -504,11 +509,14 @@ ORDER BY start_hour
 
 <img width="369" alt="res_hourly_rider_weekday" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/43196aa3-1863-4fed-a069-c156b03d3a0e">
 
+![viz_Weekday rides - hourly breakdown](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/10c907ab-1d1b-4bb3-bc0c-5a4ec1972074)
+
 
 **Weekend Rides**
 
 <img width="373" alt="res_hourly_rider_weekend" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/29c6ae74-b304-49f7-bfef-7bb8297c256f">
 
+![viz_Weekend rides - hourly breakdown](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/f3c1df03-db68-4c9c-b383-69a1f20c4689)
 
 **:bulb: Key Insights**
 - Activity on weekends is similar for both types of customers. But the activity is clearly different on weekdays - members have spikes in activity during "commuter" hours (7-8am and 4-6pm) and casual riders increase their activity steadily until 5pm. This signals commuting pattern for members.
@@ -555,6 +563,9 @@ WHERE station_rank <= 10;
 
 <img width="652" alt="res_top10_stations_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/39a8e4d7-3630-446c-aa1e-8d4193de9954">
 
+![viz_Top 10 stations for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/e4cfa920-40ff-4d74-a840-8d25fde44053)
+
+
 <img width="1089" alt="res_top_stations_casual_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/7a004861-dc14-4331-8272-92dd672d7a98">
 
 
@@ -562,6 +573,9 @@ WHERE station_rank <= 10;
 **Top 10 stations for Members**
 
 <img width="659" alt="res_top10_stations_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/5cbf546f-0f20-4398-a6a6-2cef2ad803f9">
+
+![viz_Top 10 stations for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ea47e628-aedf-48d0-b11d-8d22cdf2f763)
+
 
 <img width="1169" alt="res_top_stations_members_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/b24fbea8-2181-40b2-873d-553cff94edad">
 
@@ -598,6 +612,9 @@ ORDER BY station_rank
 
 <img width="823" alt="res_station_cluster_casual_sample" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2da65d8b-2762-4867-b494-c705e8efd846">
 
+![viz_casual_station_cluster](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/568b6371-50f1-498a-bb27-2ae04054251b)
+
+
 **:bulb: Key Insights**
 - Casual riders seem to use the service for leisure and members are using it for their commute. 
     - Casual riders start their rides mostly around leisure spots and scenic areas
@@ -633,11 +650,14 @@ WHERE route_rank <= 10;
 
 <img width="978" alt="res_top10_routes_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2b26caa6-0cfc-4cd7-8634-b09acf77acd7">
 
+![Top 10 routes for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/a2f7e422-12ca-49a2-89a3-e6a520d5101d)
+
 
 **Top 10 routes for Members**
 
 <img width="978" alt="res_top10_routes_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/62242b37-1c52-4266-b328-c178b6c984bc">
 
+![viz_Top 10 routes for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/d02d20e5-78bf-480c-915f-d2e6b026a577)
 
 **Number of distinct routes**
 Finally, I decided to check if there are differences in the variety of routes taken by casual riders and by members. 
