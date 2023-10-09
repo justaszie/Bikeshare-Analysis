@@ -285,7 +285,7 @@ So, before I started the analysis, I had to define the list of specific question
 
 Note that this framework does not give an exhaustive list of relevant questions and it will need to be adjusted to larger datasets but it's a solid start
 
-<details open>
+<details>
 <summary> Details of the framework </summary>
 
 The framework to define the specific questions consists of following a few guiding steps:
@@ -306,15 +306,12 @@ The framework to define the specific questions consists of following a few guidi
 
 **Combinations of categories**
 
-<img width="1076" alt="categories_questions" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/4edd12e0-6eb3-41a9-aed9-e821f1614db0">
+<img width="1057" alt="categories_questions" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/889320fa-2013-4e3c-beaa-f6c23da497c6">
 
 This framework reminds me to consider some angles of exploration which I may not have thought about.
-
- **TODO: Add screenshots of matrices**
 </details>
-<br/>
 
-I decided that these queries will be a good start for our business task:
+Using the framework mentioned above as a starting point, I decided that these queries will be a good start for our business task:
 1. All summary questions<sup><b>*</b></sup> for the ride length measure, on overall dataset and broken down by rider type
 1. Total number of rides broken down by month
 1. Total number of rides broken down by month and rider type
