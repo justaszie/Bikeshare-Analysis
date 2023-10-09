@@ -54,9 +54,9 @@ The project is to solve the business problem of a fictional company. But the dat
 <span style="color:red;">**TODO: Add a link to download my specific dataset**</span>
 
 ### 4.1. Loading Into Database
-The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. I chose to analyze the data from a whole year 2022 because it should represent normal activity, unaffected by Covid-19 and it would allow to analyze seasonality. To do this, I uploaded the 12 .csv files to a Google bucket and created a SQL table *rides* in BigQuery by merging all 12 files together, since the data structure of the .csv files was the same.
+The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. I chose to analyze the data from a whole year 2022 because it should represent normal activity, unaffected by Covid-19 and it would allow to analyze seasonality. To do this, I uploaded the 12 .csv files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together, since the data structure of the .csv files was the same.
 
-The dataset does not have any description or data dictionary. So, first, after inspecting the data, I built a data dictionary to help with cleanup and analysis later. For the "category" columns, I ran a *SELECT DISTINCT* query to find possible values.
+The dataset does not have any description or data dictionary. So, first, after inspecting the data, I built a data dictionary to help with cleanup and analysis later. For the "category" columns, I ran a `SELECT DISTINCT` query to find possible values.
 
 Note the format below is as per BigQuery schema definition.
 | Column | Description (assumed) | Format |
@@ -283,18 +283,26 @@ As a reminder, the business task definition was broad - provide insights on how 
 
 So, before I started the analysis, I had to define the list of specific questions, relevant to the business task, that I would answer using the data. To solve such cases easier in the future, I created a framework that provides guidance on where to start in defining the questions. 
 
-(Note that this framework does not give an exhaustive list of relevant questions and it will need to be adjusted to larger datasets but it's a solid start)
+*Note that this framework does not give an exhaustive list of relevant questions and it will need to be adjusted to larger datasets but it's a solid start*
 
-**<span style="color:red"> TODO: Add framework later. It's a nice to have that shows that I thought beyond just the task. But what matters more is what analysis I actually did**
+<details open>
+<summary> Details of the framework </summary>
 
-<details>
-<summary> Framework details </summary>
-The framework is to follow a few guiding steps:
-1. Classify the columns: timeseries, "dimensions", numerical values (measures)
-2. Define what timeseries make sense. (1) What numerical measures to use for (2) what level timeseries (month, week, day, hour, etc.) and split by which (3) dimension (rider type etc.).
-3. Define Measures and by what dimensions and combinations of dimensions (rider, rideable, station)
- - There may be one key dimension (in this case it was the rider type)
- - Summary is a group of measures. List the summary questions. 
+The framework to define the specific questions consists of following a few guiding steps:
+1. Classify the columns in the table: timeseries (e.g. ride month), categories (e.g. rider type, rider type), numerical (e.g. ride length), nominal values (e.g. start station name). Note, BI tools such as Tableau automatically perform similar classification.
+2. Define the list of timeseries analysis which make sense for the business task. It's a combination of the following questions: 
+    - which numerical values should we analyze in the timeseries (e.g. number of rides)
+    - what level timeseries (month, week, day, hour, etc.) are interesting  (e.g. number of monthly rides to explore seasonality)
+    - which categories will we use to split the numerical values (e.g. the number of monthly rides by rider type to compare seasonality across different rider types).
+3. List the possible combinations of (numerical value x 1 or more categories) and highlight the ones that are interesting to explore for the business task.
+    - in the business task, there may be some key categories (in this case it was the rider type since we explore differences in activity of different rider types)
+    - it may be interesting to also build numerical value summary table(s) for the overall dataset as well as broken down by interesting categories. 
+
+ Steps 2 and 3 can provide matrices that higliht the questions to be answered with data as a starting point for the analysis. For example, for this analysis, I created 2 matrices that guided my analysis: 
+
+ This framework reminds me to consider some angles of exploration which I may not have thought about.
+
+ **TODO: Add screenshots of matrices**
 </details>
 <br/>
 
