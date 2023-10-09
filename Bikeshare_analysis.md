@@ -339,9 +339,7 @@ ROUND(AVG(ride_length),0) AS mean_ride_length,
 STDDEV(ride_length) AS std_dev_ride_length,
 FROM `phrasal-brand-398306.bikeshare_data.rides`;
 ```
-![Summary for overall dataset](GDAC_Images/Analysis - Results/res_summary_overall.png)
-![tt](https://github.com/justaszie/Bikeshare-Analysis/blob/main/Images/Screenshot%202023-10-06%20at%2011.00.06.png)
-![suspicious values](Images/ride_length_suspicious_values.png)
+![Summary for overall dataset](GDAC_Images/Analysis_Results/res_summary_overall.png)
 
 **Broken down by rider type**
 ```sql
@@ -381,7 +379,7 @@ percentiles
 ON summary.rider_type = percentiles.rider_type;
 ```
 
-<span style="color:red">**TODO: Image to summary results of length by rider type**
+![Summary by rider type](GDAC_Images/Analysis_Results/res_summary_by_rider.png)
 
 **:bulb: Key Insights**
 - The mean is significantly higher than the median with high standard deviation, especially for the casual riders' activity. The distribution is heavily skewed due a long tail with extremely long rides, as seen in [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/edit/main/README.md#422-findings-and-changes-made) step. We will use median to describe typical ride, instead of mean.
@@ -401,7 +399,9 @@ FROM `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY ride_month
 ORDER BY ride_month;
 ```
-<span style="color:red">**TODO: Image to monthly rides**
+
+<img width="252" alt="res_monthly_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c460d21d-1ecd-4cc8-bfec-218b8a9d0b62">
+
 
 **Broken down by rider type**
 
@@ -418,7 +418,9 @@ FROM `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY ride_month
 ORDER BY ride_month;
 ```
-<span style="color:red">**TODO: Image to monthly rides by rider type**
+
+<img width="499" alt="res_monthly_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ca03f705-7a5f-4199-a097-3c5b0dbe2af2">
+
 
 **:bulb: Key Insights**
 - Overall, there's a clear peak season (May - October) when 75% of the rides happen. It's predictable given the cold winters in Chicago. 
@@ -438,7 +440,9 @@ FROM `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY start_day_of_week
 ORDER BY start_day_of_week;
 ```
-<span style="color:red">**TODO: Image to daily rides overall**
+
+<img width="253" alt="res_day_of_week_total" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2daee2b5-a4f1-48ef-a4d0-be22f9a9d419">
+
 
 **Broken down by Rider Type**
 
@@ -475,7 +479,8 @@ totals t
 ORDER BY t.start_day_of_week;
 ```
 
-<span style="color:red">**TODO: Image to daily rides by rider type**
+<img width="630" alt="res_day_of_week_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/68a233ae-84bc-4f01-b990-752ee30cdcf7">
+
 
 **:bulb: Key Insights**
 - Overall, the number of rides taken steadily increases as the week goes, reaching its peak on Saturday. No suprises here.
@@ -497,12 +502,13 @@ ORDER BY start_hour
 
 **Weekday Rides**
 
+<img width="369" alt="res_hourly_rider_weekday" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/43196aa3-1863-4fed-a069-c156b03d3a0e">
 
-<span style="color:red">**TODO: Image to daily rides by rider type on Weekday**
 
 **Weekend Rides**
 
-<span style="color:red">**TODO: Image to daily rides by rider type on Weekend**
+<img width="373" alt="res_hourly_rider_weekend" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/29c6ae74-b304-49f7-bfef-7bb8297c256f">
+
 
 **:bulb: Key Insights**
 - Activity on weekends is similar for both types of customers. But the activity is clearly different on weekdays - members have spikes in activity during "commuter" hours (7-8am and 4-6pm) and casual riders increase their activity steadily until 5pm. This signals commuting pattern for members.
@@ -520,7 +526,8 @@ COUNT(*) AS total_rides
 FROM `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY rider_type;
 ```
-<span style="color:red">**TODO: Image to rides by rideable type**
+
+<img width="579" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/67a59f06-cbcd-40ff-a3e6-501b6be8607d">
 
 The results are pretty equally distributed in both cases so there are no conclusions to draw here.
 
@@ -546,16 +553,17 @@ WHERE station_rank <= 10;
 ```
 **Top 10 stations for Casual Riders**
 
-<span style="color:red">**TODO: Image to top 10  stations for casual riders**
+<img width="652" alt="res_top10_stations_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/39a8e4d7-3630-446c-aa1e-8d4193de9954">
 
-<span style="color:red">**TODO: Image to map of popular casual rider stations**
+<img width="1089" alt="res_top_stations_casual_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/7a004861-dc14-4331-8272-92dd672d7a98">
+
 
 
 **Top 10 stations for Members**
 
-<span style="color:red">**TODO: Image to top 10  stations for members**
+<img width="659" alt="res_top10_stations_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/5cbf546f-0f20-4398-a6a6-2cef2ad803f9">
 
-<span style="color:red">**TODO: Image to map of popular casual rider stations**
+<img width="1169" alt="res_top_stations_members_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/b24fbea8-2181-40b2-873d-553cff94edad">
 
 
 **Stations clustering for Casual Riders**
@@ -587,7 +595,8 @@ ROUND(station_rank / (SELECT MAX(station_rank) FROM station_ride_counts) * 100, 
 FROM station_ride_counts
 ORDER BY station_rank
 ```
-<span style="color:red">**TODO: Image to stations cluster for riders **
+
+<img width="823" alt="res_station_cluster_casual_sample" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2da65d8b-2762-4867-b494-c705e8efd846">
 
 **:bulb: Key Insights**
 - Casual riders seem to use the service for leisure and members are using it for their commute. 
@@ -622,11 +631,13 @@ WHERE route_rank <= 10;
 
 **Top 10 routes for Casual Riders**
 
-<span style="color:red">**TODO: Image to top 10 routes for casual riders**
+<img width="978" alt="res_top10_routes_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2b26caa6-0cfc-4cd7-8634-b09acf77acd7">
+
 
 **Top 10 routes for Members**
 
-<span style="color:red">**TODO: Image to top 10 routes for members**
+<img width="978" alt="res_top10_routes_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/62242b37-1c52-4266-b328-c178b6c984bc">
+
 
 **Number of distinct routes**
 Finally, I decided to check if there are differences in the variety of routes taken by casual riders and by members. 
@@ -641,7 +652,8 @@ WHERE start_station_name IS NOT NULL AND end_station_name is not null
 GROUP BY rider_type
 ```
 
-<span style="color:red">**TODO: Image to count distinct routes**
+<img width="329" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/298b9d43-c541-402b-8092-78c8638ecd07">
+
 
 **:bulb: Key Insights**
 - There are very different patterns in routes taken by casual riders and by members. This confirms the theory of casual riders using the service for leisure and members using it for their commute.
