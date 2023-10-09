@@ -298,7 +298,9 @@ The framework to define the specific questions consists of following a few guidi
     - in the business task, there may be some key categories (in this case it was the rider type since we explore differences in activity of different rider types)
     - it may be interesting to also build numerical value summary table(s) for the overall dataset as well as broken down by interesting categories. 
 
- Steps 2 and 3 can provide matrices that higliht the questions to be answered with data as a starting point for the analysis. For example, for this analysis, I created 2 matrices that guided my analysis: 
+ Steps 2 and 3 can provide matrices that highlight the questions to be answered with data, as a starting point for the analysis. For example, for this analysis, I created 2 matrices that guided my analysis: 
+
+ 
 
  This framework reminds me to consider some angles of exploration which I may not have thought about.
 
