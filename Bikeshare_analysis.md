@@ -339,7 +339,9 @@ ROUND(AVG(ride_length),0) AS mean_ride_length,
 STDDEV(ride_length) AS std_dev_ride_length,
 FROM `phrasal-brand-398306.bikeshare_data.rides`;
 ```
-![Summary for overall dataset](GDAC_Images/Analysis_Results/res_summary_overall.png)
+
+<img width="1008" alt="res_summary_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/72f86657-1153-40cf-86f0-69b8b744b5d4">
+
 
 **Broken down by rider type**
 ```sql
@@ -379,7 +381,8 @@ percentiles
 ON summary.rider_type = percentiles.rider_type;
 ```
 
-![Summary by rider type](GDAC_Images/Analysis_Results/res_summary_by_rider.png)
+<img width="1202" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/1d670b3d-b10a-420e-9a20-f1e85481a5b8">
+
 
 **:bulb: Key Insights**
 - The mean is significantly higher than the median with high standard deviation, especially for the casual riders' activity. The distribution is heavily skewed due a long tail with extremely long rides, as seen in [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/edit/main/README.md#422-findings-and-changes-made) step. We will use median to describe typical ride, instead of mean.
@@ -484,7 +487,8 @@ ORDER BY t.start_day_of_week;
 
 ![viz_Daily rides, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c54d1be2-67ac-4385-b50c-61643444408c)
 
-![viz_Average rides on a weekday and on a weekend day, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/8651fb5f-29b8-49d3-9f23-def51c408691)
+![viz_Average rides on a weekday and on a weekend day, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/26c84d15-7679-4acc-9026-2a2043d861ba)
+
 
 
 **:bulb: Key Insights**
@@ -563,19 +567,15 @@ WHERE station_rank <= 10;
 
 <img width="652" alt="res_top10_stations_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/39a8e4d7-3630-446c-aa1e-8d4193de9954">
 
-![viz_Top 10 stations for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/e4cfa920-40ff-4d74-a840-8d25fde44053)
-
+![viz_Top 10 stations for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c49432e2-b310-4ed7-a7cc-13c038d5def5)
 
 <img width="1089" alt="res_top_stations_casual_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/7a004861-dc14-4331-8272-92dd672d7a98">
-
-
 
 **Top 10 stations for Members**
 
 <img width="659" alt="res_top10_stations_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/5cbf546f-0f20-4398-a6a6-2cef2ad803f9">
 
-![viz_Top 10 stations for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ea47e628-aedf-48d0-b11d-8d22cdf2f763)
-
+![viz_Top 10 stations for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/072e33d8-21d7-49ff-80ae-d575da7c4fde)
 
 <img width="1169" alt="res_top_stations_members_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/b24fbea8-2181-40b2-873d-553cff94edad">
 
