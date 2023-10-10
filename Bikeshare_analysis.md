@@ -448,6 +448,7 @@ Similar to start stations, we are checking for any patterns in what routes the c
 ![viz_Top 10 routes for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/d02d20e5-78bf-480c-915f-d2e6b026a577)
 
 **Number of Distinct Routes**
+
 Finally, I decided to check if there are differences in the variety of routes taken by casual riders and by members. 
 
 <img width="329" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/298b9d43-c541-402b-8092-78c8638ecd07">
