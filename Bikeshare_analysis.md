@@ -366,6 +366,7 @@ ORDER BY ride_month;
 
 <img width="252" alt="res_monthly_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c460d21d-1ecd-4cc8-bfec-218b8a9d0b62">
 
+![viz_Monthly rides](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/d490c893-0fd5-461d-b5cd-ec2b557fd440)
 
 **Broken down by rider type**
 
@@ -407,6 +408,8 @@ ORDER BY start_day_of_week;
 ```
 
 <img width="253" alt="res_day_of_week_total" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2daee2b5-a4f1-48ef-a4d0-be22f9a9d419">
+
+![viz_Daily rides](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ebb7431c-b0c1-4809-a93b-53f3f06abfdc)
 
 
 **Broken down by Rider Type**
