@@ -372,14 +372,13 @@ We explore the usage patterns for different rider types during the week. It can 
 
 ![viz_Daily rides](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ebb7431c-b0c1-4809-a93b-53f3f06abfdc)
 
-
 **Broken down by Rider Type**
 
 ![viz_Daily rides, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c54d1be2-67ac-4385-b50c-61643444408c)
 
 ![viz_Average rides on a weekday and on a weekend day, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/26c84d15-7679-4acc-9026-2a2043d861ba)
 
-
+viz_Median ride length, by rider type
 
 **:bulb: Key Insights**
 - Overall, the number of rides taken steadily increases as the week goes, reaching its peak on Saturday. No suprises here.
