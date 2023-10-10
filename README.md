@@ -12,20 +12,18 @@ Even though the project was an optional part of the certification program, I cho
 **<span style="color:red">TODO: improve summary.**</span> *First, Intro to project: context, business task and summary of what I've done and with what tools (very high level) Then, Clearly list sections of doc with bookmark links. 1. Just the analysis report 2. Analysis steps (TBD if include queries in the steps or in appendix) 3. Details of data prep and cleanup. Details of prep and cleanup should be collapsed. Appendix (if present) will be collapsed. If you're here for a good time not a long time, go to solution*
 
 This document will describe:
-1. The summary of the project
-2. Final solution for the business case - a slide presentation for the stakeholders with the business case insights and recommendations
+1. The summary of the project (this section)
+2. Final solution for the business case - a slide presentation for the stakeholders with the business case insights and recommendations. 
 3. Details of my analysis process, including the queries, lessons learned and ideas for future improvements
 
 Since this is my first project, it will be very detailed so that I can use it as a knowledge base for my future projects. 
 
 ### 1.2. Process
 I followed the analysis process provided by Google program and adjusted it to my preferences. The overall process I followed had 6 phases:
-1. **Ask** - refined the specific business task for the project
-2. **Prepare** - collected and evaluated the data needed for the analysis
-3. **Process** - cleaned the data using SQL to get it ready for analysis
+1. **Define** - refined the specific business task for the project based on the guidance document
+2. **Prepare** - collected, evaluated and cleaned the data using SQL to get it ready for analysis
 4. **Analyze** - defined relevant questions, ran SQL queries to answer them using the data, validated my hypotheses, and gained surprising insights
 5. **Share** - created a business case presentation to share the insights with stakeholders, including using visualizations. The stakeholders in this case were the marketing director and the executive team of the fictional company
-6. **Act** - updated the presentation to include recommendations to solve the business problem using the insights
 
 ### 1.3 Data Tools
 - **SQL**
@@ -42,16 +40,13 @@ The final presentation that solves the business case can be accessed [here](http
 **TODO: decide (1) how much info about the business case context (company, chicago etc) to include and (2) where should it be - here (if yes, which section) or the presentation itself?
 
 ## 3. Preparing the data
-<details>
-<summary> Click here for details </summary>
-<br/>
-
 The project is to solve the business problem of a fictional company. But the dataset to analyze comes from a real business. It is history of rides of a bikeshare service called Divvy, operated by Lyft in Chicago and is licensed out to public. 
-- [Data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
-- [Data License](https://divvybikes.com/data-license-agreement)
+- [Original data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
+- [Data license](https://divvybikes.com/data-license-agreement)
+- [CSV with Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note it's 1GB+)
 
-<span style="color:red;">**TODO: Add a link to download my specific dataset**</span>
-
+<details>
+<summary> Click here for the detailed data preparation steps</summary>
 ### 3.1. Loading Into Database
 The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. I chose to analyze the data from a whole year 2022 because it should represent normal activity, unaffected by Covid-19 and it would allow to analyze seasonality. To do this, I uploaded the 12 .csv files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together, since the data structure of the .csv files was the same.
 
