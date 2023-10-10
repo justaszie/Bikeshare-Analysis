@@ -1,5 +1,6 @@
 # Bikeshare rides analysis
-## 1. Project - the What and the Why
+## 1. Project Summary
+### 1.1 The What and the Why
 After I completed the Google Data Analytics Certification program on [Coursera](https://www.coursera.org/professional-certificates/google-data-analytics), I was keen to use its material on practical examples. 
 
 The program includes an optional guided project in which you can solve a business problem for a fictional bike-share service, called Cyclastic, by analyzing a real-world dataset. The dataset contained the ride history data and the **specific business task** of the analysis was to:
@@ -17,9 +18,7 @@ This document will describe:
 
 Since this is my first project, it will be very detailed so that I can use it as a knowledge base for my future projects. 
 
-## 2. Summary
-
-### 2.1. Process
+### 1.2. Process
 I followed the analysis process provided by Google program and adjusted it to my preferences. The overall process I followed had 6 phases:
 1. **Ask** - refined the specific business task for the project
 2. **Prepare** - collected and evaluated the data needed for the analysis
@@ -28,7 +27,7 @@ I followed the analysis process provided by Google program and adjusted it to my
 5. **Share** - created a business case presentation to share the insights with stakeholders, including using visualizations. The stakeholders in this case were the marketing director and the executive team of the fictional company
 6. **Act** - updated the presentation to include recommendations to solve the business problem using the insights
 
-### 2.2 Data Tools
+### 1.3 Data Tools
 - **SQL**
     - Timeframe for analysis was not defined by the project. I wanted to analyze at least 1 year of rides data (5M+ rows) and it was too large for spreadsheets
     - It allowed me to brush up on my SQL skills for data cleanup and analysis
@@ -37,12 +36,12 @@ I followed the analysis process provided by Google program and adjusted it to my
    - Used for some calculations which are easier to do in spreadsheets than in SQL and to build visualizations
    - I chose Sheets over Excel as it's free and, from my past experience, it is often used by startups and scaleups. The skills built on Sheets will be easily transferrable to Excel.
 
-## 3. Business Case Solution
+## 2. Business Case Solution
 The final presentation that solves the business case can be accessed [here](https://docs.google.com/presentation/d/1bwYGy23ZWJG5qMf0imZLOfAincOCCUbpCrCYMcIStbE/edit?usp=sharing)
 
 **TODO: decide (1) how much info about the business case context (company, chicago etc) to include and (2) where should it be - here (if yes, which section) or the presentation itself?
 
-## 4. Preparing the data
+## 3. Preparing the data
 <details>
 <summary> Click here for details </summary>
 <br/>
@@ -53,7 +52,7 @@ The project is to solve the business problem of a fictional company. But the dat
 
 <span style="color:red;">**TODO: Add a link to download my specific dataset**</span>
 
-### 4.1. Loading Into Database
+### 3.1. Loading Into Database
 The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. I chose to analyze the data from a whole year 2022 because it should represent normal activity, unaffected by Covid-19 and it would allow to analyze seasonality. To do this, I uploaded the 12 .csv files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together, since the data structure of the .csv files was the same.
 
 The dataset does not have any description or data dictionary. So, first, after inspecting the data, I built a data dictionary to help with cleanup and analysis later. For the "category" columns, I ran a `SELECT DISTINCT` query to find possible values.
@@ -77,9 +76,9 @@ Note the format below is as per BigQuery schema definition.
 
 Note that the schema contains multiple attributes describing the station. These attributes should not be present in the rides data in a normalized relational DB structure. It creates duplication and can lead to inconsistencies.
 
-### 4.2. Data Cleanup
+### 3.2. Data Cleanup
 
-#### 4.2.1. Process
+#### 3.2.1. Process
 These are the steps I took to clean the data inside the SQL table. 
 1. Creating a backup copy of the table in case something goes wrong. 
 2. Checking for duplicate entries
@@ -100,7 +99,7 @@ To ensure completeness and make data cleaning easier in the future, I created a 
 Note that in case of a dataset with a large number of columns, we would need to pre-selecting the relevant columns before the cleanup.
 
 **---------------**
-#### 4.2.2. Findings and Changes Made
+#### 3.2.2. Findings and Changes Made
 
 <span style="color:red;"> **TODO: ADD QUICK SUMMARY of the section and the rest should be in collapsed DETAILS section** </span>
 
@@ -270,14 +269,14 @@ Although the presence of such values is alarming, the total number of suspicious
 
 **<span style="color:red"> TODO: Maybe add the issue of 25% station IDs having more than one name - need an explanation why I ignored it**
 
-#### 4.2.3. Ideas for future improvement
+#### 3.2.3. Ideas for future improvement
 **<span style="color:red"> TODO: list what should be improved to have really clean dataset (Nice to have)**
 </details>
 
-## 5. Analysis
+## 4. Analysis
 After the dataset was cleaned, I moved to analysis steps.
 
-### 5.1. Defining the questions
+### 4.1. Defining the questions
 As a reminder, the business task definition was broad - provide insights on how annual members and casual riders use Cyclistic bikes differently. The certification project material gave some suggestions on specific questions but they were very basic:
 > looking at the total number of rows, distinct values, maximum, minimum, or mean value
 
@@ -333,7 +332,7 @@ Using the framework mentioned above as a starting point, I decided that these qu
 - 75th percentile value
 - Standard deviation
 
-### 5.2. Ride Length Summary 
+### 4.2. Ride Length Summary 
 Summary queries allowed me to explore the distribution of the ride lengths. Note that the ride length values are **expressed in seconds**.
 
 **Overall dataset**
@@ -348,7 +347,7 @@ Summary queries allowed me to explore the distribution of the ride lengths. Note
 - There are more rides taken by members but without rider identifier attribute we don't know if it's due to higher number of riders or average rides per rider.
 - Thre is a 60/40 division of data by rider type, which means the data is representative of both populations (casual riders and members).
 
-### 5.3. Rides by Month
+### 4.3. Rides by Month
 The below queries allow us to impact of seasonality on the rides activity.
 
 **Overall Dataset**
@@ -365,7 +364,7 @@ The below queries allow us to impact of seasonality on the rides activity.
 - Overall, there's a clear peak season (May - October) when 75% of the rides happen. It's predictable given the cold winters in Chicago. 
 - Casual riders' activity has shorter and more intense peak. In April, casual riders reach 30% of their peak monthly rides value, while members are already at almost 60%.
 
-### 5.4. Rides by day of the Week
+### 4.4. Rides by day of the Week
 We explore the usage patterns for different rider types during the week. It can give insights into service usage for daily commute.
 **Overall Dataset**
 
@@ -384,7 +383,7 @@ We explore the usage patterns for different rider types during the week. It can 
 - Overall, the number of rides taken steadily increases as the week goes, reaching its peak on Saturday. No suprises here.
 - The members' rides seem to have daiy commute pattern VS more leisure-centered activity for casual riders. On an average weekday, members take 17% more rides than on a weekend day. Casual riders, on average, take 48% more rides on weekends. 
 
-### 5.5. Rides by Starting Hour
+### 4.5. Rides by Starting Hour
 Looking at the “busiest times” for each rider type allows to find patterns and potentially validate the commute hypothesis for members.
 
 **Weekday Rides**
@@ -399,14 +398,14 @@ Looking at the “busiest times” for each rider type allows to find patterns a
 **:bulb: Key Insights**
 - Activity on weekends is similar for both types of customers. But the activity is clearly different on weekdays - members have spikes in activity during "commuter" hours (7-8am and 4-6pm) and casual riders increase their activity steadily until 5pm. This signals commuting pattern for members.
 
-### 5.6. Rides by Rideable Type
+### 4.6. Rides by Rideable Type
 We are exploring if casual riders and members have any preferences in terms of bike types (classic or electric bikes).
 
 <img width="579" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/67a59f06-cbcd-40ff-a3e6-501b6be8607d">
 
 The results are pretty equally distributed in both cases so there are no conclusions to draw here.
 
-### 5.7. Ride Start Stations
+### 4.7. Ride Start Stations
 Next set of queries allow us to see if casual riders and members start their rides in different or similar locations. Since there are hundreds of stations in the dataset, we look at TOP 10 stations, where most of the rides start and look for any patterns.
 
 **Top 10 stations for Casual Riders**
@@ -435,7 +434,7 @@ If it's confirmed, it could help focus the physical marketing assets to a small 
     - Members start their rides in the middle of the city, near universities, etc.
 - The activity of casual riders is clustered. 90% of the rides start in 350 stations (out of 800+ total).
 
-### 5.7. Routes Taken
+### 4.7. Routes Taken
 Similar to start stations, we are checking for any patterns in what routes the casual riders and members are taking.
 
 **Top 10 routes for Casual Riders**
@@ -459,7 +458,7 @@ Finally, I decided to check if there are differences in the variety of routes ta
     - The most popular routes for members have a clear "round-trip" pattern.  
 - There are no differences in number of different routes taken by different riders.
 
-# 6. Appendix A - SQL Queries for Analysis
+# 5. Appendix A - SQL Queries for Analysis
 <details>
 
 ## Ride Length Summary 
