@@ -339,50 +339,11 @@ Using the framework mentioned above as a starting point, I decided that these qu
 Summary queries allowed me to explore the distribution of the ride lengths. Note that the ride length values are **expressed in seconds**.
 
 **Overall dataset**
-
 <img width="1008" alt="res_summary_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/72f86657-1153-40cf-86f0-69b8b744b5d4">
 
 
 **Broken down by rider type**
-```sql
--- All summary questions for ride length by rider type
--- Step 1. Return median ride length values by rider type
-WITH percentiles AS (
-SELECT DISTINCT
-rider_type,
-PERCENTILE_CONT(ride_length, 0.25) OVER(PARTITION BY rider_type) AS perc_25_ride_lengh,
-PERCENTILE_CONT(ride_length, 0.5) OVER(PARTITION BY rider_type) AS median_ride_length,
-PERCENTILE_CONT(ride_length, 0.75) OVER(PARTITION BY rider_type) AS perc_75_ride_lenght
-FROM
-`phrasal-brand-398306.bikeshare_data.rides`
-),
-
-
--- Step 2. Return summary table (except percentiles)
-summary AS (
-SELECT
-rider_type,
-COUNT(*) AS total_rides,
-MIN(ride_length) AS min_ride_length,
-MAX(ride_length) AS max_ride_length,
-ROUND(AVG(ride_length),0) AS mean_ride_length,
-STDDEV(ride_length) AS std_dev_ride_length,
-FROM `phrasal-brand-398306.bikeshare_data.rides`
-GROUP BY rider_type
-)
-
-
--- Step 3. Join summary table with percentiles values
-SELECT summary.rider_type, total_rides, min_ride_length, max_ride_length, mean_ride_length, median_ride_length, perc_25_ride_lengh, perc_75_ride_lenght, std_dev_ride_length
-FROM
-summary
-JOIN
-percentiles
-ON summary.rider_type = percentiles.rider_type;
-```
-
 <img width="1202" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/1d670b3d-b10a-420e-9a20-f1e85481a5b8">
-
 
 **:bulb: Key Insights**
 - The mean is significantly higher than the median with high standard deviation, especially for the casual riders' activity. The distribution is heavily skewed due a long tail with extremely long rides, as seen in [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/edit/main/README.md#422-findings-and-changes-made) step. We will use median to describe typical ride, instead of mean.
@@ -681,7 +642,7 @@ GROUP BY rider_type
     - The most popular routes for members have a clear "round-trip" pattern.  
 - There are no differences in number of different routes taken by different riders.
 
-# 6. Appendix A - SQL Queries
+# 6. Appendix A - SQL Queries for Analysis
 ## Ride Length Summary 
 **Overall dataset**
 ```sql
@@ -699,6 +660,46 @@ FROM `phrasal-brand-398306.bikeshare_data.rides`;
 ```
 
 <img width="1008" alt="res_summary_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/72f86657-1153-40cf-86f0-69b8b744b5d4">
+
+**Broken down by Rider Type**
+```sql
+-- All summary questions for ride length by rider type
+-- Step 1. Return median ride length values by rider type
+WITH percentiles AS (
+SELECT DISTINCT
+rider_type,
+PERCENTILE_CONT(ride_length, 0.25) OVER(PARTITION BY rider_type) AS perc_25_ride_lengh,
+PERCENTILE_CONT(ride_length, 0.5) OVER(PARTITION BY rider_type) AS median_ride_length,
+PERCENTILE_CONT(ride_length, 0.75) OVER(PARTITION BY rider_type) AS perc_75_ride_lenght
+FROM
+`phrasal-brand-398306.bikeshare_data.rides`
+),
+
+
+-- Step 2. Return summary table (except percentiles)
+summary AS (
+SELECT
+rider_type,
+COUNT(*) AS total_rides,
+MIN(ride_length) AS min_ride_length,
+MAX(ride_length) AS max_ride_length,
+ROUND(AVG(ride_length),0) AS mean_ride_length,
+STDDEV(ride_length) AS std_dev_ride_length,
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+GROUP BY rider_type
+)
+
+
+-- Step 3. Join summary table with percentiles values
+SELECT summary.rider_type, total_rides, min_ride_length, max_ride_length, mean_ride_length, median_ride_length, perc_25_ride_lengh, perc_75_ride_lenght, std_dev_ride_length
+FROM
+summary
+JOIN
+percentiles
+ON summary.rider_type = percentiles.rider_type;
+```
+
+<img width="1202" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/1d670b3d-b10a-420e-9a20-f1e85481a5b8">
 
 <br /><br />
 
