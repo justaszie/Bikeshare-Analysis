@@ -366,8 +366,7 @@ The below queries allow us to impact of seasonality on the rides activity.
 - Casual riders' activity has shorter and more intense peak. In April, casual riders reach 30% of their peak monthly rides value, while members are already at almost 60%.
 
 ### 5.4. Rides by day of the Week
-We explore the usage patterns for different rider types during the week. It can give insights into service usage for daily commute. **Note, "1" in the results means Monday.**
-
+We explore the usage patterns for different rider types during the week. It can give insights into service usage for daily commute.
 **Overall Dataset**
 
 ![viz_Daily rides](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ebb7431c-b0c1-4809-a93b-53f3f06abfdc)
