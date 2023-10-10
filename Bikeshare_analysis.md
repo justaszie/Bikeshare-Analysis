@@ -354,37 +354,12 @@ Summary queries allowed me to explore the distribution of the ride lengths. Note
 The below queries allow us to impact of seasonality on the rides activity.
 
 **Overall Dataset**
-```sql
--- Total rides by month
-SELECT
-ride_month,
-COUNT(*) AS total_rides
-FROM `phrasal-brand-398306.bikeshare_data.rides`
-GROUP BY ride_month
-ORDER BY ride_month;
-```
-
-<img width="252" alt="res_monthly_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c460d21d-1ecd-4cc8-bfec-218b8a9d0b62">
 
 ![viz_Monthly rides](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/d490c893-0fd5-461d-b5cd-ec2b557fd440)
 
 **Broken down by rider type**
 
 <span style="color:red">**TODO: Explain that I used "pivot" format for easier viz in Sheets**
-
-```sql
--- Total rides by month and rider type
-SELECT
-ride_month,
-COUNT(CASE rider_type WHEN 'casual' THEN 1 END) as rides_casual,
-COUNT(CASE rider_type WHEN 'member' THEN 1 END) as rides_member,
-COUNT(*) AS total_rides
-FROM `phrasal-brand-398306.bikeshare_data.rides`
-GROUP BY ride_month
-ORDER BY ride_month;
-```
-
-<img width="499" alt="res_monthly_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ca03f705-7a5f-4199-a097-3c5b0dbe2af2">
 
 ![viz_Monthly rides by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/03c8d47c-b31c-424b-a30e-2b22358cc8df)
 
@@ -397,57 +372,10 @@ We explore the usage patterns for different rider types during the week. It can 
 
 **Overall Dataset**
 
-```sql
--- Total rides by day of week
-SELECT
-start_day_of_week,
-COUNT(*) AS total_rides
-FROM `phrasal-brand-398306.bikeshare_data.rides`
-GROUP BY start_day_of_week
-ORDER BY start_day_of_week;
-```
-
-<img width="253" alt="res_day_of_week_total" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2daee2b5-a4f1-48ef-a4d0-be22f9a9d419">
-
 ![viz_Daily rides](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ebb7431c-b0c1-4809-a93b-53f3f06abfdc)
 
 
 **Broken down by Rider Type**
-
-```sql
--- 4 - Total rides and median by day of week and rider type
--- Step 1. Return median ride length values by rider type and day of the week.
-WITH medians AS (
-SELECT DISTINCT
-start_day_of_week,
-rider_type,
-PERCENTILE_CONT(ride_length, 0.5) OVER(PARTITION BY rider_type, FORMAT_DATE('%u', started_at)) AS median_ride_length
-FROM
-`phrasal-brand-398306.bikeshare_data.rides`
-),
-
--- Step 2. Return total ride count by rider type and day of the week
-totals AS (
-SELECT
-start_day_of_week,
-rider_type,
-COUNT(*) AS total_rides
-FROM
-`phrasal-brand-398306.bikeshare_data.rides`
-GROUP BY start_day_of_week, rider_type
-)
--- Step 3. Create main query that pulls relevant values from the 2 separate queries. Since there are only 2 rider types, we define a column for each measure for each rider type (4 columns total).
-SELECT DISTINCT t.start_day_of_week,
-(SELECT total_rides FROM totals WHERE start_day_of_week = t.start_day_of_week AND rider_type = 'casual') AS total_rides_casual,
-(SELECT total_rides FROM totals WHERE start_day_of_week = t.start_day_of_week AND rider_type = 'member') AS total_rides_member,
-(SELECT median_ride_length FROM medians WHERE start_day_of_week = t.start_day_of_week AND rider_type = 'casual') AS median_ride_length_casual,
-(SELECT median_ride_length FROM medians WHERE start_day_of_week = t.start_day_of_week AND rider_type = 'member') AS median_ride_length_member
-FROM
-totals t
-ORDER BY t.start_day_of_week;
-```
-
-<img width="630" alt="res_day_of_week_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/68a233ae-84bc-4f01-b990-752ee30cdcf7">
 
 ![viz_Daily rides, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c54d1be2-67ac-4385-b50c-61643444408c)
 
@@ -462,27 +390,12 @@ ORDER BY t.start_day_of_week;
 ### 5.5. Rides by Starting Hour
 Looking at the “busiest times” for each rider type allows to find patterns and potentially validate the commute hypothesis for members.
 
-```sql
-SELECT start_hour,
-count(*) AS total_rides,
-SUM(CASE rider_type WHEN 'casual' THEN 1 END) AS casual_rides,
-SUM(CASE rider_type WHEN 'member' THEN 1 END) AS member_rides,
-FROM `phrasal-brand-398306.bikeshare_data.rides`
-WHERE day_of_week NOT IN (6,7) -- Change this condition to IN (6,7) for weekend rides
-GROUP BY start_hour
-ORDER BY start_hour
-```
-
 **Weekday Rides**
-
-<img width="369" alt="res_hourly_rider_weekday" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/43196aa3-1863-4fed-a069-c156b03d3a0e">
 
 ![viz_Weekday rides - hourly breakdown](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/10c907ab-1d1b-4bb3-bc0c-5a4ec1972074)
 
 
 **Weekend Rides**
-
-<img width="373" alt="res_hourly_rider_weekend" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/29c6ae74-b304-49f7-bfef-7bb8297c256f">
 
 ![viz_Weekend rides - hourly breakdown](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/f3c1df03-db68-4c9c-b383-69a1f20c4689)
 
@@ -492,17 +405,6 @@ ORDER BY start_hour
 ### 5.6. Rides by Rideable Type
 We are exploring if casual riders and members have any preferences in terms of bike types (classic or electric bikes).
 
-```sql
--- Total rides by rider and rideable type
-SELECT
-rider_type,
-COUNT(CASE rideable_type WHEN 'electric_bike' THEN 1 END) as rides_electric,
-COUNT(CASE rideable_type WHEN 'classic_bike' THEN 1 END) as rides_classic,
-COUNT(*) AS total_rides
-FROM `phrasal-brand-398306.bikeshare_data.rides`
-GROUP BY rider_type;
-```
-
 <img width="579" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/67a59f06-cbcd-40ff-a3e6-501b6be8607d">
 
 The results are pretty equally distributed in both cases so there are no conclusions to draw here.
@@ -510,34 +412,12 @@ The results are pretty equally distributed in both cases so there are no conclus
 ### 5.7. Ride Start Stations
 Next set of queries allow us to see if casual riders and members start their rides in different or similar locations. Since there are hundreds of stations in the dataset, we look at TOP 10 stations, where most of the rides start and look for any patterns.
 
-```sql
-WITH counts AS(
-    SELECT
-    rider_type,
-    start_station_name,
-    COUNT(*) AS total_rides,
-    RANK() OVER (PARTITION BY rider_type ORDER BY COUNT(*) DESC) AS station_rank
-    FROM `phrasal-brand-398306.bikeshare_data.rides`
-    -- Ignoring stations with null values
-    WHERE start_station_name IS NOT NULL
-    GROUP BY rider_type, start_station_name
-)
-
-SELECT *
-FROM counts
-WHERE station_rank <= 10;
-```
 **Top 10 stations for Casual Riders**
-
-<img width="652" alt="res_top10_stations_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/39a8e4d7-3630-446c-aa1e-8d4193de9954">
-
 ![viz_Top 10 stations for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c49432e2-b310-4ed7-a7cc-13c038d5def5)
 
 <img width="1089" alt="res_top_stations_casual_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/7a004861-dc14-4331-8272-92dd672d7a98">
 
 **Top 10 stations for Members**
-
-<img width="659" alt="res_top10_stations_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/5cbf546f-0f20-4398-a6a6-2cef2ad803f9">
 
 ![viz_Top 10 stations for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/072e33d8-21d7-49ff-80ae-d575da7c4fde)
 
@@ -548,33 +428,6 @@ WHERE station_rank <= 10;
 
 While looking at the distribution of rides startign at various stations, I noticed a lot of stations had 1 or 2 rides that started there. Inspired by the 80/20 principle, I decided to check if it applies here - i.e. if a small subset of starting stations cover most of the rides. 
 If it's confirmed, it could help focus the physical marketing assets to a small number of areas. 
-
-```sql
-WITH station_ride_counts AS (
-    SELECT
-    start_station_name,
-    COUNT(*) AS station_rides,
-    RANK() OVER (ORDER BY count(*) DESC) AS station_rank
-    FROM `phrasal-brand-398306.bikeshare_data.rides`
-    -- Ignoring stations with null values
-    WHERE start_station_name IS NOT NULL
-    AND rider_type = 'casual'
-    GROUP BY start_station_name
-    ORDER BY 3 ASC
-)
-
-SELECT
-start_station_name,
-station_rides,
-SUM(station_rides) OVER (ORDER BY station_rank ASC) AS cumul_rides, -- Number of cumulative rides - i.e. sum of rides started in stations from TOP 1 station to the current station, included
-ROUND(SUM(station_rides) OVER (ORDER BY station_rank ASC) / SUM(station_rides) OVER() * 100, 2) as prc_total_rides, -- Number of cumulative rides as a % of total rides
-station_rank,
-ROUND(station_rank / (SELECT MAX(station_rank) FROM station_ride_counts) * 100, 2) as prc_stations -- Number of stations (from TOP 1 station to the current station, included) as a % of total number of stations
-FROM station_ride_counts
-ORDER BY station_rank
-```
-
-<img width="823" alt="res_station_cluster_casual_sample" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2da65d8b-2762-4867-b494-c705e8efd846">
 
 ![viz_casual_station_cluster](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/568b6371-50f1-498a-bb27-2ae04054251b)
 
@@ -588,56 +441,19 @@ ORDER BY station_rank
 ### 5.7. Routes Taken
 Similar to start stations, we are checking for any patterns in what routes the casual riders and members are taking.
 
-**Top 10 routes**
-```sql
--- Total rides by rider and route
-WITH counts AS(
-    SELECT
-    rider_type,
-    CONCAT(start_station_name, " - ", end_station_name) AS route,
-    -- After the first look, I noticed routes that start and end in same station. In this V2 of the query, I added a specific column for better visibility.
-    (start_station_name = end_station_name) AS same_station,
-    COUNT(*) AS total_rides,
-    RANK() OVER (PARTITION BY rider_type ORDER BY COUNT(*) DESC) AS route_rank
-    FROM `phrasal-brand-398306.bikeshare_data.rides`
-    --  Ignoring routes that have either start or end station as null
-    WHERE start_station_name IS NOT NULL AND end_station_name IS NOT NULL
-    GROUP BY 1, 2, 3
-)
-
-SELECT *
-FROM counts
-WHERE route_rank <= 10;
-```
-
 **Top 10 routes for Casual Riders**
-
-<img width="978" alt="res_top10_routes_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2b26caa6-0cfc-4cd7-8634-b09acf77acd7">
 
 ![Top 10 routes for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/a2f7e422-12ca-49a2-89a3-e6a520d5101d)
 
 
 **Top 10 routes for Members**
 
-<img width="978" alt="res_top10_routes_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/62242b37-1c52-4266-b328-c178b6c984bc">
-
 ![viz_Top 10 routes for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/d02d20e5-78bf-480c-915f-d2e6b026a577)
 
-**Number of distinct routes**
+**Number of Distinct Routes**
 Finally, I decided to check if there are differences in the variety of routes taken by casual riders and by members. 
 
-```sql
-SELECT
-rider_type,
-COUNT(DISTINCT CONCAT(start_station_name, " - ", end_station_name)) AS num_routes,
-FROM `phrasal-brand-398306.bikeshare_data.rides`
--- Ignoring routes that have either start or end station as null
-WHERE start_station_name IS NOT NULL AND end_station_name is not null
-GROUP BY rider_type
-```
-
 <img width="329" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/298b9d43-c541-402b-8092-78c8638ecd07">
-
 
 **:bulb: Key Insights**
 - There are very different patterns in routes taken by casual riders and by members. This confirms the theory of casual riders using the service for leisure and members using it for their commute.
@@ -646,6 +462,8 @@ GROUP BY rider_type
 - There are no differences in number of different routes taken by different riders.
 
 # 6. Appendix A - SQL Queries for Analysis
+<details>
+
 ## Ride Length Summary 
 **Overall dataset**
 ```sql
@@ -704,6 +522,223 @@ ON summary.rider_type = percentiles.rider_type;
 
 <img width="1202" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/1d670b3d-b10a-420e-9a20-f1e85481a5b8">
 
+## Rides by Month
+**Overall Dataset**
+
+```sql
+-- Total rides by month
+SELECT
+ride_month,
+COUNT(*) AS total_rides
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+GROUP BY ride_month
+ORDER BY ride_month;
+```
+
+<img width="252" alt="res_monthly_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c460d21d-1ecd-4cc8-bfec-218b8a9d0b62">
+
+**Broken down by Rider Type**
+```sql
+-- Total rides by month and rider type
+SELECT
+ride_month,
+COUNT(CASE rider_type WHEN 'casual' THEN 1 END) as rides_casual,
+COUNT(CASE rider_type WHEN 'member' THEN 1 END) as rides_member,
+COUNT(*) AS total_rides
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+GROUP BY ride_month
+ORDER BY ride_month;
+```
+
+<img width="499" alt="res_monthly_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ca03f705-7a5f-4199-a097-3c5b0dbe2af2">
+
+## Rides by day of the Week
+**Overall Dataset**
+```sql
+-- Total rides by day of week
+SELECT
+start_day_of_week,
+COUNT(*) AS total_rides
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+GROUP BY start_day_of_week
+ORDER BY start_day_of_week;
+```
+
+<img width="253" alt="res_day_of_week_total" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2daee2b5-a4f1-48ef-a4d0-be22f9a9d419">
+
+**Broken down by Rider Type**
+
+```sql
+-- Total rides and median by day of week and rider type
+-- Step 1. Return median ride length values by rider type and day of the week.
+WITH medians AS (
+SELECT DISTINCT
+start_day_of_week,
+rider_type,
+PERCENTILE_CONT(ride_length, 0.5) OVER(PARTITION BY rider_type, FORMAT_DATE('%u', started_at)) AS median_ride_length
+FROM
+`phrasal-brand-398306.bikeshare_data.rides`
+),
+
+-- Step 2. Return total ride count by rider type and day of the week
+totals AS (
+SELECT
+start_day_of_week,
+rider_type,
+COUNT(*) AS total_rides
+FROM
+`phrasal-brand-398306.bikeshare_data.rides`
+GROUP BY start_day_of_week, rider_type
+)
+-- Step 3. Create main query that pulls relevant values from the 2 separate queries. Since there are only 2 rider types, we define a column for each measure for each rider type (4 columns total).
+SELECT DISTINCT t.start_day_of_week,
+(SELECT total_rides FROM totals WHERE start_day_of_week = t.start_day_of_week AND rider_type = 'casual') AS total_rides_casual,
+(SELECT total_rides FROM totals WHERE start_day_of_week = t.start_day_of_week AND rider_type = 'member') AS total_rides_member,
+(SELECT median_ride_length FROM medians WHERE start_day_of_week = t.start_day_of_week AND rider_type = 'casual') AS median_ride_length_casual,
+(SELECT median_ride_length FROM medians WHERE start_day_of_week = t.start_day_of_week AND rider_type = 'member') AS median_ride_length_member
+FROM
+totals t
+ORDER BY t.start_day_of_week;
+```
+
+<img width="630" alt="res_day_of_week_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/68a233ae-84bc-4f01-b990-752ee30cdcf7">
+
+## Rides by Starting Hour
+```sql
+SELECT start_hour,
+count(*) AS total_rides,
+SUM(CASE rider_type WHEN 'casual' THEN 1 END) AS casual_rides,
+SUM(CASE rider_type WHEN 'member' THEN 1 END) AS member_rides,
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+WHERE day_of_week NOT IN (6,7) -- Change this condition to IN (6,7) for weekend rides
+GROUP BY start_hour
+ORDER BY start_hour
+```
+**Weekday Rides**
+
+<img width="369" alt="res_hourly_rider_weekday" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/43196aa3-1863-4fed-a069-c156b03d3a0e">
+
+**Weekend Rides**
+
+<img width="373" alt="res_hourly_rider_weekend" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/29c6ae74-b304-49f7-bfef-7bb8297c256f">
+
+## Rides by Rideable Type
+```sql
+-- Total rides by rider and rideable type
+SELECT
+rider_type,
+COUNT(CASE rideable_type WHEN 'electric_bike' THEN 1 END) as rides_electric,
+COUNT(CASE rideable_type WHEN 'classic_bike' THEN 1 END) as rides_classic,
+COUNT(*) AS total_rides
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+GROUP BY rider_type;
+```
+
+<img width="579" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/67a59f06-cbcd-40ff-a3e6-501b6be8607d">
+
+## Ride Start Stations
+
+**Top 10 stations for Casual Riders**
+
+```sql
+WITH counts AS(
+    SELECT
+    rider_type,
+    start_station_name,
+    COUNT(*) AS total_rides,
+    RANK() OVER (PARTITION BY rider_type ORDER BY COUNT(*) DESC) AS station_rank
+    FROM `phrasal-brand-398306.bikeshare_data.rides`
+    -- Ignoring stations with null values
+    WHERE start_station_name IS NOT NULL
+    GROUP BY rider_type, start_station_name
+)
+
+SELECT *
+FROM counts
+WHERE station_rank <= 10;
+```
+
+<img width="652" alt="res_top10_stations_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/39a8e4d7-3630-446c-aa1e-8d4193de9954">
+
+**Top 10 stations for Members**
+
+<img width="659" alt="res_top10_stations_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/5cbf546f-0f20-4398-a6a6-2cef2ad803f9">
+
+**Stations clustering for Casual Riders**
+
+```sql
+WITH station_ride_counts AS (
+    SELECT
+    start_station_name,
+    COUNT(*) AS station_rides,
+    RANK() OVER (ORDER BY count(*) DESC) AS station_rank
+    FROM `phrasal-brand-398306.bikeshare_data.rides`
+    -- Ignoring stations with null values
+    WHERE start_station_name IS NOT NULL
+    AND rider_type = 'casual'
+    GROUP BY start_station_name
+    ORDER BY 3 ASC
+)
+
+SELECT
+start_station_name,
+station_rides,
+SUM(station_rides) OVER (ORDER BY station_rank ASC) AS cumul_rides, -- Number of cumulative rides - i.e. sum of rides started in stations from TOP 1 station to the current station, included
+ROUND(SUM(station_rides) OVER (ORDER BY station_rank ASC) / SUM(station_rides) OVER() * 100, 2) as prc_total_rides, -- Number of cumulative rides as a % of total rides
+station_rank,
+ROUND(station_rank / (SELECT MAX(station_rank) FROM station_ride_counts) * 100, 2) as prc_stations -- Number of stations (from TOP 1 station to the current station, included) as a % of total number of stations
+FROM station_ride_counts
+ORDER BY station_rank
+```
+
+<img width="823" alt="res_station_cluster_casual_sample" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2da65d8b-2762-4867-b494-c705e8efd846">
+
+## Routes Taken
+```sql
+-- Total rides by rider and route
+WITH counts AS(
+    SELECT
+    rider_type,
+    CONCAT(start_station_name, " - ", end_station_name) AS route,
+    -- After the first look, I noticed routes that start and end in same station. In this V2 of the query, I added a specific column for better visibility.
+    (start_station_name = end_station_name) AS same_station,
+    COUNT(*) AS total_rides,
+    RANK() OVER (PARTITION BY rider_type ORDER BY COUNT(*) DESC) AS route_rank
+    FROM `phrasal-brand-398306.bikeshare_data.rides`
+    --  Ignoring routes that have either start or end station as null
+    WHERE start_station_name IS NOT NULL AND end_station_name IS NOT NULL
+    GROUP BY 1, 2, 3
+)
+
+SELECT *
+FROM counts
+WHERE route_rank <= 10;
+```
+**Top 10 routes for Casual Riders**
+
+<img width="978" alt="res_top10_routes_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2b26caa6-0cfc-4cd7-8634-b09acf77acd7">
+
+**Top 10 routes for Members**
+
+<img width="978" alt="res_top10_routes_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/62242b37-1c52-4266-b328-c178b6c984bc">
+
+**Number of Distinct Routes**
+
+```sql
+SELECT
+rider_type,
+COUNT(DISTINCT CONCAT(start_station_name, " - ", end_station_name)) AS num_routes,
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+-- Ignoring routes that have either start or end station as null
+WHERE start_station_name IS NOT NULL AND end_station_name is not null
+GROUP BY rider_type
+```
+
+<img width="329" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/298b9d43-c541-402b-8092-78c8638ecd07">
+
+</details>
+
+
 <br /><br />
 
 # ----------- OUTLINE WIP --------------
@@ -720,6 +755,5 @@ ON summary.rider_type = percentiles.rider_type;
     3. Visualizing the results - exporting to Sheets, some reformatting and creating
         - Add the viz images, add bookmark link to question in analysis section (and vice versa?)
 3. Lessons Learned - **TODO**
-
 
 
