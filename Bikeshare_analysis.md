@@ -339,19 +339,6 @@ Using the framework mentioned above as a starting point, I decided that these qu
 Summary queries allowed me to explore the distribution of the ride lengths. Note that the ride length values are **expressed in seconds**.
 
 **Overall dataset**
-```sql
--- All summary questions for ride length
-SELECT
-COUNT(*) AS total_rides,
-MIN(ride_length) AS min_ride_length,
-MAX(ride_length) AS max_ride_length,
-ROUND(AVG(ride_length),0) AS mean_ride_length,
-(SELECT PERCENTILE_CONT(ride_length, 0.25) OVER() FROM `phrasal-brand-398306.bikeshare_data.rides` LIMIT 1) AS perc_25_ride_lengh,
-(SELECT PERCENTILE_CONT(ride_length, 0.5) OVER() FROM `phrasal-brand-398306.bikeshare_data.rides` LIMIT 1) AS median_ride_length,
-(SELECT PERCENTILE_CONT(ride_length, 0.75) OVER() FROM `phrasal-brand-398306.bikeshare_data.rides` LIMIT 1) AS perc_75_ride_lenght,
-STDDEV(ride_length) AS std_dev_ride_length,
-FROM `phrasal-brand-398306.bikeshare_data.rides`;
-```
 
 <img width="1008" alt="res_summary_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/72f86657-1153-40cf-86f0-69b8b744b5d4">
 
@@ -693,6 +680,25 @@ GROUP BY rider_type
     - The majority of most popular routes for casual riders start and end in the same station. This means that the purpose of the ride is not transportation but the ride itself.
     - The most popular routes for members have a clear "round-trip" pattern.  
 - There are no differences in number of different routes taken by different riders.
+
+# 6. Appendix A - SQL Queries
+## Ride Length Summary 
+**Overall dataset**
+```sql
+-- All summary questions for ride length
+SELECT
+COUNT(*) AS total_rides,
+MIN(ride_length) AS min_ride_length,
+MAX(ride_length) AS max_ride_length,
+ROUND(AVG(ride_length),0) AS mean_ride_length,
+(SELECT PERCENTILE_CONT(ride_length, 0.25) OVER() FROM `phrasal-brand-398306.bikeshare_data.rides` LIMIT 1) AS perc_25_ride_lengh,
+(SELECT PERCENTILE_CONT(ride_length, 0.5) OVER() FROM `phrasal-brand-398306.bikeshare_data.rides` LIMIT 1) AS median_ride_length,
+(SELECT PERCENTILE_CONT(ride_length, 0.75) OVER() FROM `phrasal-brand-398306.bikeshare_data.rides` LIMIT 1) AS perc_75_ride_lenght,
+STDDEV(ride_length) AS std_dev_ride_length,
+FROM `phrasal-brand-398306.bikeshare_data.rides`;
+```
+
+<img width="1008" alt="res_summary_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/72f86657-1153-40cf-86f0-69b8b744b5d4">
 
 <br /><br />
 
