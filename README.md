@@ -47,10 +47,15 @@ The project is to solve the business problem of a fictional company. But the dat
 
 <details>
 <summary> Click here for the detailed data preparation steps</summary>
+
 ### 3.1. Loading Into Database
 The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. I chose to analyze the data from a whole year 2022 because it should represent normal activity, unaffected by Covid-19 and it would allow to analyze seasonality. To do this, I uploaded the 12 .csv files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together, since the data structure of the .csv files was the same.
 
 The dataset does not have any description or data dictionary. So, first, after inspecting the data, I built a data dictionary to help with cleanup and analysis later. For the "category" columns, I ran a `SELECT DISTINCT` query to find possible values.
+
+<span style="color:text;"> TODO - Decide if we want to move this table out to make it more visible - maybe in the dataset defnition outside of prep steps (but maybe still collapsed)  </span>
+
+<span style="color:text;"> TODO - At the end of the prep steps probably add another table with cleaned up data </span> 
 
 Note the format below is as per BigQuery schema definition.
 | Column | Description (assumed) | Format |
@@ -264,9 +269,34 @@ Although the presence of such values is alarming, the total number of suspicious
 
 **<span style="color:red"> TODO: Maybe add the issue of 25% station IDs having more than one name - need an explanation why I ignored it**
 
+
 #### 3.2.3. Ideas for future improvement
 **<span style="color:red"> TODO: list what should be improved to have really clean dataset (Nice to have)**
 </details>
+
+#### 3.2.4. Final Dataset
+The below table  describes the final dataset after the original dataset was cleaned up. This dataset was used in the Analysis phase. 
+
+| Column | Description (assumed) | Format |
+|---|---|---|
+| ride_id | Primary key | String |
+| rideable_type | Describes the typo of the bike used in the ride | String   Possible values: electric_bike classic_bike |
+| started_at | Date and time when the ride started | Date / time |
+| ended_at | Date and time when the ride ended | Date / time |
+| start_station_id | ID of the station where the ride started (bike was picked up). | String |
+| start_station_name | Describes the name of the station | String |
+| end_station_id | ID of the station where the ride started (bike was picked up). | String |
+| end_station_name | Describes the name of the station | String |
+| start_lat | Latitude coordinate where the ride started | Float |
+| start_lng | Longitude coordinate where the ride started | Float |
+| end_lat | Latitude coordinate where the ride ended | Float |
+| end_lng | Longitude coordinate where the ride ended | Float |
+| rider_type | Describes the type of the rider - either casual rider or holding annual membership | String   Possible values:  casual   member |
+| ride_length | Length of the ride (from start date/time to end date/time) in seconds | Integer |
+| start_day_of_week | Day of week when the ride started in numerical format (1 represents Monday) | Integer |
+| start_hour | Hour (in 24h format) when the ride started | Integer |
+| ride_month | Month when the ride started in numerical format (1 represents January) | Integer |
+
 
 ## 4. Analysis
 After the dataset was cleaned, I moved to analysis steps.
@@ -343,15 +373,13 @@ Summary queries allowed me to explore the distribution of the ride lengths. Note
 - Thre is a 60/40 division of data by rider type, which means the data is representative of both populations (casual riders and members).
 
 ### 4.3. Rides by Month
-The below queries allow us to impact of seasonality on the rides activity.
+Looking at numbers of monthly rides allows us to see the impact of seasonality on the rides activity.
 
 **Overall Dataset**
 
 ![viz_Monthly rides](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/d490c893-0fd5-461d-b5cd-ec2b557fd440)
 
 **Broken down by rider type**
-
-<span style="color:red">**TODO: Explain that I used "pivot" format for easier viz in Sheets**
 
 ![viz_Monthly rides by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/03c8d47c-b31c-424b-a30e-2b22358cc8df)
 
@@ -360,7 +388,8 @@ The below queries allow us to impact of seasonality on the rides activity.
 - Casual riders' activity has shorter and more intense peak. In April, casual riders reach 30% of their peak monthly rides value, while members are already at almost 60%.
 
 ### 4.4. Rides by day of the Week
-We explore the usage patterns for different rider types during the week. It can give insights into service usage for daily commute.
+We explore the usage patterns for different rider types during the week. It can give insights into the purpose of the rides.
+
 **Overall Dataset**
 
 ![viz_Daily rides](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ebb7431c-b0c1-4809-a93b-53f3f06abfdc)
@@ -369,7 +398,11 @@ We explore the usage patterns for different rider types during the week. It can 
 
 ![viz_Daily rides, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c54d1be2-67ac-4385-b50c-61643444408c)
 
+We also look into the difference in weekend rides vs weekday rides for both types of riders to see how significant the preferences are. 
+
 ![viz_Average rides on a weekday and on a weekend day, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/26c84d15-7679-4acc-9026-2a2043d861ba)
+
+We also explore the differences in ride lengths on various day.s 
 
 ![viz_Median ride length, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/87667293-df57-4a45-bd43-00f0bca8ae54)
 
@@ -379,7 +412,7 @@ We explore the usage patterns for different rider types during the week. It can 
 - The members' rides seem to have daiy commute pattern VS more leisure-centered activity for casual riders. On an average weekday, members take 17% more rides than on a weekend day. Casual riders, on average, take 48% more rides on weekends. 
 
 ### 4.5. Rides by Starting Hour
-Looking at the “busiest times” for each rider type allows to find patterns and potentially validate the commute hypothesis for members.
+Looking at the “busiest times” for each rider type allows to find patterns and potentially validate the commute vs leisure hypothesis. 
 
 **Weekday Rides**
 
@@ -391,7 +424,7 @@ Looking at the “busiest times” for each rider type allows to find patterns a
 ![viz_Weekend rides - hourly breakdown](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/f3c1df03-db68-4c9c-b383-69a1f20c4689)
 
 **:bulb: Key Insights**
-- Activity on weekends is similar for both types of customers. But the activity is clearly different on weekdays - members have spikes in activity during "commuter" hours (7-8am and 4-6pm) and casual riders increase their activity steadily until 5pm. This signals commuting pattern for members.
+- Activity on weekends is similar for both types of customers. But the activity is clearly different on weekdays - members have spikes in activity during "commuter" hours (7-8am and 4-6pm) and casual riders increase their activity steadily until 5pm. This pattern also signals commuting pattern for members.
 
 ### 4.6. Rides by Rideable Type
 We are exploring if casual riders and members have any preferences in terms of bike types (classic or electric bikes).
@@ -401,10 +434,12 @@ We are exploring if casual riders and members have any preferences in terms of b
 The results are pretty equally distributed in both cases so there are no conclusions to draw here.
 
 ### 4.7. Ride Start Stations
-Next set of queries allow us to see if casual riders and members start their rides in different or similar locations. Since there are hundreds of stations in the dataset, we look at TOP 10 stations, where most of the rides start and look for any patterns.
+Next set of queries allow us to see if casual riders and members start their rides in different or similar locations. Since there are hundreds of stations in the dataset, we look at TOP 10 stations, where most of the rides start, and look for any patterns there.
 
 **Top 10 stations for Casual Riders**
 ![viz_Top 10 stations for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c49432e2-b310-4ed7-a7cc-13c038d5def5)
+
+For better visibility, we mark a few of the most popular stations on the map to look for geographical patterns. As we can see, casual riders mostly start their rides in leisure sports: near beaches, piers, parks, etc.
 
 <img width="1089" alt="res_top_stations_casual_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/7a004861-dc14-4331-8272-92dd672d7a98">
 
@@ -412,12 +447,14 @@ Next set of queries allow us to see if casual riders and members start their rid
 
 ![viz_Top 10 stations for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/072e33d8-21d7-49ff-80ae-d575da7c4fde)
 
+Members start their rides mostly in the middle of the city, presumably business areas. One of the most popular stations is also near the main university in the city. 
+
 <img width="1169" alt="res_top_stations_members_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/b24fbea8-2181-40b2-873d-553cff94edad">
 
 
 **Stations clustering for Casual Riders**
 
-While looking at the distribution of rides startign at various stations, I noticed a lot of stations had 1 or 2 rides that started there. Inspired by the 80/20 principle, I decided to check if it applies here - i.e. if a small subset of starting stations cover most of the rides. 
+While looking at the distribution of rides starting at various stations, I noticed a lot of stations had only 1 or 2 rides that started there. Inspired by the 80/20 principle, I decided to check if it applies here - i.e. if a small subset of starting stations cover most of the rides. 
 If it's confirmed, it could help focus the physical marketing assets to a small number of areas. 
 
 ![viz_casual_station_cluster](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/568b6371-50f1-498a-bb27-2ae04054251b)
@@ -447,14 +484,17 @@ Finally, I decided to check if there are differences in the variety of routes ta
 
 <img width="329" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/298b9d43-c541-402b-8092-78c8638ecd07">
 
+There is no significant difference in number of different routes taken by different riders.
+
 **:bulb: Key Insights**
-- There are very different patterns in routes taken by casual riders and by members. This confirms the theory of casual riders using the service for leisure and members using it for their commute.
-    - The majority of most popular routes for casual riders start and end in the same station. This means that the purpose of the ride is not transportation but the ride itself.
+- There are very different patterns in routes taken by casual riders and by members. This is another argument for the theory of casual riders using the service for leisure and members using it for their commute.
+    - The majority of most popular routes for casual riders start and end in the same station. This suggests that the purpose of the ride is not transportation but the ride itself.
     - The most popular routes for members have a clear "round-trip" pattern.  
-- There are no differences in number of different routes taken by different riders.
 
 # 5. Appendix A - SQL Queries for Analysis
+This section lists all the SQL queries used in the analysis and the results when they were run. 
 <details>
+<summary> Click here to see the SQL queries </summary>
 
 ## Ride Length Summary 
 **Overall dataset**
@@ -502,7 +542,6 @@ FROM `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY rider_type
 )
 
-
 -- Step 3. Join summary table with percentiles values
 SELECT summary.rider_type, total_rides, min_ride_length, max_ride_length, mean_ride_length, median_ride_length, perc_25_ride_lengh, perc_75_ride_lenght, std_dev_ride_length
 FROM
@@ -530,6 +569,8 @@ ORDER BY ride_month;
 <img width="252" alt="res_monthly_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c460d21d-1ecd-4cc8-bfec-218b8a9d0b62">
 
 **Broken down by Rider Type**
+Note that in this query I chose to have rider type breakdown in separate columns. Simpler way would be to add just `rder_type` column in the query and have separate rows for each rider type. But the advantage of splitting it into separate columns allows to create charts on that data without additional processing. And in this case, the rider type only has 2 values so it makes sense. 
+
 ```sql
 -- Total rides by month and rider type
 SELECT
@@ -729,9 +770,7 @@ GROUP BY rider_type
 <img width="329" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/298b9d43-c541-402b-8092-78c8638ecd07">
 
 </details>
-
-
-<br /><br />
+<br />
 
 # ----------- OUTLINE WIP --------------
 
