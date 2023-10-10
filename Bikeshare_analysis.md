@@ -313,17 +313,15 @@ This framework reminds me to consider some angles of exploration which I may not
 
 Using the framework mentioned above as a starting point, I decided that these queries will be a good start for our business task:
 1. All summary questions<sup><b>*</b></sup> for the ride length measure, on overall dataset and broken down by rider type
-1. Total number of rides broken down by month
-1. Total number of rides broken down by month and rider type
-1. Total number of rides broken down by day of week 
-1. Total number of rides and average ride length (median) broken down by day of week and rider type
-1. Total number of rides broken down by start hour and rider type
-1. Total number of rides broken down by start hour of day and rider type
-1. Total number of rides broken down by rider and rideable type
+1. Total number of rides, broken down by month, and by month and rider type
+1. Total number of rides, broken down by day of week
+1. Total number of rides and average ride length (median), broken down by day of week and rider type
+1. Total number of rides, broken down by start hour and by rider type
+1. Total number of rides, broken down by rider type and by rideable type
 1. Top 10 stations where most rides start for each rider type
 1. Top 10 routes taken by each rider type
-1. Count distinct routes taken broken down by rider type
-1. How clustered is the activity fo each rider type in terms of stations where rides start.
+1. Count distinct routes taken, broken down by rider type
+1. How clustered is the activity for casual riders, in terms of stations where rides start
 
 <sup><b>*</b></sup> By summary questions, I mean finding the following values on the ride length that give a sense of the distribution (I queried them on overall dataset and and grouped by rider type): 
 - Total table row count (observations)
