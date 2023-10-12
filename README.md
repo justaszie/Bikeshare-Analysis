@@ -264,7 +264,8 @@ FROM `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY bin
 ORDER BY bin;
 ```
-![suspicious values](Images/ride_length_suspicious_values.png)
+
+<img width="639" alt="ride_length_suspicious_values" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/13acebc8-2651-499e-9a8a-790b48194426">
 
 Although the presence of such values is alarming, the total number of suspicious values is <2.5% of the overall dataset. As the majority of the dataset seems correct, I decided to proceed with the analysis. 
 
