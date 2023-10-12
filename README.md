@@ -106,7 +106,13 @@ Note that in the case of a dataset with a large number of columns, we would need
 
 <span style="color:red;"> **TODO: ADD QUICK SUMMARY of the section and the rest (how I found the issues) should be in collapsed DETAILS section** </span>
 
-<span style="color:red;"> **TODO: Don't forget to list the key issues found: no station names different lat - long for same station id, 1500 stations when divvy says there are 800 (TBD - I can't say I didn't deal with this** </span>
+<span style="color:red;"> **TODO: Don't forget to list the key issues found: no station names , 1500 stations when divvy says there are 800 (TBD - I can't say I didn't deal with this** </span>
+
+<span style="color:red">**TODO: Remaining issues of:
+- Why we have 1.5k+ stations when website says 800+
+- different lat - long for same station id
+- 25% station IDs having more than one name (duplicate stations)
+need an explanation why I ignored it. Website about station numbers: https://www.chicago.gov/city/en/depts/cdot/provdrs/bike/news/2023/april/divvy-for-the-entire-city--divvy-service-hits-all-50-wards.html**</span>
 
 **Duplicates**
 
@@ -271,8 +277,6 @@ Although the presence of such values is alarming, the total number of suspicious
 
 :warning: Note that the outlier values will create a positive skewness in the ride length distribution. I will use median instead of mean in our analysis to negate this.
 
-**<span style="color:red"> TODO: Maybe add the issue of 25% station IDs having more than one name - need an explanation why I ignored it NOTE big mismatch between dataset and website info. Website says over 800 and we have over thousand.  https://www.chicago.gov/city/en/depts/cdot/provdrs/bike/news/2023/april/divvy-for-the-entire-city--divvy-service-hits-all-50-wards.html**
-
 #### 3.3.3. Ideas for future improvement
 **<span style="color:red"> TODO: list what should be improved to have really clean dataset (Nice to have)**
 </details>
@@ -300,7 +304,7 @@ The below table  describes the final dataset after the original dataset was clea
 | start_hour | Hour (in 24h format) when the ride started | Integer |
 | ride_month | Month when the ride started in numerical format (1 represents January) | Integer |
 
-See a few rows from the table below
+See a few rows from the table below:
 
 | ride_id | rideable_type | started_at | ended_at | start_station_name | start_station_id | end_station_name | end_station_id | start_lat | start_lng | end_lat | end_lng | rider_type | ride_length | start_day_of_week | start_hour | ride_month |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
