@@ -95,26 +95,22 @@ These are the steps I took to clean the data inside the SQL table.
 6. Renamed columns for clarity
 7. Wrote query to add calculated columns to facilitate the analysis later and performed the checks (Steps 2-5) on them
 
-**<span style="color:red"> TODO: Below these steps, give a summary of section: issues and what I did. Then go into details what I did to find the issues**
-
 To ensure completeness and make data cleaning easier in the future, I created a checklist framework. I created a spreadsheet with column names in columns and the types of checks (steps 2-6) in rows. I went through each type of check and ran the check on each column, where it was relevant.
 
-<span style="color:red;"> **TODO: Add the updated image of the cleanup framework table (from Sheets) here** </span>
+<img width="1711" alt="GDAC_Cleanup_checklist" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/d3360e1d-3272-49fc-a53f-366de075d1a3">
 
-![tt](https://github.com/justaszie/Bikeshare-Analysis/blob/main/Images/Screenshot%202023-10-06%20at%2011.00.06.png)
-
-Note that in case of a dataset with a large number of columns, we would need to pre-selecting the relevant columns before the cleanup.
+Note that in the case of a dataset with a large number of columns, we would need to pre-select the relevant columns before the cleanup.
 
 **---------------**
 #### 3.3.2. Findings and Changes Made
 
-<span style="color:red;"> **TODO: ADD QUICK SUMMARY of the section and the rest should be in collapsed DETAILS section** </span>
+<span style="color:red;"> **TODO: ADD QUICK SUMMARY of the section and the rest (how I found the issues) should be in collapsed DETAILS section** </span>
 
-<span style="color:red;"> **TODO: Don't forget to list the key issues found: no station names, docked bikes, negative and extreme ride length, different lat - long for same station id, 1500 stations when divvy says there are 800 (TBD - I can't say I didn't deal with this** </span>
+<span style="color:red;"> **TODO: Don't forget to list the key issues found: no station names different lat - long for same station id, 1500 stations when divvy says there are 800 (TBD - I can't say I didn't deal with this** </span>
 
 **Duplicates**
 
-I run a query to check the number of rides per ride_id and there were no IDs having more than 1 ride. 
+I ran a query to check the number of rides per ride_id and there were no IDs having more than 1 ride. 
 ```sql
 SELECT
 ride_id, COUNT(*) as nb_rides
@@ -130,12 +126,12 @@ I used the following steps to inspect the null values in relevant columns:
 1. Does the column have any null values?
 2. What % of rows have null values for that column
 3. Why the null values are there - is there an explanation or pattern
-4. Decide hat to do with null values
+4. Decide what to do with null values
     - If most values of a column are null, consider deleting the column
-    - If some values are null, fill it in, if possible. If not possible, exclude the null values unless it impacts the core of the analysis.
+    - If some values are null, fill it in, if possible. If not possible, exclude the null values unless they impact the core of the analysis.
 
 Outcomes:
-- Start and end station names and IDs have ~15% of null values. We could potentially fill them using the coordinates but it's too much efffort for 15% of the set and it's not the core of our analysis. I left it as-is.
+- Start and end station names and IDs have ~15% of null values. We could potentially fill them using the coordinates but it's too much effort for 15% of the set and it's not the core of our analysis. I left it as-is.
 - End station coordinates (lat and long) have a small amount of null values. It's a small amount so I left it as-is.
 - No other columns had issues with null values
 
@@ -169,7 +165,7 @@ LIMIT 5
 
 **Incorrect Values**
 
-There are various checks that may be useful depending on the type of the data in the column. For example, checking if the dates are in expected range. Below I will detail the value checks I did.
+There are various checks that may be useful depending on the type of data in the column. For example, checking if the dates are in the expected range. Below I will detail the value checks I did.
 
 - Rideable type  
 ```sql
@@ -177,7 +173,7 @@ SELECT rideable_type, ROUND(COUNT(*)  / (SELECT COUNT(*) from `phrasal-brand-398
 FROM `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY rideable_type
 ```
-While classic and electric bike types are self-explanatory, it's not clear what docked bike type means, since there is no dockless bike types in the dataset. . There is no definition of the values provided by the data owner. Looking at samples of older data, it seems that pre-2020 there were only docked bikes and around November 2020 it was split into "docked" and "classic" types. Since only 3% of rides were made using the docked bike tipe, we will assume that docked and classic bikes represent the same type of bike in this analysis. We are making changes to the table accordingly:
+While classic and electric bike types are self-explanatory, it's not clear what docked bike type means, since there is no dockless bike type in the dataset. There is no definition of the values provided by the data owner. Looking at samples of older data, it seems that pre-2020 there were only docked bikes and around November 2020 it was split into "docked" and "classic" types. Since only 3% of rides were made using the docked bike type, we will assume that docked and classic bikes represent the same type of bike in this analysis. We are making changes to the table accordingly:
 ```sql
 UPDATE `phrasal-brand-398306.bikeshare_data.rides`
 SET rideable_type = 'classic_bike'
@@ -185,7 +181,7 @@ WHERE rideable_type = 'docked_bike'
 ```
 
 -  Ride Started and Ended dates.
-    - I checked that both dates are within the expected range. I selected the .csv files with 2022 rides. So the expected range for start date is within 2022 while end date may also be a little after last day of 2022. The ride start dates are within range. There is a ride that ended on 02/01/2023 but it's the only one so we will ignore it.
+    - I checked that both dates are within the expected range. I selected the .csv files with 2022 rides. So the expected range for the start date is within 2022 while the end date may also be a little after the last day of 2022. The ride start dates are within range. There is a ride that ended on 02/01/2023 but it's the only one so we will ignore it.
     ```sql
     SELECT
     MIN(started_at) AS min_start_date,
@@ -195,26 +191,26 @@ WHERE rideable_type = 'docked_bike'
     FROM
     `phrasal-brand-398306.bikeshare_data.rides`
     ```
-    - Next, I checked if there are cases where the ride end date and time equals start date/time or is before the start date/time. <br/>  :warning: It turns out there are 531 such cases. While it's a tiny percentage of the overall dataset (5M+ rows), it should not impact our analysis. But it's definitely alarming :triangular_flag_on_post: in terms of overall data quality. 
+    - Next, I checked if there were cases where the ride end date and time equals start date/time or is before the start date/time. <br/>  :warning: It turns out there are 531 such cases. While it's a tiny percentage of the overall dataset (5M+ rows), it should not impact our analysis. But it's definitely alarming :triangular_flag_on_post: in terms of overall data quality. 
     ```sql
     SELECT started_at, ended_at, * 
     FROM `phrasal-brand-398306.bikeshare_data.rides`
     WHERE ended_at <= started_at
     ```
 - Other
-    - The "category" fields (rideable_type and member_casual) do not contain any whitespaces, typos or any problems. I checked it by looking at the values manually, since they are few.
-    - There is no definition of constraints for station ID and name values provided by the data owner so I din't do any validation on it. It is not the core of our analysis.
+    - The "category" fields (rideable_type and member_casual) do not contain any whitespaces, typos, or any problems. I checked it by looking at the values manually since they are few.
+    - There is no definition of constraints for station ID and name values provided by the data owner so I didn't do any validation on it. It is not the core of our analysis.
     - No validation was done on the coordinates as it is not important to the analysis
 
 **Adding calculated columns and renaming columns**
 
-I renamed *member_casual* column to *rider_type* to make it clearer.
+I renamed the `member_casual` column to `rider_type` to make it clearer.
 
 I ran queries to add and populate 4 calculated columns which would facilitate the analysis later. The ride length allows us to explore the usage patterns of casual riders and members and the 3 other columns allow us to explore the data in time series.
 | Column | Description (assumed) | Format |
 |---|---|---|
 | ride_length | calculated ride length in seconds | Integer |
-| start_day_of_week | day of week, when the ride was started. Note that I used `FORMAT_DATE` SQL function instead of usual `EXTRACT`, because it returns '1' for Mondays, which is what I want. `FORMAT_DATE` function returns strings so I transformed it to an Integer for easier analysis. | Integer |
+| start_day_of_week | day of week, when the ride was started. Note that I used `FORMAT_DATE` SQL function instead of usual `EXTRACT` because it returns '1' for Mondays, which is what I want. `FORMAT_DATE` function returns strings so I transformed it to an Integer for easier analysis. | Integer |
 | start_hour | the hour of the day when the ride started. | Integer |
 | ride_month | the month when the ride started. | Integer |
 
@@ -235,7 +231,7 @@ ride_month = EXTRACT(MONTH from started_at)
 WHERE TRUE;
 ```
 
-After creating calculated columns, it makes sense to do cleanup checks on their values as well. The start_day_of_week, start_hour and ride_month all have corect values and no null values. 
+After creating calculated columns, it makes sense to do cleanup checks on their values as well. The start_day_of_week, start_hour, and ride_month all have correct values and no null values. 
 
 :warning: There are red flags with ride_length, though. 
 
@@ -247,9 +243,9 @@ min(ride_length) as min_length,
 max(ride_length) as max_length 
 FROM `phrasal-brand-398306.bikeshare_data.rides`;
 ```
-This confirmed that there are very strange values. Minimum is -621,201s (more than -7 days) and maximum is 2,483,235s (over 28 days). That is a second red flag :triangular_flag_on_post: in the dataset. The extremely long rides are probably rides in which the bike was not returned or the return was not registered properly but there is no way to confirm without any dataset description available. 
+This confirmed that there are very strange values. The minimum is -621,201s (more than -7 days) and the maximum is 2,483,235s (over 28 days). That is a second red flag :triangular_flag_on_post: in the dataset. The extremely long rides are probably rides in which the bike was not returned or the return was not registered properly but there is no way to confirm without any dataset description available. 
 
-Next, I checked what percentage of rows fall in the area of suspicious to see if the analysis will be at all possible. I divided the length into a number of bins that represent rides of negative length, 0 length rides, suspiciously short and suspiciously long rides. 
+Next, I checked what percentage of rows fall in the area of suspicious to see if the analysis will be at all possible. I divided the length into a number of bins that represent rides of negative length, 0 length rides, suspiciously short, and suspiciously long rides. 
 
 ```sql
 SELECT
@@ -317,13 +313,13 @@ Note that this framework does not give an exhaustive list of relevant questions 
 <br/>
 
 The framework to define the specific questions consists of following a few guiding steps:
-1. Classify the columns in the table: timeseries (e.g. ride month), categories (e.g. rider type, rider type), numerical (e.g. ride length), nominal values (e.g. start station name). Note, BI tools such as Tableau automatically perform similar classification.
-2. Define the list of timeseries analysis which make sense for the business task. It's a combination of the following questions: 
+1. Classify the columns in the table: timeseries (e.g. ride month), categories (e.g. rider type, rider type), numerical (e.g. ride length), nominal values (e.g. start station name). Note that BI tools such as Tableau automatically perform similar classification.
+2. Define the list of timeseries analyses which make sense for the business task. It's a combination of the following questions: 
     - which numerical values should we analyze in the timeseries (e.g. number of rides)
     - what level timeseries (month, week, day, hour, etc.) are interesting  (e.g. number of monthly rides to explore seasonality)
     - which categories will we use to split the numerical values (e.g. the number of monthly rides by rider type to compare seasonality across different rider types).
 3. List the possible combinations of (numerical value x 1 or more categories) and highlight the ones that are interesting to explore for the business task.
-    - in the business task, there may be some key categories (in this case it was the rider type since we explore differences in activity of different rider types)
+    - in the business task, there may be some key categories (in this case it was the rider type since we explore differences in the activity of different rider types)
     - it may be interesting to also build numerical value summary table(s) for the overall dataset as well as broken down by interesting categories. 
 
  Steps 2 and 3 can provide matrices that highlight the questions to be answered with data, as a starting point for the analysis. For example, for this analysis, I created 2 matrices that guided my analysis: 
@@ -339,8 +335,8 @@ The framework to define the specific questions consists of following a few guidi
 This framework reminds me to consider some angles of exploration which I may not have thought about.
 </details>
 
-Using the framework mentioned above as a starting point, I decided that these queries will be a good start for our business task:
-1. All summary questions<sup><b>*</b></sup> for the ride length measure, on overall dataset and broken down by rider type
+Using the framework mentioned above as a starting point, I decided that these queries would be a good start for our business task:
+1. All summary questions<sup><b>*</b></sup> for the ride length measure, on the overall dataset and broken down by rider type
 1. Total number of rides, broken down by month, and by month and rider type
 1. Total number of rides, broken down by day of week
 1. Total number of rides and average ride length (median), broken down by day of week and rider type
@@ -351,7 +347,7 @@ Using the framework mentioned above as a starting point, I decided that these qu
 1. Count distinct routes taken, broken down by rider type
 1. How clustered is the activity for casual riders, in terms of stations where rides start
 
-<sup><b>*</b></sup> By summary questions, I mean finding the following values on the ride length that give a sense of the distribution (I queried them on overall dataset and and grouped by rider type): 
+<sup><b>*</b></sup> By summary questions, I mean finding the following values on the ride length that give a sense of the distribution (I queried them on the overall dataset and broken down by rider type): 
 - Total table row count (observations)
 - Max field value
 - Min field value
@@ -376,13 +372,13 @@ Summary queries allowed me to explore the distribution of the ride lengths. Note
 <img width="1202" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/1d670b3d-b10a-420e-9a20-f1e85481a5b8">
 
 **:bulb: Key Insights**
-- The mean is significantly higher than the median with high standard deviation, especially for the casual riders' activity. This means that the distribution is heavily skewed due a long tail with extremely long rides, as seen in [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data) step. We will use median to describe the typical ride, instead of mean.
-- There are more rides taken by members but without rider identifier attribute we don't know if it's due to higher number of riders or average rides per rider.
-- Thre is a 60/40 division of data by rider type, which means the data is representative of both populations (casual riders and members).
+- The mean is significantly higher than the median with a high standard deviation, especially for the casual riders' activity. This means that the distribution is heavily skewed due to a long tail with extremely long rides, as seen in [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data) step. We will use the median to describe the typical ride, instead of the mean.
+- There are more rides taken by members but without the rider identifier attribute, we don't know if it's due to a higher number of riders or average rides per rider.
+- There is a 60/40 division of data by rider type, which means the data is representative of both populations (casual riders and members).
 - The casual riders are taking significantly longer rides than members (median for casual riders is 47% higher)
 
 ### 4.3. Rides by Month
-Looking at numbers of monthly rides allows us to see the impact of seasonality on the rides activity.
+Looking at the number of monthly rides allows us to see the impact of seasonality on the activity.
 
 [Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-month-queries)
 
@@ -421,11 +417,11 @@ We also explore the differences in ride lengths on various days.
 
 
 **:bulb: Key Insights**
-- Overall, the number of rides taken steadily increases as the week goes, reaching its peak on Saturday. No suprises here.
-- The members' rides seem to have daiy commute pattern VS more leisure-centered activity for casual riders. On an average weekday, members take 17% more rides than on a weekend day. Casual riders, on average, take 48% more rides on weekends. 
+- Overall, the number of rides taken steadily increases as the week goes on, reaching its peak on Saturday. No surprises here.
+- The members' rides seem to have a daily commute pattern versus more leisure-centered activity for casual riders. On an average weekday, members take 17% more rides than on a weekend day. Casual riders, on average, take 48% more rides on weekends. 
 
 ### 4.5. Rides by Starting Hour
-Looking at the “busiest times” for each rider type allows to find patterns and potentially validate the commute vs leisure hypothesis. 
+Looking at the “busiest times” for each rider type allows us to find patterns and potentially validate the commute vs leisure hypothesis. 
 
 [Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-starting-hour-queries)
 
@@ -439,7 +435,7 @@ Looking at the “busiest times” for each rider type allows to find patterns a
 ![viz_Weekend rides - hourly breakdown](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/f3c1df03-db68-4c9c-b383-69a1f20c4689)
 
 **:bulb: Key Insights**
-- Activity on weekends is similar for both types of customers. But the activity is clearly different on weekdays - members have spikes in activity during "commuter" hours (7-8am and 4-6pm) and casual riders increase their activity steadily until 5pm. This pattern signals daily commute habits of members.
+- Activity on weekends is similar for both types of customers. But the activity is clearly different on weekdays - members have spikes in activity during "commuter" hours (7-8 am and 4-6 pm) and casual riders increase their activity steadily until 5 pm. This pattern signals daily commute habits of members.
 
 ### 4.6. Rides by Rideable Type
 We are exploring if casual riders and members have any preferences in terms of bike types (classic or electric bikes).
@@ -451,7 +447,7 @@ We are exploring if casual riders and members have any preferences in terms of b
 The results are pretty equally distributed in both cases so there are no conclusions to draw here.
 
 ### 4.7. Ride Start Stations
-Next set of queries allows us to see if casual riders and members start their rides in different or similar locations. Since there are over a thousand of stations in the dataset, we look at TOP 10 stations, where most of the rides start, and look for any patterns there.
+The next set of queries allows us to see if casual riders and members start their rides in different or similar locations. Since there are over a thousand of stations in the dataset, we look at the TOP 10 stations, where most of the rides start, and look for any patterns there.
 
 [Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#ride-start-stations-queries)
 
@@ -466,13 +462,13 @@ For better visibility, we mark a few of the most popular stations on the map to 
 
 ![viz_Top 10 stations for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/072e33d8-21d7-49ff-80ae-d575da7c4fde)
 
-Members start their rides mostly in the middle of the city, presumably business areas. One of the most popular stations is also near the main university in the city. 
+Members start their rides mostly in the middle of the city, presumably in business areas. One of the most popular stations is also near the main university in the city. 
 
 <img width="1169" alt="res_top_stations_members_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/b24fbea8-2181-40b2-873d-553cff94edad">
 
 **Stations clustering for Casual Riders**
 While looking at the distribution of rides starting at various stations, I noticed a lot of stations had only 1 or 2 rides that started there. Inspired by the 80/20 principle, I decided to check if it applies here - i.e. if a small subset of starting stations cover most of the rides. 
-If it's confirmed, it could help focus the physical marketing assets to a small number of areas. 
+If it's confirmed, it could help focus the physical marketing assets on a small number of areas. 
 
 ![viz_casual_station_cluster](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/568b6371-50f1-498a-bb27-2ae04054251b)
 
@@ -502,11 +498,11 @@ Finally, I decided to check if there are differences in the variety of routes ta
 
 <img width="329" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/298b9d43-c541-402b-8092-78c8638ecd07">
 
-There is no significant difference in number of different routes taken by different riders.
+There is no significant difference in the number of different routes taken by different riders.
 
 **:bulb: Key Insights**
 - There are very different patterns in routes taken by casual riders and by members. This is another argument for the theory of casual riders using the service for leisure and members using it for their commute.
-    - The majority of most popular routes for casual riders start and end in the same station. This suggests that the purpose of the ride is not transportation but the ride itself.
+    - The majority of the most popular routes for casual riders start and end in the same station. This suggests that the purpose of the ride is not transportation but the ride itself.
     - The most popular routes for members have a clear "round-trip" pattern.  
 
 ## 5. Appendix A - SQL Queries for Analysis
@@ -560,7 +556,7 @@ FROM `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY rider_type
 )
 
--- Step 3. Join summary table with percentiles values
+-- Step 3. Join the summary table with percentile values
 SELECT summary.rider_type, total_rides, min_ride_length, max_ride_length, mean_ride_length, median_ride_length, perc_25_ride_lengh, perc_75_ride_lenght, std_dev_ride_length
 FROM
 summary
@@ -588,7 +584,7 @@ ORDER BY ride_month;
 
 **Broken down by Rider Type**
 
-Note that in this query I chose to have rider type breakdown in separate columns. Simpler way would be to add just `rder_type` column in the query and have separate rows for each rider type. But the advantage of splitting it into separate columns allows to create charts on that data without additional processing. And in this case, the rider type only has 2 values so it makes sense. 
+Note that in this query I chose to have rider type breakdown in separate columns. A simpler way would be to add just the `rider_type` column in the query and have separate rows for each rider type. However the advantage of splitting it into separate columns allows us to create charts on that data without additional processing. And in this case, the rider type only has 2 values so it makes sense. 
 
 ```sql
 -- Total rides by month and rider type
@@ -607,7 +603,7 @@ ORDER BY ride_month;
 ### Rides by Day of the Week Queries
 **Overall Dataset**
 ```sql
--- Total rides by day of week
+-- Total rides by day of the week
 SELECT
 start_day_of_week,
 COUNT(*) AS total_rides
@@ -642,7 +638,7 @@ FROM
 `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY start_day_of_week, rider_type
 )
--- Step 3. Create main query that pulls relevant values from the 2 separate queries. Since there are only 2 rider types, we define a column for each measure for each rider type (4 columns total).
+-- Step 3. Create the main query that pulls relevant values from the 2 separate queries. Since there are only 2 rider types, we define a column for each measure for each rider type (4 columns total).
 SELECT DISTINCT t.start_day_of_week,
 (SELECT total_rides FROM totals WHERE start_day_of_week = t.start_day_of_week AND rider_type = 'casual') AS total_rides_casual,
 (SELECT total_rides FROM totals WHERE start_day_of_week = t.start_day_of_week AND rider_type = 'member') AS total_rides_member,
@@ -676,7 +672,7 @@ ORDER BY start_hour
 
 ### Rides by Rideable Type Queries
 ```sql
--- Total rides by rider and rideable type
+-- Total rides by the rider type and rideable type
 SELECT
 rider_type,
 COUNT(CASE rideable_type WHEN 'electric_bike' THEN 1 END) as rides_electric,
@@ -738,7 +734,7 @@ station_rides,
 SUM(station_rides) OVER (ORDER BY station_rank ASC) AS cumul_rides, -- Number of cumulative rides - i.e. sum of rides started in stations from TOP 1 station to the current station, included
 ROUND(SUM(station_rides) OVER (ORDER BY station_rank ASC) / SUM(station_rides) OVER() * 100, 2) as prc_total_rides, -- Number of cumulative rides as a % of total rides
 station_rank,
-ROUND(station_rank / (SELECT MAX(station_rank) FROM station_ride_counts) * 100, 2) as prc_stations -- Number of stations (from TOP 1 station to the current station, included) as a % of total number of stations
+ROUND(station_rank / (SELECT MAX(station_rank) FROM station_ride_counts) * 100, 2) as prc_stations -- Number of stations (from TOP 1 station to the current station, included) as a % of the total number of stations
 FROM station_ride_counts
 ORDER BY station_rank
 ```
@@ -752,7 +748,7 @@ WITH counts AS(
     SELECT
     rider_type,
     CONCAT(start_station_name, " - ", end_station_name) AS route,
-    -- After the first look, I noticed routes that start and end in same station. In this V2 of the query, I added a specific column for better visibility.
+    -- After the first look, I noticed routes that start and end in the same station. In this V2 of the query, I added a specific column for better visibility.
     (start_station_name = end_station_name) AS same_station,
     COUNT(*) AS total_rides,
     RANK() OVER (PARTITION BY rider_type ORDER BY COUNT(*) DESC) AS route_rank
