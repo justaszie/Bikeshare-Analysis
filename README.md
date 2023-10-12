@@ -3,16 +3,14 @@
 ### 1.1 The What and the Why
 After I completed the Google Data Analytics Certification program on [Coursera](https://www.coursera.org/professional-certificates/google-data-analytics), I was keen to use its material on practical examples. 
 
-The program includes a guided project in which you can solve a business problem for a fictional bike-share service, called Cyclastic, by analyzing a real-world dataset. The dataset contains the ride history data and the **specific business task** of the analysis was to:
+The program includes a guided project in which you can solve a business problem for a fictional bike-share service, called Cyclastic, by analyzing a real-life dataset. The dataset contains the ride history data and the **specific business task** of the analysis was to:
 1. find out the differences between the activity of the casual riders and members (riders holding annual membership pass)
 2. based on these insights, make recommendations on how marketing team can convert casual riders into members
 
-Even though the project was an optional part of the certification program, I chose to complete it because I was interested in using real-world dataset and solve a realistic business problem and it allowed me to brush up on my key data analysis skills.
+Even though the project was an optional part of the certification program, I chose to complete it because I was interested in using real-life dataset to solve a realistic business problem and it allowed me to brush up on my key data analysis skills.
 
 ### 1.2. Guide to This Document
 As it's my first data project, this documentation is very detailed and quite chunky. I plan to use it as knowledge base for future projects. Feel free to skip to the parts that are most interesting to you. 
-
-<span style="color:red;">**TODO - ADD UPDATED BOOKMARK LINKS**</span>
 
 If you're here for a good time, not a long time: [presentation with the solution to the business problem](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-business-case-solution).
 
@@ -515,9 +513,8 @@ There is no significant difference in number of different routes taken by differ
 This section lists all the SQL queries used in the analysis and the results when they were run. 
 <details>
 <summary> Click here to see the SQL queries </summary>
-<br/>
 
-### Ride Length Summary 
+### Ride Length Summary Queries
 **Overall dataset**
 ```sql
 -- All summary questions for ride length
@@ -574,7 +571,7 @@ ON summary.rider_type = percentiles.rider_type;
 
 <img width="1202" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/1d670b3d-b10a-420e-9a20-f1e85481a5b8">
 
-### Rides by Month
+### Rides by Month Queries
 **Overall Dataset**
 
 ```sql
@@ -607,7 +604,7 @@ ORDER BY ride_month;
 
 <img width="499" alt="res_monthly_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ca03f705-7a5f-4199-a097-3c5b0dbe2af2">
 
-### Rides by day of the Week
+### Rides by day of the Week Queries
 **Overall Dataset**
 ```sql
 -- Total rides by day of week
@@ -658,7 +655,7 @@ ORDER BY t.start_day_of_week;
 
 <img width="630" alt="res_day_of_week_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/68a233ae-84bc-4f01-b990-752ee30cdcf7">
 
-### Rides by Starting Hour
+### Rides by Starting Hour Queries
 ```sql
 SELECT start_hour,
 count(*) AS total_rides,
@@ -677,7 +674,7 @@ ORDER BY start_hour
 
 <img width="373" alt="res_hourly_rider_weekend" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/29c6ae74-b304-49f7-bfef-7bb8297c256f">
 
-### Rides by Rideable Type
+### Rides by Rideable Type Queries
 ```sql
 -- Total rides by rider and rideable type
 SELECT
@@ -691,7 +688,7 @@ GROUP BY rider_type;
 
 <img width="579" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/67a59f06-cbcd-40ff-a3e6-501b6be8607d">
 
-### Ride Start Stations
+### Ride Start Stations Queries
 
 **Top 10 stations for Casual Riders**
 
@@ -748,7 +745,7 @@ ORDER BY station_rank
 
 <img width="823" alt="res_station_cluster_casual_sample" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2da65d8b-2762-4867-b494-c705e8efd846">
 
-### Routes Taken
+### Routes Taken Queries
 ```sql
 -- Total rides by rider and route
 WITH counts AS(
