@@ -366,7 +366,7 @@ Using the framework mentioned above as a starting point, I decided that these qu
 
 Summary queries allowed me to explore the distribution of the ride lengths. Note that the ride length values are **expressed in seconds**.
 
-[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#ride-length-summary)
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#ride-length-summary-queries)
 
 **Overall dataset**
 <img width="1008" alt="res_summary_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/72f86657-1153-40cf-86f0-69b8b744b5d4">
@@ -384,7 +384,7 @@ Summary queries allowed me to explore the distribution of the ride lengths. Note
 ### 4.3. Rides by Month
 Looking at numbers of monthly rides allows us to see the impact of seasonality on the rides activity.
 
-[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-month)
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-month-queries)
 
 **Overall Dataset**
 
@@ -401,7 +401,7 @@ Looking at numbers of monthly rides allows us to see the impact of seasonality o
 ### 4.4. Rides by Day of the Week
 We explore the usage patterns for different rider types during the week. It can give insights into the purpose of the rides.
 
-[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-day-of-the-week)
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-day-of-the-week-queries)
 
 **Overall Dataset**
 
@@ -427,7 +427,7 @@ We also explore the differences in ride lengths on various days.
 ### 4.5. Rides by Starting Hour
 Looking at the “busiest times” for each rider type allows to find patterns and potentially validate the commute vs leisure hypothesis. 
 
-[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-starting-hour)
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-starting-hour-queries)
 
 **Weekday Rides**
 
@@ -444,7 +444,7 @@ Looking at the “busiest times” for each rider type allows to find patterns a
 ### 4.6. Rides by Rideable Type
 We are exploring if casual riders and members have any preferences in terms of bike types (classic or electric bikes).
 
-[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-rideable-type)
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-rideable-type-queries)
 
 <img width="579" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/67a59f06-cbcd-40ff-a3e6-501b6be8607d">
 
@@ -453,7 +453,7 @@ The results are pretty equally distributed in both cases so there are no conclus
 ### 4.7. Ride Start Stations
 Next set of queries allows us to see if casual riders and members start their rides in different or similar locations. Since there are over a thousand of stations in the dataset, we look at TOP 10 stations, where most of the rides start, and look for any patterns there.
 
-[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#ride-start-stations)
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#ride-start-stations-queries)
 
 **Top 10 stations for Casual Riders**
 ![viz_Top 10 stations for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c49432e2-b310-4ed7-a7cc-13c038d5def5)
@@ -485,7 +485,7 @@ If it's confirmed, it could help focus the physical marketing assets to a small 
 ### 4.7. Routes Taken
 Similar to start stations, we are checking for any patterns in what routes the casual riders and members are taking.
 
-[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#routes-taken)
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#routes-taken-queries)
 
 **Top 10 routes for Casual Riders**
 
@@ -604,7 +604,7 @@ ORDER BY ride_month;
 
 <img width="499" alt="res_monthly_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ca03f705-7a5f-4199-a097-3c5b0dbe2af2">
 
-### Rides by day of the Week Queries
+### Rides by Day of the Week Queries
 **Overall Dataset**
 ```sql
 -- Total rides by day of week
