@@ -300,6 +300,16 @@ The below table  describes the final dataset after the original dataset was clea
 | start_hour | Hour (in 24h format) when the ride started | Integer |
 | ride_month | Month when the ride started in numerical format (1 represents January) | Integer |
 
+See a few rows from the table below
+
+| ride_id | rideable_type | started_at | ended_at | start_station_name | start_station_id | end_station_name | end_station_id | start_lat | start_lng | end_lat | end_lng | rider_type | ride_length | start_day_of_week | start_hour | ride_month |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 8A7454BBD65EAC62 | classic_bike | 2022-08-23 15:32:38.000000 UTC | 2022-08-23 15:46:40.000000 UTC | Smith Park | 643 | California Ave & North Ave | 13258 | 41.892048 | -87.689397 | 41.9104754 | -87.6968944 | casual | 842 | 2 | 15 | 8 |
+| 53C5BAE1132E76B5 | electric_bike | 2022-11-02 19:03:38.000000 UTC | 2022-11-02 19:26:50.000000 UTC | Smith Park | 643 | Paulina St & Montrose Ave | TA1309000021 | 41.892029333333333 | -87.6893675 | 41.961507 | -87.671387 | casual | 1392 | 3 | 19 | 11 |
+| 8FD6192B4B3BFB78 | electric_bike | 2022-08-05 06:58:52.000000 UTC | 2022-08-05 07:11:57.000000 UTC | Smith Park | 643 | Wood St & Taylor St (Temp) | 13285 | 41.892021166666666 | -87.6894195 | 41.869265218438194 | -87.673730850219727 | member | 785 | 5 | 6 | 8 |
+| 6B7F118F0056817B | electric_bike | 2022-04-23 13:50:30.000000 UTC | 2022-04-23 14:08:27.000000 UTC | Smith Park | 643 | Morgan St & Lake St* | chargingstx4 | 41.892080833333331 | -87.689340833333333 | 41.885491706269057 | -87.652289271354675 | casual | 1077 | 6 | 13 | 4 |
+| 46793D8860690574 | classic_bike | 2022-12-02 08:27:56.000000 UTC | 2022-12-02 08:42:55.000000 UTC | Smith Park | 643 | Morgan St & Lake St* | chargingstx4 | 41.892048 | -87.689397 | 41.885491706269057 | -87.652289271354675 | member | 899 | 5 | 8 | 12 |
+
 ## 4. Analysis
 ### 4.1. Defining the questions
 As a reminder, the business task definition was broad - provide insights on how annual members and casual riders use Cyclistic bikes differently. The certification project material gave some suggestions on specific questions but they were very basic:
