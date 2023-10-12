@@ -368,6 +368,8 @@ Using the framework mentioned above as a starting point, I decided that these qu
 
 Summary queries allowed me to explore the distribution of the ride lengths. Note that the ride length values are **expressed in seconds**.
 
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#ride-length-summary)
+
 **Overall dataset**
 <img width="1008" alt="res_summary_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/72f86657-1153-40cf-86f0-69b8b744b5d4">
 
@@ -384,6 +386,8 @@ Summary queries allowed me to explore the distribution of the ride lengths. Note
 ### 4.3. Rides by Month
 Looking at numbers of monthly rides allows us to see the impact of seasonality on the rides activity.
 
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-month)
+
 **Overall Dataset**
 
 ![viz_Monthly rides](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/d490c893-0fd5-461d-b5cd-ec2b557fd440)
@@ -398,6 +402,8 @@ Looking at numbers of monthly rides allows us to see the impact of seasonality o
 
 ### 4.4. Rides by Day of the Week
 We explore the usage patterns for different rider types during the week. It can give insights into the purpose of the rides.
+
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-day-of-the-week)
 
 **Overall Dataset**
 
@@ -423,6 +429,8 @@ We also explore the differences in ride lengths on various days.
 ### 4.5. Rides by Starting Hour
 Looking at the “busiest times” for each rider type allows to find patterns and potentially validate the commute vs leisure hypothesis. 
 
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-starting-hour)
+
 **Weekday Rides**
 
 ![viz_Weekday rides - hourly breakdown](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/10c907ab-1d1b-4bb3-bc0c-5a4ec1972074)
@@ -438,12 +446,16 @@ Looking at the “busiest times” for each rider type allows to find patterns a
 ### 4.6. Rides by Rideable Type
 We are exploring if casual riders and members have any preferences in terms of bike types (classic or electric bikes).
 
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-rideable-type)
+
 <img width="579" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/67a59f06-cbcd-40ff-a3e6-501b6be8607d">
 
 The results are pretty equally distributed in both cases so there are no conclusions to draw here.
 
 ### 4.7. Ride Start Stations
 Next set of queries allows us to see if casual riders and members start their rides in different or similar locations. Since there are over a thousand of stations in the dataset, we look at TOP 10 stations, where most of the rides start, and look for any patterns there.
+
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#ride-start-stations)
 
 **Top 10 stations for Casual Riders**
 ![viz_Top 10 stations for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c49432e2-b310-4ed7-a7cc-13c038d5def5)
@@ -460,13 +472,11 @@ Members start their rides mostly in the middle of the city, presumably business 
 
 <img width="1169" alt="res_top_stations_members_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/b24fbea8-2181-40b2-873d-553cff94edad">
 
-
 **Stations clustering for Casual Riders**
 While looking at the distribution of rides starting at various stations, I noticed a lot of stations had only 1 or 2 rides that started there. Inspired by the 80/20 principle, I decided to check if it applies here - i.e. if a small subset of starting stations cover most of the rides. 
 If it's confirmed, it could help focus the physical marketing assets to a small number of areas. 
 
 ![viz_casual_station_cluster](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/568b6371-50f1-498a-bb27-2ae04054251b)
-
 
 **:bulb: Key Insights**
 - Casual riders seem to use the service for leisure and members are using it for their commute. 
@@ -476,6 +486,8 @@ If it's confirmed, it could help focus the physical marketing assets to a small 
 
 ### 4.7. Routes Taken
 Similar to start stations, we are checking for any patterns in what routes the casual riders and members are taking.
+
+[Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#routes-taken)
 
 **Top 10 routes for Casual Riders**
 
@@ -578,6 +590,7 @@ ORDER BY ride_month;
 <img width="252" alt="res_monthly_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c460d21d-1ecd-4cc8-bfec-218b8a9d0b62">
 
 **Broken down by Rider Type**
+
 Note that in this query I chose to have rider type breakdown in separate columns. Simpler way would be to add just `rder_type` column in the query and have separate rows for each rider type. But the advantage of splitting it into separate columns allows to create charts on that data without additional processing. And in this case, the rider type only has 2 values so it makes sense. 
 
 ```sql
