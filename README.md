@@ -312,7 +312,7 @@ So, before I started the analysis, I had to define the list of specific question
 
 Note that this framework does not give an exhaustive list of relevant questions and it will need to be adjusted to larger datasets but it's a solid start.
 
-<details open>
+<details>
 <summary> Details of the framework </summary>
 <br/>
 
