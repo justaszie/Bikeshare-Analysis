@@ -387,7 +387,7 @@ Looking at numbers of monthly rides allows us to see the impact of seasonality o
 - Overall, there's a clear peak season (May - October) when 75% of the rides happen. It's predictable given the cold winters in Chicago. 
 - Casual riders' activity has shorter and more intense peak. In April, casual riders reach 30% of their peak monthly rides value, while members are already at almost 60%.
 
-### 4.4. Rides by day of the Week
+### 4.4. Rides by Day of the Week
 We explore the usage patterns for different rider types during the week. It can give insights into the purpose of the rides.
 
 **Overall Dataset**
