@@ -3,49 +3,56 @@
 ### 1.1 The What and the Why
 After I completed the Google Data Analytics Certification program on [Coursera](https://www.coursera.org/professional-certificates/google-data-analytics), I was keen to use its material on practical examples. 
 
-The program includes an optional guided project in which you can solve a business problem for a fictional bike-share service, called Cyclastic, by analyzing a real-world dataset. The dataset contained the ride history data and the **specific business task** of the analysis was to:
-1. explore the differences between the activity of the casual riders and members (riders holding annual membership pass)
-2. use these insights to make recommendations on how marketing efforts can convert casual riders into members
+The program includes a guided project in which you can solve a business problem for a fictional bike-share service, called Cyclastic, by analyzing a real-world dataset. The dataset contains the ride history data and the **specific business task** of the analysis was to:
+1. find out the differences between the activity of the casual riders and members (riders holding annual membership pass)
+2. based on these insights, make recommendations on how marketing team can convert casual riders into members
 
 Even though the project was an optional part of the certification program, I chose to complete it because I was interested in using real-world dataset and solve a realistic business problem and it allowed me to brush up on my key data analysis skills.
 
-**<span style="color:red">TODO: improve summary.**</span> *First, Intro to project: context, business task and summary of what I've done and with what tools (very high level) Then, Clearly list sections of doc with bookmark links. 1. Just the analysis report 2. Analysis steps (TBD if include queries in the steps or in appendix) 3. Details of data prep and cleanup. Details of prep and cleanup should be collapsed. Appendix (if present) will be collapsed. If you're here for a good time not a long time, go to solution*
+### 1.2. Guide to This Document
+As it's my first data project, this documentation is very detailed and quite chunky. I plan to use it as knowledge base for future projects. Feel free to skip to the parts that are most interesting to you. 
 
-This document will describe:
-1. The summary of the project (this section)
-2. Final solution for the business case - a slide presentation for the stakeholders with the business case insights and recommendations. 
-3. Details of my analysis process, including the queries, lessons learned and ideas for future improvements
+If you're here for a good time, not a long time: [presentation with the solution to the business problem]().
 
-Since this is my first project, it will be very detailed so that I can use it as a knowledge base for my future projects. 
+If yoou're interested what's under the hood:
+- [Analysis steps]()
+- [Data preparation and cleanup steps]()
+- [SQL queries used for the analysis]()
 
-### 1.2. Process
+### 1.3. Dataset
+The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is history of rides of a bikeshare service called Divvy, operated by Lyft in Chicago, and is licensed out for public usage. It contains a large amount of data from 2015 up to mid-2023.
+- [Data license](https://divvybikes.com/data-license-agreement)
+- [Original data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
+- [Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note it's 1GB+ .csv file)
+
+### 1.4. Process
 I followed the analysis process provided by Google program and adjusted it to my preferences. The overall process I followed had 6 phases:
-1. **Define** - refined the specific business task for the project based on the guidance document
+1. **Define** - read through guidance material and refined the specific business task for the project based on the guidance document
 2. **Prepare** - collected, evaluated and cleaned the data using SQL to get it ready for analysis
 4. **Analyze** - defined relevant questions, ran SQL queries to answer them using the data, validated my hypotheses, and gained surprising insights
 5. **Share** - created a business case presentation to share the insights with stakeholders, including using visualizations. The stakeholders in this case were the marketing director and the executive team of the fictional company
 
-### 1.3 Data Tools
+### 1.5 Data Tools
+The project material did not impose any tools for the analysis, so I chose the combination of:
 - **SQL**
-    - Timeframe for analysis was not defined by the project. I wanted to analyze at least 1 year of rides data (5M+ rows) and it was too large for spreadsheets
+    - Data timeframe for analysis was not defined by the project. I wanted to analyze at least 1 year of rides data (5M+ rows) and it was too large for spreadsheets
     - It allowed me to brush up on my SQL skills for data cleanup and analysis
-    - To focus on the analysis itself, I used BigQuery - Google's serverless data warehouse solution which was the simplest way to set up a database.
+    - To focus on the analysis itself, I used BigQuery - Google's serverless data warehouse solution which was the simplest way to set up a database for storage and analysis.
 - **Google Sheets**
    - Used for some calculations which are easier to do in spreadsheets than in SQL and to build visualizations
    - I chose Sheets over Excel as it's free and, from my past experience, it is often used by startups and scaleups. The skills built on Sheets will be easily transferrable to Excel.
 
 ## 2. Business Case Solution
-The final presentation that solves the business case can be accessed [here](https://docs.google.com/presentation/d/1bwYGy23ZWJG5qMf0imZLOfAincOCCUbpCrCYMcIStbE/edit?usp=sharing)
+The final presentation that solves the business case can be accessed [here](https://docs.google.com/presentation/d/1bwYGy23ZWJG5qMf0imZLOfAincOCCUbpCrCYMcIStbE/edit?usp=sharing).
 
-**TODO: decide (1) how much info about the business case context (company, chicago etc) to include and (2) where should it be - here (if yes, which section) or the presentation itself?
+As a reminder, the business problem was to convert the casual riders to annual members of the bikeshare service. Specifically, I had to find the differences in the usage of casual riders and annual members of the service, and use this knowledge to make marketing recommendations to help the conversion.
 
 ## 3. Preparing the data
-The project is to solve the business problem of a fictional company. But the dataset to analyze comes from a real business. It is history of rides of a bikeshare service called Divvy, operated by Lyft in Chicago and is licensed out to public. 
-- [Original data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
-- [Data license](https://divvybikes.com/data-license-agreement)
-- [CSV with Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note it's 1GB+)
+I've chosen to work with the data of The first thing to do was to download the data from the original data source, load it into an SQL database and perform cleaning, necessary for my analysis. 
 
-<details>
+
+
+<details open>
 <summary> Click here for the detailed data preparation steps</summary>
 
 ### 3.1. Loading Into Database
@@ -309,7 +316,7 @@ So, before I started the analysis, I had to define the list of specific question
 
 Note that this framework does not give an exhaustive list of relevant questions and it will need to be adjusted to larger datasets but it's a solid start
 
-<details>
+<details open>
 <summary> Details of the framework </summary>
 
 The framework to define the specific questions consists of following a few guiding steps:
@@ -358,6 +365,8 @@ Using the framework mentioned above as a starting point, I decided that these qu
 - Standard deviation
 
 ### 4.2. Ride Length Summary 
+<span style="color:red;">**TODO: add links to relevant queries in these sections**</span>
+
 Summary queries allowed me to explore the distribution of the ride lengths. Note that the ride length values are **expressed in seconds**.
 
 **Overall dataset**
@@ -402,7 +411,7 @@ We also look into the difference in weekend rides vs weekday rides for both type
 
 ![viz_Average rides on a weekday and on a weekend day, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/26c84d15-7679-4acc-9026-2a2043d861ba)
 
-We also explore the differences in ride lengths on various day.s 
+We also explore the differences in ride lengths on various days.
 
 ![viz_Median ride length, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/87667293-df57-4a45-bd43-00f0bca8ae54)
 
