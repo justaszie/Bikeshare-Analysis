@@ -12,18 +12,20 @@ Even though the project was an optional part of the certification program, I cho
 ### 1.2. Guide to This Document
 As it's my first data project, this documentation is very detailed and quite chunky. I plan to use it as knowledge base for future projects. Feel free to skip to the parts that are most interesting to you. 
 
+<span style="color:red;">**TODO - ADD UPDATED BOOKMARK LINKS**</span>
+
 If you're here for a good time, not a long time: [presentation with the solution to the business problem]().
 
-If yoou're interested what's under the hood:
+If you're interested what's under the hood:
 - [Analysis steps]()
 - [Data preparation and cleanup steps]()
 - [SQL queries used for the analysis]()
 
 ### 1.3. Dataset
-The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is history of rides of a bikeshare service called Divvy, operated by Lyft in Chicago, and is licensed out for public usage. It contains a large amount of data from 2015 up to mid-2023.
+The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is history of rides of a bikeshare service called [Divvy](https://divvybikes.com/), operated by Lyft in Chicago, and its data is licensed out for public usage. It contains a large amount of data on rides from 2015 up to mid-2023.
 - [Data license](https://divvybikes.com/data-license-agreement)
 - [Original data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
-- [Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note it's 1GB+ .csv file)
+- [Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note it's 1GB+ .csv file). **TODO: add link to final dataset schema**
 
 ### 1.4. Process
 I followed the analysis process provided by Google program and adjusted it to my preferences. The overall process I followed had 6 phases:
@@ -48,23 +50,22 @@ The final presentation that solves the business case can be accessed [here](http
 As a reminder, the business problem was to convert the casual riders to annual members of the bikeshare service. Specifically, I had to find the differences in the usage of casual riders and annual members of the service, and use this knowledge to make marketing recommendations to help the conversion.
 
 ## 3. Preparing the data
-I've chosen to work with the data of The first thing to do was to download the data from the original data source, load it into an SQL database and perform cleaning, necessary for my analysis. 
+I've chosen to work with the data on rides from a full year of 2022.
+ - It's post Covid-19 restrictions, so should represent somewhat normal activity
+ - A full year of data allows to explore seasonality
 
+ The first thing to do was to download the data from the original data source, load it into an SQL database and perform cleaning, necessary for my analysis. 
 
-
-<details open>
+<details>
 <summary> Click here for the detailed data preparation steps</summary>
 
 ### 3.1. Loading Into Database
-The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. I chose to analyze the data from a whole year 2022 because it should represent normal activity, unaffected by Covid-19 and it would allow to analyze seasonality. To do this, I uploaded the 12 .csv files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together, since the data structure of the .csv files was the same.
+The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. For 2022 data, I downloaded the 12 .csv files containing the data for eeach month of 2022. I then uploaded the 12 files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together (the structure of the 12 .csv files was the same).
 
-The dataset does not have any description or data dictionary. So, first, after inspecting the data, I built a data dictionary to help with cleanup and analysis later. For the "category" columns, I ran a `SELECT DISTINCT` query to find possible values.
+### 3.2. Data Dictionary
+The dataset does not have any description or data dictionary. So, first, I inspected the data and built a data dictionary to help with cleanup and analysis steps later. For the "category" columns, I ran a `SELECT DISTINCT` query to find possible values.
 
-<span style="color:text;"> TODO - Decide if we want to move this table out to make it more visible - maybe in the dataset defnition outside of prep steps (but maybe still collapsed)  </span>
-
-<span style="color:text;"> TODO - At the end of the prep steps probably add another table with cleaned up data </span> 
-
-Note the format below is as per BigQuery schema definition.
+Note the format of columns (e.g. Float) is as per BigQuery schema definition.
 | Column | Description (assumed) | Format |
 |---|---|---|
 | ride_id | Primary key | String |
@@ -81,11 +82,11 @@ Note the format below is as per BigQuery schema definition.
 | end_lng | Longitude coordinate where the ride ended | Float |
 | member_casual | Describes the type of the rider - either casual rider or holding annual membership | String <br /> Possible values:<br/> casual <br/> member |
 
-Note that the schema contains multiple attributes describing the station. These attributes should not be present in the rides data in a normalized relational DB structure. It creates duplication and can lead to inconsistencies.
+It is not clear if the original source of these files was a relational DB or a Data Warehouse of some type. The schema contains multiple attributes describing the station. These attributes should not be present in the rides data in a normalized relational DB structure. It creates duplication and can lead to inconsistencies. 
 
-### 3.2. Data Cleanup
+### 3.3. Data Cleanup
 
-#### 3.2.1. Process
+#### 3.3.1. Process
 These are the steps I took to clean the data inside the SQL table. 
 1. Creating a backup copy of the table in case something goes wrong. 
 2. Checking for duplicate entries
@@ -106,7 +107,7 @@ To ensure completeness and make data cleaning easier in the future, I created a 
 Note that in case of a dataset with a large number of columns, we would need to pre-selecting the relevant columns before the cleanup.
 
 **---------------**
-#### 3.2.2. Findings and Changes Made
+#### 3.3.2. Findings and Changes Made
 
 <span style="color:red;"> **TODO: ADD QUICK SUMMARY of the section and the rest should be in collapsed DETAILS section** </span>
 
@@ -276,12 +277,11 @@ Although the presence of such values is alarming, the total number of suspicious
 
 **<span style="color:red"> TODO: Maybe add the issue of 25% station IDs having more than one name - need an explanation why I ignored it**
 
-
-#### 3.2.3. Ideas for future improvement
+#### 3.3.3. Ideas for future improvement
 **<span style="color:red"> TODO: list what should be improved to have really clean dataset (Nice to have)**
 </details>
 
-#### 3.2.4. Final Dataset
+#### 3.3.4. Final Dataset
 The below table  describes the final dataset after the original dataset was cleaned up. This dataset was used in the Analysis phase. 
 
 | Column | Description (assumed) | Format |
@@ -303,7 +303,6 @@ The below table  describes the final dataset after the original dataset was clea
 | start_day_of_week | Day of week when the ride started in numerical format (1 represents Monday) | Integer |
 | start_hour | Hour (in 24h format) when the ride started | Integer |
 | ride_month | Month when the ride started in numerical format (1 represents January) | Integer |
-
 
 ## 4. Analysis
 After the dataset was cleaned, I moved to analysis steps.
