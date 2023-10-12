@@ -494,7 +494,7 @@ Similar to start stations, we are checking for any patterns in what routes the c
 
 **Top 10 routes for Members**
 
-![Top 10 routes for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2c509dfc-2d78-4cc8-9f6c-873141a73b0d)
+![viz_Top 10 routes for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/fdb8027c-bf44-4929-9e5e-41294f48c3ca)
 
 **Number of Distinct Routes**
 
