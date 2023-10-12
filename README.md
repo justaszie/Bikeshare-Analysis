@@ -95,20 +95,18 @@ These are the steps I took to clean the data inside the SQL table.
 6. Renamed columns for clarity
 7. Wrote query to add calculated columns to facilitate the analysis later and performed the checks (Steps 2-5) on them
 
-**<span style="color:red"> TODO: Below these steps, give a summary of section: issues and what I did. Then go into details what I did to find the issues**
-
 To ensure completeness and make data cleaning easier in the future, I created a checklist framework. I created a spreadsheet with column names in columns and the types of checks (steps 2-6) in rows. I went through each type of check and ran the check on each column, where it was relevant.
 
-<img width="1714" alt="GDAC_Cleanup_checklist" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/de219777-42f8-4d3d-85d6-691f12e181ad">
+<img width="1711" alt="GDAC_Cleanup_checklist" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/d3360e1d-3272-49fc-a53f-366de075d1a3">
 
 Note that in the case of a dataset with a large number of columns, we would need to pre-select the relevant columns before the cleanup.
 
 **---------------**
 #### 3.3.2. Findings and Changes Made
 
-<span style="color:red;"> **TODO: ADD QUICK SUMMARY of the section and the rest should be in collapsed DETAILS section** </span>
+<span style="color:red;"> **TODO: ADD QUICK SUMMARY of the section and the rest (how I found the issues) should be in collapsed DETAILS section** </span>
 
-<span style="color:red;"> **TODO: Don't forget to list the key issues found: no station names, docked bikes, negative and extreme ride length, different lat - long for same station id, 1500 stations when divvy says there are 800 (TBD - I can't say I didn't deal with this** </span>
+<span style="color:red;"> **TODO: Don't forget to list the key issues found: no station names different lat - long for same station id, 1500 stations when divvy says there are 800 (TBD - I can't say I didn't deal with this** </span>
 
 **Duplicates**
 
