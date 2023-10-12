@@ -68,7 +68,7 @@ Note the format of columns (e.g. Float) is as per BigQuery schema definition.
 | Column | Description (assumed) | Format |
 |---|---|---|
 | ride_id | Primary key | String |
-| rideable_type | Describes the typo of the bike used in the ride | String <br/> Possible values: electric_bike classic_bike docked_bike |
+| rideable_type | Describes the type of the bike used in the ride | String <br/> Possible values: electric_bike classic_bike docked_bike |
 | started_at | Date and time when the ride started | Date / time |
 | ended_at | Date and time when the ride ended | Date / time |
 | start_station_id | ID of the station where the ride started (bike was picked up). | String |
@@ -286,7 +286,7 @@ The below table  describes the final dataset after the original dataset was clea
 | Column | Description (assumed) | Format |
 |---|---|---|
 | ride_id | Primary key | String |
-| rideable_type | Describes the typo of the bike used in the ride | String   Possible values: electric_bike classic_bike |
+| rideable_type | Describes the type of the bike used in the ride | String   Possible values: electric_bike classic_bike |
 | started_at | Date and time when the ride started | Date / time |
 | ended_at | Date and time when the ride ended | Date / time |
 | start_station_id | ID of the station where the ride started (bike was picked up). | String |
