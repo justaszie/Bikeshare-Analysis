@@ -23,7 +23,7 @@ If you're interested what's under the hood:
 The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is history of rides of a bikeshare service called [Divvy](https://divvybikes.com/), operated by Lyft in Chicago, and its data is licensed out for public usage. It contains a large amount of data on rides from 2015 up to mid-2023.
 - [Data license](https://divvybikes.com/data-license-agreement)
 - [Original data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
-- [Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note it's 1GB+ .csv file). See [clean dataset format](https://github.com/justaszie/Bikeshare-Analysis/tree/main#334-final-dataset).
+- [Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note it's 1GB+ .csv file). See [clean dataset format](https://github.com/justaszie/Bikeshare-Analysis/tree/main#34-final-dataset).
 
 ### 1.4. Process
 I followed the analysis process provided by Google program and adjusted it to my preferences. The overall process I followed had 6 phases:
@@ -376,7 +376,7 @@ Summary queries allowed me to explore the distribution of the ride lengths. Note
 <img width="1202" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/1d670b3d-b10a-420e-9a20-f1e85481a5b8">
 
 **:bulb: Key Insights**
-- The mean is significantly higher than the median with high standard deviation, especially for the casual riders' activity. This means that the distribution is heavily skewed due a long tail with extremely long rides, as seen in [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/edit/main/README.md#422-findings-and-changes-made) step. We will use median to describe the typical ride, instead of mean.
+- The mean is significantly higher than the median with high standard deviation, especially for the casual riders' activity. This means that the distribution is heavily skewed due a long tail with extremely long rides, as seen in [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data) step. We will use median to describe the typical ride, instead of mean.
 - There are more rides taken by members but without rider identifier attribute we don't know if it's due to higher number of riders or average rides per rider.
 - Thre is a 60/40 division of data by rider type, which means the data is representative of both populations (casual riders and members).
 - The casual riders are taking significantly longer rides than members (median for casual riders is 47% higher)
@@ -511,7 +511,7 @@ There is no significant difference in number of different routes taken by differ
 
 ## 5. Appendix A - SQL Queries for Analysis
 This section lists all the SQL queries used in the analysis and the results when they were run. 
-<details>
+<details open>
 <summary> Click here to see the SQL queries </summary>
 
 ### Ride Length Summary Queries
