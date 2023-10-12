@@ -14,18 +14,18 @@ As it's my first data project, this documentation is very detailed and quite chu
 
 <span style="color:red;">**TODO - ADD UPDATED BOOKMARK LINKS**</span>
 
-If you're here for a good time, not a long time: [presentation with the solution to the business problem]().
+If you're here for a good time, not a long time: [presentation with the solution to the business problem](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-business-case-solution).
 
 If you're interested what's under the hood:
-- [Analysis steps]()
-- [Data preparation and cleanup steps]()
-- [SQL queries used for the analysis]()
+- [Analysis steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#4-analysis)
+- [Data preparation and cleanup steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data)
+- [SQL queries used for the analysis](https://github.com/justaszie/Bikeshare-Analysis/tree/main#5-appendix-a---sql-queries-for-analysis)
 
 ### 1.3. Dataset
 The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is history of rides of a bikeshare service called [Divvy](https://divvybikes.com/), operated by Lyft in Chicago, and its data is licensed out for public usage. It contains a large amount of data on rides from 2015 up to mid-2023.
 - [Data license](https://divvybikes.com/data-license-agreement)
 - [Original data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
-- [Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note it's 1GB+ .csv file). **TODO: add link to final dataset schema**
+- [Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note it's 1GB+ .csv file). See [clean dataset format](https://github.com/justaszie/Bikeshare-Analysis/tree/main#334-final-dataset).
 
 ### 1.4. Process
 I followed the analysis process provided by Google program and adjusted it to my preferences. The overall process I followed had 6 phases:
@@ -50,7 +50,7 @@ The final presentation that solves the business case can be accessed [here](http
 As a reminder, the business problem was to convert the casual riders to annual members of the bikeshare service. Specifically, I had to find the differences in the usage of casual riders and annual members of the service, and use this knowledge to make marketing recommendations to help the conversion.
 
 ## 3. Preparing the data
-I've chosen to work with the data on rides from a full year of 2022.
+I chose to work with the data on rides from a full year of 2022.
  - It's post Covid-19 restrictions, so should represent somewhat normal activity
  - A full year of data allows to explore seasonality
 
@@ -58,6 +58,7 @@ I've chosen to work with the data on rides from a full year of 2022.
 
 <details>
 <summary> Click here for the detailed data preparation steps</summary>
+<br/>
 
 ### 3.1. Loading Into Database
 The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. For 2022 data, I downloaded the 12 .csv files containing the data for eeach month of 2022. I then uploaded the 12 files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together (the structure of the 12 .csv files was the same).
@@ -275,13 +276,13 @@ Although the presence of such values is alarming, the total number of suspicious
 
 :warning: Note that the outlier values will create a positive skewness in the ride length distribution. I will use median instead of mean in our analysis to negate this.
 
-**<span style="color:red"> TODO: Maybe add the issue of 25% station IDs having more than one name - need an explanation why I ignored it**
+**<span style="color:red"> TODO: Maybe add the issue of 25% station IDs having more than one name - need an explanation why I ignored it NOTE big mismatch between dataset and website info. Website says over 800 and we have over thousand.  https://www.chicago.gov/city/en/depts/cdot/provdrs/bike/news/2023/april/divvy-for-the-entire-city--divvy-service-hits-all-50-wards.html**
 
 #### 3.3.3. Ideas for future improvement
 **<span style="color:red"> TODO: list what should be improved to have really clean dataset (Nice to have)**
 </details>
 
-#### 3.3.4. Final Dataset
+### 3.4. Final Dataset
 The below table  describes the final dataset after the original dataset was cleaned up. This dataset was used in the Analysis phase. 
 
 | Column | Description (assumed) | Format |
@@ -305,18 +306,17 @@ The below table  describes the final dataset after the original dataset was clea
 | ride_month | Month when the ride started in numerical format (1 represents January) | Integer |
 
 ## 4. Analysis
-After the dataset was cleaned, I moved to analysis steps.
-
 ### 4.1. Defining the questions
 As a reminder, the business task definition was broad - provide insights on how annual members and casual riders use Cyclistic bikes differently. The certification project material gave some suggestions on specific questions but they were very basic:
 > looking at the total number of rows, distinct values, maximum, minimum, or mean value
 
 So, before I started the analysis, I had to define the list of specific questions, relevant to the business task, that I would answer using the data. To solve such cases easier in the future, I created a framework that provides guidance on where to start in defining the questions. 
 
-Note that this framework does not give an exhaustive list of relevant questions and it will need to be adjusted to larger datasets but it's a solid start
+Note that this framework does not give an exhaustive list of relevant questions and it will need to be adjusted to larger datasets but it's a solid start.
 
 <details open>
 <summary> Details of the framework </summary>
+<br/>
 
 The framework to define the specific questions consists of following a few guiding steps:
 1. Classify the columns in the table: timeseries (e.g. ride month), categories (e.g. rider type, rider type), numerical (e.g. ride length), nominal values (e.g. start station name). Note, BI tools such as Tableau automatically perform similar classification.
@@ -376,9 +376,10 @@ Summary queries allowed me to explore the distribution of the ride lengths. Note
 <img width="1202" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/1d670b3d-b10a-420e-9a20-f1e85481a5b8">
 
 **:bulb: Key Insights**
-- The mean is significantly higher than the median with high standard deviation, especially for the casual riders' activity. The distribution is heavily skewed due a long tail with extremely long rides, as seen in [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/edit/main/README.md#422-findings-and-changes-made) step. We will use median to describe typical ride, instead of mean.
+- The mean is significantly higher than the median with high standard deviation, especially for the casual riders' activity. This means that the distribution is heavily skewed due a long tail with extremely long rides, as seen in [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/edit/main/README.md#422-findings-and-changes-made) step. We will use median to describe the typical ride, instead of mean.
 - There are more rides taken by members but without rider identifier attribute we don't know if it's due to higher number of riders or average rides per rider.
 - Thre is a 60/40 division of data by rider type, which means the data is representative of both populations (casual riders and members).
+- The casual riders are taking significantly longer rides than members (median for casual riders is 47% higher)
 
 ### 4.3. Rides by Month
 Looking at numbers of monthly rides allows us to see the impact of seasonality on the rides activity.
@@ -432,7 +433,7 @@ Looking at the “busiest times” for each rider type allows to find patterns a
 ![viz_Weekend rides - hourly breakdown](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/f3c1df03-db68-4c9c-b383-69a1f20c4689)
 
 **:bulb: Key Insights**
-- Activity on weekends is similar for both types of customers. But the activity is clearly different on weekdays - members have spikes in activity during "commuter" hours (7-8am and 4-6pm) and casual riders increase their activity steadily until 5pm. This pattern also signals commuting pattern for members.
+- Activity on weekends is similar for both types of customers. But the activity is clearly different on weekdays - members have spikes in activity during "commuter" hours (7-8am and 4-6pm) and casual riders increase their activity steadily until 5pm. This pattern signals daily commute habits of members.
 
 ### 4.6. Rides by Rideable Type
 We are exploring if casual riders and members have any preferences in terms of bike types (classic or electric bikes).
@@ -442,7 +443,7 @@ We are exploring if casual riders and members have any preferences in terms of b
 The results are pretty equally distributed in both cases so there are no conclusions to draw here.
 
 ### 4.7. Ride Start Stations
-Next set of queries allow us to see if casual riders and members start their rides in different or similar locations. Since there are hundreds of stations in the dataset, we look at TOP 10 stations, where most of the rides start, and look for any patterns there.
+Next set of queries allows us to see if casual riders and members start their rides in different or similar locations. Since there are over a thousand of stations in the dataset, we look at TOP 10 stations, where most of the rides start, and look for any patterns there.
 
 **Top 10 stations for Casual Riders**
 ![viz_Top 10 stations for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c49432e2-b310-4ed7-a7cc-13c038d5def5)
@@ -461,7 +462,6 @@ Members start their rides mostly in the middle of the city, presumably business 
 
 
 **Stations clustering for Casual Riders**
-
 While looking at the distribution of rides starting at various stations, I noticed a lot of stations had only 1 or 2 rides that started there. Inspired by the 80/20 principle, I decided to check if it applies here - i.e. if a small subset of starting stations cover most of the rides. 
 If it's confirmed, it could help focus the physical marketing assets to a small number of areas. 
 
@@ -472,7 +472,7 @@ If it's confirmed, it could help focus the physical marketing assets to a small 
 - Casual riders seem to use the service for leisure and members are using it for their commute. 
     - Casual riders start their rides mostly around leisure spots and scenic areas
     - Members start their rides in the middle of the city, near universities, etc.
-- The activity of casual riders is clustered. 90% of the rides start in 350 stations (out of 800+ total).
+- The activity of casual riders is clustered. 90% of the rides start in 350 stations (out of 1k+ total).
 
 ### 4.7. Routes Taken
 Similar to start stations, we are checking for any patterns in what routes the casual riders and members are taking.
@@ -499,12 +499,13 @@ There is no significant difference in number of different routes taken by differ
     - The majority of most popular routes for casual riders start and end in the same station. This suggests that the purpose of the ride is not transportation but the ride itself.
     - The most popular routes for members have a clear "round-trip" pattern.  
 
-# 5. Appendix A - SQL Queries for Analysis
+## 5. Appendix A - SQL Queries for Analysis
 This section lists all the SQL queries used in the analysis and the results when they were run. 
 <details>
 <summary> Click here to see the SQL queries </summary>
+<br/>
 
-## Ride Length Summary 
+### Ride Length Summary 
 **Overall dataset**
 ```sql
 -- All summary questions for ride length
@@ -561,7 +562,7 @@ ON summary.rider_type = percentiles.rider_type;
 
 <img width="1202" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/1d670b3d-b10a-420e-9a20-f1e85481a5b8">
 
-## Rides by Month
+### Rides by Month
 **Overall Dataset**
 
 ```sql
@@ -593,7 +594,7 @@ ORDER BY ride_month;
 
 <img width="499" alt="res_monthly_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ca03f705-7a5f-4199-a097-3c5b0dbe2af2">
 
-## Rides by day of the Week
+### Rides by day of the Week
 **Overall Dataset**
 ```sql
 -- Total rides by day of week
@@ -644,7 +645,7 @@ ORDER BY t.start_day_of_week;
 
 <img width="630" alt="res_day_of_week_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/68a233ae-84bc-4f01-b990-752ee30cdcf7">
 
-## Rides by Starting Hour
+### Rides by Starting Hour
 ```sql
 SELECT start_hour,
 count(*) AS total_rides,
@@ -663,7 +664,7 @@ ORDER BY start_hour
 
 <img width="373" alt="res_hourly_rider_weekend" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/29c6ae74-b304-49f7-bfef-7bb8297c256f">
 
-## Rides by Rideable Type
+### Rides by Rideable Type
 ```sql
 -- Total rides by rider and rideable type
 SELECT
@@ -677,7 +678,7 @@ GROUP BY rider_type;
 
 <img width="579" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/67a59f06-cbcd-40ff-a3e6-501b6be8607d">
 
-## Ride Start Stations
+### Ride Start Stations
 
 **Top 10 stations for Casual Riders**
 
@@ -734,7 +735,7 @@ ORDER BY station_rank
 
 <img width="823" alt="res_station_cluster_casual_sample" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2da65d8b-2762-4867-b494-c705e8efd846">
 
-## Routes Taken
+### Routes Taken
 ```sql
 -- Total rides by rider and route
 WITH counts AS(
