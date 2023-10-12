@@ -776,23 +776,4 @@ GROUP BY rider_type
 ```
 
 <img width="329" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/298b9d43-c541-402b-8092-78c8638ecd07">
-
 </details>
-<br />
-
-# ----------- OUTLINE WIP --------------
-
-
-## Structure
-3. Analysis steps
-    1. Framework for selecting the specific questions - 
-        1. Categorizing datapoints to time series, categories, numericals
-        2. Building matrices of what matters
-    2. The questions that I ran, the queries and the results
-        - Add queries as code, add images as results 
-        - Add viz next to results
-    3. Visualizing the results - exporting to Sheets, some reformatting and creating
-        - Add the viz images, add bookmark link to question in analysis section (and vice versa?)
-3. Lessons Learned - **TODO**
-
-
