@@ -506,11 +506,11 @@ Summary queries allowed me to explore the distribution of the ride lengths. Note
 [Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#ride-length-summary-queries)
 
 **Overall dataset**
-<img width="1008" alt="res_summary_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/72f86657-1153-40cf-86f0-69b8b744b5d4">
-
+<img width="1027" alt="res_summary_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/dc6e4150-5ecd-4e92-aefb-3746cac081ae">
 
 **Broken down by rider type**
-<img width="1202" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/1d670b3d-b10a-420e-9a20-f1e85481a5b8">
+<img width="1111" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/72e73cf2-54c0-42fb-a88b-3b2871c519eb">
+
 
 **:bulb: Key Insights**
 - The mean is significantly higher than the median with a high standard deviation, especially for the casual riders' activity. This means that the distribution is heavily skewed due to a long tail with extremely long rides, as seen in [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data) step. We will use the median to describe the typical ride, instead of the mean.
@@ -550,7 +550,7 @@ We explore the usage patterns for different rider types during the week. It can 
 
 We also look into the difference in weekend rides vs weekday rides for both types of riders to see how significant the preferences are. 
 
-![viz_Average rides on a weekday and on a weekend day, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/26c84d15-7679-4acc-9026-2a2043d861ba)
+![viz_Average rides on a weekday and on a weekend day, by rider type](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/71e0a373-ee6b-40e2-8cf3-e34837efa1c2)
 
 We also explore the differences in ride lengths on various days.
 
@@ -583,7 +583,7 @@ We are exploring if casual riders and members have any preferences in terms of b
 
 [Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#rides-by-rideable-type-queries)
 
-<img width="579" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/67a59f06-cbcd-40ff-a3e6-501b6be8607d">
+<img width="491" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/943a67d0-5271-4766-ad8f-12da62bba789">
 
 The results are pretty equally distributed in both cases so there are no conclusions to draw here.
 
@@ -593,7 +593,8 @@ The next set of queries allows us to see if casual riders and members start thei
 [Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#ride-start-stations-queries)
 
 **Top 10 stations for Casual Riders**
-![viz_Top 10 stations for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c49432e2-b310-4ed7-a7cc-13c038d5def5)
+
+![viz_Top 10 stations for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2a60fa2e-aa68-43e8-ac80-79d3a18313d7)
 
 For better visibility, we mark a few of the most popular stations on the map to look for geographical patterns. As we can see, casual riders mostly start their rides in leisure sports: near beaches, piers, parks, etc.
 
@@ -601,17 +602,18 @@ For better visibility, we mark a few of the most popular stations on the map to 
 
 **Top 10 stations for Members**
 
-![viz_Top 10 stations for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/072e33d8-21d7-49ff-80ae-d575da7c4fde)
+![viz_Top 10 stations for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/78648eb9-be10-4a5b-871b-ab59c7483f16)
 
 Members start their rides mostly in the middle of the city, presumably in business areas. One of the most popular stations is also near the main university in the city. 
 
 <img width="1169" alt="res_top_stations_members_map" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/b24fbea8-2181-40b2-873d-553cff94edad">
 
 **Stations clustering for Casual Riders**
+
 While looking at the distribution of rides starting at various stations, I noticed a lot of stations had only 1 or 2 rides that started there. Inspired by the 80/20 principle, I decided to check if it applies here - i.e. if a small subset of starting stations cover most of the rides. 
 If it's confirmed, it could help focus the physical marketing assets on a small number of areas. 
 
-![viz_casual_station_cluster](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/568b6371-50f1-498a-bb27-2ae04054251b)
+![viz_casual_station_cluster](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/0d509e92-68d6-4c44-b096-7a5b6170aec0)
 
 **:bulb: Key Insights**
 - Casual riders seem to use the service for leisure and members are using it for their commute. 
@@ -628,16 +630,15 @@ Similar to start stations, we are checking for any patterns in what routes the c
 
 ![Top 10 routes for casual riders](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/a2f7e422-12ca-49a2-89a3-e6a520d5101d)
 
-
 **Top 10 routes for Members**
 
-![viz_Top 10 routes for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/fdb8027c-bf44-4929-9e5e-41294f48c3ca)
+![viz_Top 10 routes for members](https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/9d3b1f41-fbf6-4f7c-b4e7-9e2c673f22a0)
 
 **Number of Distinct Routes**
 
 Finally, I decided to check if there are differences in the variety of routes taken by casual riders and by members. 
 
-<img width="329" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/298b9d43-c541-402b-8092-78c8638ecd07">
+<img width="251" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/9f4cda45-3465-40b2-977f-8c7bdad2521c">
 
 There is no significant difference in the number of different routes taken by different riders.
 
@@ -667,7 +668,7 @@ STDDEV(ride_length) AS std_dev_ride_length,
 FROM `phrasal-brand-398306.bikeshare_data.rides`;
 ```
 
-<img width="1008" alt="res_summary_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/72f86657-1153-40cf-86f0-69b8b744b5d4">
+<img width="1027" alt="res_summary_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c67465b2-ce93-49f4-899f-07d5a7ec3c14">
 
 **Broken down by Rider Type**
 ```sql
@@ -706,7 +707,7 @@ percentiles
 ON summary.rider_type = percentiles.rider_type;
 ```
 
-<img width="1202" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/1d670b3d-b10a-420e-9a20-f1e85481a5b8">
+<img width="1111" alt="res_summary_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c6e259f1-ccee-4883-9ea3-0946e6e4e25d">
 
 ### Rides by Month Queries
 **Overall Dataset**
@@ -721,7 +722,7 @@ GROUP BY ride_month
 ORDER BY ride_month;
 ```
 
-<img width="252" alt="res_monthly_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c460d21d-1ecd-4cc8-bfec-218b8a9d0b62">
+<img width="251" alt="res_monthly_overall" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ac8e1ecf-86e9-49a5-bee4-735fd716d58e">
 
 **Broken down by Rider Type**
 
@@ -739,7 +740,7 @@ GROUP BY ride_month
 ORDER BY ride_month;
 ```
 
-<img width="499" alt="res_monthly_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ca03f705-7a5f-4199-a097-3c5b0dbe2af2">
+<img width="468" alt="res_monthly_by_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/6fea7e78-a73f-40e6-b205-d05094efe341">
 
 ### Rides by Day of the Week Queries
 **Overall Dataset**
@@ -753,7 +754,7 @@ GROUP BY start_day_of_week
 ORDER BY start_day_of_week;
 ```
 
-<img width="253" alt="res_day_of_week_total" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2daee2b5-a4f1-48ef-a4d0-be22f9a9d419">
+<img width="253" alt="res_day_of_week_total" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c3fc5634-35c9-4ed3-b402-d9426a95be3d">
 
 **Broken down by Rider Type**
 
@@ -790,7 +791,7 @@ totals t
 ORDER BY t.start_day_of_week;
 ```
 
-<img width="630" alt="res_day_of_week_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/68a233ae-84bc-4f01-b990-752ee30cdcf7">
+<img width="623" alt="res_day_of_week_rider" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/8221c1b2-a0c5-4d72-8960-1fd833dff961">
 
 ### Rides by Starting Hour Queries
 ```sql
@@ -799,17 +800,17 @@ count(*) AS total_rides,
 SUM(CASE rider_type WHEN 'casual' THEN 1 END) AS casual_rides,
 SUM(CASE rider_type WHEN 'member' THEN 1 END) AS member_rides,
 FROM `phrasal-brand-398306.bikeshare_data.rides`
-WHERE day_of_week NOT IN (6,7) -- Change this condition to IN (6,7) for weekend rides
+WHERE start_day_of_week NOT IN (6,7) -- Change this condition to IN (6,7) for weekend rides
 GROUP BY start_hour
 ORDER BY start_hour
 ```
 **Weekday Rides**
 
-<img width="369" alt="res_hourly_rider_weekday" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/43196aa3-1863-4fed-a069-c156b03d3a0e">
+<img width="370" alt="res_hourly_rider_weekday" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/308d019d-c808-4e2e-a282-a45d476ebf10">
 
 **Weekend Rides**
 
-<img width="373" alt="res_hourly_rider_weekend" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/29c6ae74-b304-49f7-bfef-7bb8297c256f">
+<img width="365" alt="res_hourly_rider_weekend" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/4f4ea371-ecc1-44eb-a6a3-409914f1df75">
 
 ### Rides by Rideable Type Queries
 ```sql
@@ -823,23 +824,30 @@ FROM `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY rider_type;
 ```
 
-<img width="579" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/67a59f06-cbcd-40ff-a3e6-501b6be8607d">
+<img width="491" alt="res_rideable_type" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/780bb31e-3d70-44b3-b679-e14476cac7df">
 
 ### Ride Start Stations Queries
 
-**Top 10 stations for Casual Riders**
-
 ```sql
-WITH counts AS(
+-- Group the stations that have the same name, except for suffix - these stations are pretty much in the same location
+WITH processed_rides AS (
+SELECT *,
+REGEXP_REPLACE(
+REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(start_station_name, 'Public Rack - ', ''),' - midblock', ''), ' - SW', ''), ' - NW', ''), ' - SE', ''), ' - NE', '')
+, r'( -)? (?:(?:N|E|W|S)|(?:North|West|East|South)|(?:(?:north|south|east|west) corner)|(?:NW|NE|SW|SE))$', '')
+AS grouped_start_station_name
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+)
+, counts AS(
     SELECT
     rider_type,
-    start_station_name,
+    grouped_start_station_name,
     COUNT(*) AS total_rides,
     RANK() OVER (PARTITION BY rider_type ORDER BY COUNT(*) DESC) AS station_rank
-    FROM `phrasal-brand-398306.bikeshare_data.rides`
+    FROM processed_rides
     -- Ignoring stations with null values
-    WHERE start_station_name IS NOT NULL
-    GROUP BY rider_type, start_station_name
+    WHERE grouped_start_station_name IS NOT NULL
+    GROUP BY rider_type, grouped_start_station_name
 )
 
 SELECT *
@@ -847,30 +855,41 @@ FROM counts
 WHERE station_rank <= 10;
 ```
 
-<img width="652" alt="res_top10_stations_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/39a8e4d7-3630-446c-aa1e-8d4193de9954">
+**Top 10 stations for Casual Riders**
+
+<img width="653" alt="res_top10_stations_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c0134603-ef85-49d5-91ba-a3d024ae7d16">
 
 **Top 10 stations for Members**
 
-<img width="659" alt="res_top10_stations_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/5cbf546f-0f20-4398-a6a6-2cef2ad803f9">
+<img width="652" alt="res_top10_stations_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/ba3c9af9-fa18-4989-bb31-420f28e52072">
 
 **Stations clustering for Casual Riders**
 
 ```sql
-WITH station_ride_counts AS (
+WITH processed_rides AS (
+SELECT *,
+REGEXP_REPLACE(
+REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(start_station_name, 'Public Rack - ', ''),' - midblock', ''), ' - SW', ''), ' - NW', ''), ' - SE', ''), ' - NE', '')
+, r'( -)? (?:(?:N|E|W|S)|(?:North|West|East|South)|(?:(?:north|south|east|west) corner)|(?:NW|NE|SW|SE))$', '')
+AS grouped_start_station_name
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+)
+
+, station_ride_counts AS (
     SELECT
-    start_station_name,
+    grouped_start_station_name,
     COUNT(*) AS station_rides,
     RANK() OVER (ORDER BY count(*) DESC) AS station_rank
-    FROM `phrasal-brand-398306.bikeshare_data.rides`
+    FROM processed_rides
     -- Ignoring stations with null values
-    WHERE start_station_name IS NOT NULL
+    WHERE grouped_start_station_name IS NOT NULL
     AND rider_type = 'casual'
-    GROUP BY start_station_name
+    GROUP BY grouped_start_station_name
     ORDER BY 3 ASC
 )
 
 SELECT
-start_station_name,
+grouped_start_station_name,
 station_rides,
 SUM(station_rides) OVER (ORDER BY station_rank ASC) AS cumul_rides, -- Number of cumulative rides - i.e. sum of rides started in stations from TOP 1 station to the current station, included
 ROUND(SUM(station_rides) OVER (ORDER BY station_rank ASC) / SUM(station_rides) OVER() * 100, 2) as prc_total_rides, -- Number of cumulative rides as a % of total rides
@@ -880,22 +899,34 @@ FROM station_ride_counts
 ORDER BY station_rank
 ```
 
-<img width="823" alt="res_station_cluster_casual_sample" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2da65d8b-2762-4867-b494-c705e8efd846">
+<img width="873" alt="res_station_cluster_casual_sample" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2d363e45-4b50-4e1f-a216-96c0c5c927af">
 
 ### Routes Taken Queries
 ```sql
+WITH processed_rides AS (
+  SELECT *,
+  REGEXP_REPLACE(
+  REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(start_station_name, 'Public Rack - ', ''),' - midblock', ''), ' - SW', ''), ' - NW', ''), ' - SE', ''), ' - NE', '')
+  , r'( -)? (?:(?:N|E|W|S)|(?:North|West|East|South)|(?:(?:north|south|east|west) corner)|(?:NW|NE|SW|SE))$', '')
+  AS grouped_start_station_name,
+  REGEXP_REPLACE(
+  REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(end_station_name, 'Public Rack - ', ''),' - midblock', ''), ' - SW', ''), ' - NW', ''), ' - SE', ''), ' - NE', '')
+  , r'( -)? (?:(?:N|E|W|S)|(?:North|West|East|South)|(?:(?:north|south|east|west) corner)|(?:NW|NE|SW|SE))$', '')
+  AS grouped_end_station_name
+  FROM `phrasal-brand-398306.bikeshare_data.rides`
+)
 -- Total rides by rider and route
-WITH counts AS(
+, counts AS(
     SELECT
     rider_type,
-    CONCAT(start_station_name, " - ", end_station_name) AS route,
+    CONCAT(grouped_start_station_name, " - ", grouped_end_station_name) AS route,
     -- After the first look, I noticed routes that start and end in the same station. In this V2 of the query, I added a specific column for better visibility.
-    (start_station_name = end_station_name) AS same_station,
+    (grouped_start_station_name = grouped_end_station_name) AS same_station,
     COUNT(*) AS total_rides,
     RANK() OVER (PARTITION BY rider_type ORDER BY COUNT(*) DESC) AS route_rank
-    FROM `phrasal-brand-398306.bikeshare_data.rides`
+    FROM processed_rides
     --  Ignoring routes that have either start or end station as null
-    WHERE start_station_name IS NOT NULL AND end_station_name IS NOT NULL
+    WHERE grouped_start_station_name IS NOT NULL AND grouped_end_station_name IS NOT NULL
     GROUP BY 1, 2, 3
 )
 
@@ -905,23 +936,36 @@ WHERE route_rank <= 10;
 ```
 **Top 10 routes for Casual Riders**
 
-<img width="978" alt="res_top10_routes_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/2b26caa6-0cfc-4cd7-8634-b09acf77acd7">
+<img width="978" alt="res_top10_routes_casual" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/f3646e33-e610-4daf-b9b4-87b3ccbc41ba">
 
 **Top 10 routes for Members**
 
-<img width="978" alt="res_top10_routes_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/62242b37-1c52-4266-b328-c178b6c984bc">
+<img width="825" alt="res_top10_routes_member" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/dd43f31e-e6ca-4ffc-93b9-7544bf16f3b0">
 
 **Number of Distinct Routes**
 
 ```sql
+WITH processed_rides AS (
+  SELECT *,
+  REGEXP_REPLACE(
+  REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(start_station_name, 'Public Rack - ', ''),' - midblock', ''), ' - SW', ''), ' - NW', ''), ' - SE', ''), ' - NE', '')
+  , r'( -)? (?:(?:N|E|W|S)|(?:North|West|East|South)|(?:(?:north|south|east|west) corner)|(?:NW|NE|SW|SE))$', '')
+  AS grouped_start_station_name,
+  REGEXP_REPLACE(
+  REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(end_station_name, 'Public Rack - ', ''),' - midblock', ''), ' - SW', ''), ' - NW', ''), ' - SE', ''), ' - NE', '')
+  , r'( -)? (?:(?:N|E|W|S)|(?:North|West|East|South)|(?:(?:north|south|east|west) corner)|(?:NW|NE|SW|SE))$', '')
+  AS grouped_end_station_name
+  FROM `phrasal-brand-398306.bikeshare_data.rides`
+)
 SELECT
 rider_type,
-COUNT(DISTINCT CONCAT(start_station_name, " - ", end_station_name)) AS num_routes,
-FROM `phrasal-brand-398306.bikeshare_data.rides`
+COUNT(DISTINCT CONCAT(grouped_start_station_name, " - ", grouped_end_station_name)) AS num_routes,
+FROM processed_rides
 -- Ignoring routes that have either start or end station as null
-WHERE start_station_name IS NOT NULL AND end_station_name is not null
+WHERE grouped_start_station_name IS NOT NULL AND grouped_end_station_name is not null
 GROUP BY rider_type
 ```
 
-<img width="329" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/298b9d43-c541-402b-8092-78c8638ecd07">
+<img width="251" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/0440996c-c524-417e-9e7d-fffe2aaef8b1">
+
 </details>
