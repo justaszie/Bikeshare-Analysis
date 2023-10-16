@@ -203,15 +203,15 @@ WHERE ended_at <= started_at
 ```
 Start, End Station Names and IDs
 
-:warning: The dataset contains 1313 distinct `start_station_id` and 1645 `start_station_name` values. It's already an issue but it's even more concerning given that the service provider's website mentions only about 800 stations program. Although the stations are not key elements of this analysis, I decided to look into these values as it allowed me to practice data cleanup on string values. I did the following checks to detect anomalies (**Note that same checks and fixes were done to end stations**):
-1. Checking distribution of start_station_id lengths and looking at IDs ofvarious lengths to spot patterns.
+:warning: The dataset contains 1313 distinct `start_station_id` and 1645 `start_station_name` values. It's already an issue but it's even more concerning given that the service provider's website mentions only about 800 stations program. Although the stations are not key elements of this analysis, I decided to look into these values as it allowed me to practice data cleanup on string values. I did the following checks to detect anomalies (**Note that the same checks were done to end stations**):
+- Checking distribution of start_station_id lengths and looking at IDs of various lengths to spot patterns.
 ```sql
 SELECT LENGTH(start_station_id) AS str_length, COUNT(DISTINCT start_station_id) AS num_stations
 FROM `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY str_length
 ORDER BY num_stations DESC
 ```
-1. Looking at cases where 1 ID is associated with multiple names (and number of rides associated with each station name)
+- Looking at cases where 1 ID is associated with multiple names (and number of rides associated with each station name)
 ```sql
 SELECT * FROM
 (
@@ -223,7 +223,7 @@ SELECT * FROM
 WHERE num_station_names_per_ID > 1
 ORDER BY num_station_names_per_ID DESC, start_station_id ASC, num_rides_per_name DESC
 ```
-1. Looking at cases where 1 name is associated with multiple ID (and number of rides associated with each ID)
+- Looking at cases where 1 name is associated with multiple ID (and number of rides associated with each ID)
 ```sql
 SELECT * FROM
 (
@@ -235,30 +235,115 @@ SELECT * FROM
 WHERE num_station_IDs_per_name > 1
 ORDER BY start_station_name ASC, num_rides_per_id DESC
 ```
-
-1. Looking at stations where rides with 0 or negative length have started
+- Looking at stations where rides with 0 or negative length have started
 ```sql
 SELECT DISTINCT start_station_id, start_station_name
 FROM `phrasal-brand-398306.bikeshare_data.rides`
 WHERE ride_length <= 0 -- we added ride_length as a calculated field as part of cleanup process
 ```
-1. Finding stations that have white space characters at the end
+- Finding stations that have white space characters at the end
 ```sql
 SELECT DISTINCT start_station_id, start_station_name
 FROM `phrasal-brand-398306.bikeshare_data.rides_original`
 WHERE REGEXP_CONTAINS(start_station_name, r' +$')
 ```
 
-Fixing Start, End Station Names and IDs values
+Fixing Station Names and ID values (note that these fixes were done on both start and end stations). 
 
-First, I found that dataset contained rides to / from "Test" stations. So I removed such rides from the dataset. 
+First, I found that the dataset contained rides to/from "Test" stations. These could not be found in the service provider's stations map. So I removed such rides from the dataset. 
+```sql
+DELETE FROM `phrasal-brand-398306.bikeshare_data.rides`
+WHERE start_station_id IN (
+    'DIVVY 001 - Warehouse test station',
+    'DIVVY 001',
+    'DIVVY CASSETTE REPAIR MOBILE STATION',
+    'Hastings WH 2',
+    'Hubbard Bike-checking (LBS-WH-TEST)',
+    'Pawel Bialowas - Test- PBSC charging station'
+)
+```
+
+By looking at station IDs of various lengths, I found some stations had different IDs representing them, with some IDs having "Charging station" ID format:
+```sql
+SELECT distinct r1.start_station_id, r1.start_station_name, r2.start_station_id, r2.start_station_name
+FROM `phrasal-brand-398306.bikeshare_data.rides` r1
+JOIN `phrasal-brand-398306.bikeshare_data.rides` r2 ON REPLACE(REPLACE(r1.start_station_name, '*', ''), ' - Charging', '') = r2.start_station_name
+WHERE r1.start_station_id like '%chargingst%' OR r1.start_station_id like '% - Charging%'
+```
+<img width="800" alt="Charging format stations" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/b96f5e21-5494-41c4-836a-2752f420f9c3">
+
+I have merged them with the stations that have "clean" name.
+```sql
+UPDATE `phrasal-brand-398306.bikeshare_data.rides` as r1
+SET r1.start_station_id = r2.start_station_id,
+r1.start_station_name = r2.start_station_name
+FROM (
+SELECT DISTINCT start_station_id, start_station_name
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+) r2
+WHERE (r1.start_station_id LIKE '%chargingst%' OR r1.start_station_id LIKE '% - Charging%')
+AND REPLACE(REPLACE(r1.start_station_name, '*', ''), ' - Charging', '') = r2.start_station_name
+```
+
+While looking at stations with multiple names for the same ID, I found a list of mistakes and temporary values added to the station name. This caused to have duplicated station values. Sample of values below ("Pubic rack", really? :sob: )
+
+<img width="636" alt="start station value errors" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/eb2e48af-5ff0-401e-b05e-ee62fe91db1f">
+
+I checked the correct station names on the service providers's website and made the updates accordingly. 
+
+A few updates were made using `WHERE` logic
+```sql
+-- Replacing the station name including "vaccination site" suffix with the "clean" station name
+UPDATE `phrasal-brand-398306.bikeshare_data.rides` as r1
+SET
+r1.start_station_name = r2.start_station_name
+FROM (
+SELECT DISTINCT start_station_id, start_station_name
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+) r2
+WHERE LOWER(r1.start_station_name) like '%vaccination%'
+AND r1.start_station_id = r2.start_station_id AND LOWER(r2.start_station_name) NOT LIKE '%vaccination%'
+```
+```sql
+-- Removing trailing white spaces
+UPDATE `phrasal-brand-398306.bikeshare_data.rides`
+SET start_station_name = TRIM(start_station_name)
+WHERE REGEXP_CONTAINS(start_station_name, ' +$')
+```
+```sql
+-- Remove ' (Temp)' from station names
+UPDATE `phrasal-brand-398306.bikeshare_data.rides`
+SET start_station_name = REPLACE(start_station_name, ' (Temp)', '')
+WHERE start_station_name like '% (Temp)%';
+```
+Others had to be udpated case by case.
+```sql
+UPDATE `phrasal-brand-398306.bikeshare_data.rides`
+SET start_station_name = 'Whipple St & 26th St' -- correct value based on divvy website
+WHERE start_station_id = '540'
+AND start_station_name = 'Whippie St & 26th St';
+```
+
+Note that some stations have one ID and multiple names, where the name has various suffixes, such as " - midblock", "Public Rack - ", " SW", etc - see sample below. This explains most of the cases where 1 ID has multiple name values (300+ cases).  I checked the stations map on the service provider's website and they are actually considered as different stations. So we are leaving them as different stations in the preparation step. I group them in my queries in Analysis phase, when I'm looking at geographical distribution of the rides. 
+
+<img width="756" alt="station name suffixes" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/137f1fd9-e9d1-4199-ba32-8632e9e54d4b">
+
+Finally, in some cases, there was nothing to be done.
+- Cases, where 1 ID value has multiple names associated, with no logic association between them. This accounts for about 80 cases. On the stations map, both stations exist and are far away - see sample below. Since no data reference is provided by the data owner, we can't make a call on which values are correct and we leave it as is. 
+
+<img width="651" alt="Sample same ID multiple names" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/e4de166a-2bd7-4a73-aa34-dcf37a6add3f">
+
+<img width="1783" alt="Screenshot 2023-10-16 at 11 35 21" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c364196a-4400-4ba4-b7c9-eab3f0f68d56">
+
+- Some station names have multiple IDs (17 such stations (36k rides)). Again, with no referential information, we can't make a call here. In the analysis, I focus on the station names. There's a risk that these stations are actually different stations but it involves only a small amount of rides so it won't impact the analysis a lot.
+
+<img width="660" alt="Sample same name multiple IDs" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/8dbfcedd-94ee-42ae-a7a5-4ffb6ad7b726">
 
 
-Other checks
+Other incorrect value checks:
 - The "category" fields (rideable_type and member_casual) do not contain any whitespaces, typos, or any problems. I checked it by looking at the values manually since they are few.
 - No validation was done on the coordinates as it is not important to the analysis
 
-**TODO: Add start / end station IDs and names cleanup steps. Explain that it was not strictly necessary but it helped me practice the string values cleanup which is probably very common**
 
 **Adding calculated columns and renaming columns**
 
