@@ -559,7 +559,7 @@ We also explore the differences in ride lengths on various days.
 
 **:bulb: Key Insights**
 - Overall, the number of rides taken steadily increases as the week goes on, reaching its peak on Saturday. No surprises here.
-- The members' rides seem to have a daily commute pattern versus more leisure-centered activity for casual riders. On an average weekday, members take 17% more rides than on a weekend day. Casual riders, on average, take 48% more rides on weekends. 
+- The members' rides seem to have a daily commute pattern versus more leisure-centered activity for casual riders. On an average weekday, members take 21% more rides than on a weekend day. Casual riders, on average, take 48% more rides on weekends. 
 
 ### 4.5. Rides by Starting Hour
 Looking at the “busiest times” for each rider type allows us to find patterns and potentially validate the commute vs leisure hypothesis. 
