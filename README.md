@@ -96,22 +96,13 @@ These are the steps I took to clean the data inside the SQL table.
 
 To ensure completeness and make data cleaning easier in the future, I created a checklist framework. I created a spreadsheet with column names in columns and the types of checks (steps 2-6) in rows. I went through each type of check and ran the check on each column, where it was relevant.
 
-<img width="1711" alt="GDAC_Cleanup_checklist" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/d3360e1d-3272-49fc-a53f-366de075d1a3">
+<img width="1713" alt="GDAC_Cleanup_checklist" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/5e6abad3-385e-4482-ab0a-9e7b8de05933">
 
 Note that in the case of a dataset with a large number of columns, we would need to pre-select the relevant columns before the cleanup.
 
 **---------------**
 #### 3.3.2. Findings and Changes Made
 
-<span style="color:red;"> **TODO: ADD QUICK SUMMARY of the section and the rest (how I found the issues) should be in collapsed DETAILS section** </span>
-
-**TODO: Remaining issues of**
-```
-- Why we have 1.5k+ stations when website says 800+
-- different lat - long for same station id
-- 25% station IDs having more than one name (duplicate stations)
-need an explanation why I ignored it. Website about station numbers: https://www.chicago.gov/city/en/depts/cdot/provdrs/bike/news/2023/april/divvy-for-the-entire-city--divvy-service-hits-all-50-wards.html
-```
 **Duplicates**
 
 I ran a query to check the number of rides per ride_id and there were no IDs having more than 1 ride. 
@@ -135,7 +126,7 @@ I used the following steps to inspect the null values in relevant columns:
     - If some values are null, fill it in, if possible. If not possible, exclude the null values unless they impact the core of the analysis.
 
 Outcomes:
-- Start and end station names and IDs have ~15% of null values. Start stations are only empty in case of electric bikes. This is most likely because there were dockless ebikes introduced [starting from 2020](https://divvybikes.com/explore-chicago/expansion-temp). The end station names may be null due to bikes that were not properly returned. These cases represent a rather small number of the rides (15%) and it's not the core of our analysis. I left it as-is.
+- Start and end station names and IDs have ~15% of null values. Start stations are only empty in case of electric bikes. This is most likely because there were dockless ebikes introduced [starting from 2020](https://divvybikes.com/explore-chicago/expansion-temp) and these bikes can be picked up and left anywhere. The end station names may be null due to bikes that were not properly returned. We could look into coordinates to fill in these values but these cases represent a rather small number of the rides (15%) and it's not the core of our analysis. I left it as-is.
 - End station coordinates (lat and long) have a small amount of null values. This may mean that the bikes were never returned. It's a small amount so I left it as-is.
 - No other columns had issues with null values
 
@@ -184,23 +175,6 @@ SET rideable_type = 'classic_bike'
 WHERE rideable_type = 'docked_bike'
 ```
 
-Ride Started and Ended dates.
-- I checked that both dates are within the expected range. I selected the .csv files with 2022 rides. So the expected range for the start date is within 2022 while the end date mayalso be a little after the last day of 2022. The ride start dates are within range. There is a ride that ended on 02/01/2023 but it's the only one so we will ignore it.
-```sql
-SELECT
-MIN(started_at) AS min_start_date,
-MAX(started_at) AS max_start_date,
-MIN(ended_at) AS min_end_date,
-MAX(ended_at) AS max_end_date,
-FROM
-`phrasal-brand-398306.bikeshare_data.rides`
-```
-- Next, I checked if there were cases where the ride end date and time equals start date/time or is before the start date/time. <br/>  :warning: It turns out there are 531 such cases.While it's a tiny percentage of the overall dataset (5M+ rows), it should not impact our analysis. But it's definitely alarming :triangular_flag_on_post: in terms of overall dataquality. 
-```sql
-SELECT started_at, ended_at, * 
-FROM `phrasal-brand-398306.bikeshare_data.rides`
-WHERE ended_at <= started_at
-```
 Start, End Station Names and IDs
 
 :warning: The dataset contains 1313 distinct `start_station_id` and 1645 `start_station_name` values. It's already an issue but it's even more concerning given that the service provider's website mentions only about 800 stations program. Although the stations are not key elements of this analysis, I decided to look into these values as it allowed me to practice data cleanup on string values. I did the following checks to detect anomalies (**Note that the same checks were done to end stations**):
@@ -339,6 +313,23 @@ Finally, in some cases, there was nothing to be done.
 
 <img width="660" alt="Sample same name multiple IDs" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/8dbfcedd-94ee-42ae-a7a5-4ffb6ad7b726">
 
+Ride Started and Ended dates
+- I checked that both dates are within the expected range. I selected the .csv files with 2022 rides. So the expected range for the start date is within 2022 while the end date may also be a little after the last day of 2022. The ride start dates are within range. There is a ride that ended on 02/01/2023 but it's the only one so we will ignore it.
+```sql
+SELECT
+MIN(started_at) AS min_start_date,
+MAX(started_at) AS max_start_date,
+MIN(ended_at) AS min_end_date,
+MAX(ended_at) AS max_end_date,
+FROM
+`phrasal-brand-398306.bikeshare_data.rides`
+```
+- I checked if there were cases where the ride end date and time equals start date/time or is before the start date/time. <br/>  :warning: It turns out there are 530 such cases. While it's a tiny percentage of the overall dataset (5M+ rows), it should not impact our analysis. But it's definitely alarming :triangular_flag_on_post: in terms of overall data quality. 
+```sql
+SELECT started_at, ended_at, * 
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+WHERE ended_at <= started_at
+```
 
 Other incorrect value checks:
 - The "category" fields (rideable_type and member_casual) do not contain any whitespaces, typos, or any problems. I checked it by looking at the values manually since they are few.
@@ -408,7 +399,7 @@ GROUP BY bin
 ORDER BY bin;
 ```
 
-<img width="639" alt="ride_length_suspicious_values" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/13acebc8-2651-499e-9a8a-790b48194426">
+<img width="588" alt="ride_length_suspicious_values" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/0f07bdbc-cc6a-47f9-a30d-bd9ceb5bacf9">
 
 Although the presence of such values is alarming, the total number of suspicious values is <2.5% of the overall dataset. As the majority of the dataset seems correct, I decided to proceed with the analysis. 
 
@@ -445,11 +436,11 @@ See a few rows from the table below:
 
 | ride_id | rideable_type | started_at | ended_at | start_station_name | start_station_id | end_station_name | end_station_id | start_lat | start_lng | end_lat | end_lng | rider_type | ride_length | start_day_of_week | start_hour | ride_month |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 8A7454BBD65EAC62 | classic_bike | 2022-08-23 15:32:38.000000 UTC | 2022-08-23 15:46:40.000000 UTC | Smith Park | 643 | California Ave & North Ave | 13258 | 41.892048 | -87.689397 | 41.9104754 | -87.6968944 | casual | 842 | 2 | 15 | 8 |
-| 53C5BAE1132E76B5 | electric_bike | 2022-11-02 19:03:38.000000 UTC | 2022-11-02 19:26:50.000000 UTC | Smith Park | 643 | Paulina St & Montrose Ave | TA1309000021 | 41.892029333333333 | -87.6893675 | 41.961507 | -87.671387 | casual | 1392 | 3 | 19 | 11 |
-| 8FD6192B4B3BFB78 | electric_bike | 2022-08-05 06:58:52.000000 UTC | 2022-08-05 07:11:57.000000 UTC | Smith Park | 643 | Wood St & Taylor St (Temp) | 13285 | 41.892021166666666 | -87.6894195 | 41.869265218438194 | -87.673730850219727 | member | 785 | 5 | 6 | 8 |
-| 6B7F118F0056817B | electric_bike | 2022-04-23 13:50:30.000000 UTC | 2022-04-23 14:08:27.000000 UTC | Smith Park | 643 | Morgan St & Lake St* | chargingstx4 | 41.892080833333331 | -87.689340833333333 | 41.885491706269057 | -87.652289271354675 | casual | 1077 | 6 | 13 | 4 |
-| 46793D8860690574 | classic_bike | 2022-12-02 08:27:56.000000 UTC | 2022-12-02 08:42:55.000000 UTC | Smith Park | 643 | Morgan St & Lake St* | chargingstx4 | 41.892048 | -87.689397 | 41.885491706269057 | -87.652289271354675 | member | 899 | 5 | 8 | 12 |
+| 00000123F60251E6 | classic_bike | 2022-02-07 15:47:40.000000 UTC | 2022-02-07 15:49:28.000000 UTC | Wells St & Hubbard St | TA1307000151 | Kingsbury St & Kinzie St | KA1503000043 | 41.889906 | -87.634266 | 41.88917683258 | -87.6385057718 | member | 108 | 1 | 15 | 2 |
+| 00000179CF2C4FB5 | electric_bike | 2022-07-28 09:02:27.000000 UTC | 2022-07-28 09:13:51.000000 UTC | Ellis Ave & 55th St | KA1504000076 | Ellis Ave & 55th St | KA1504000076 | 41.794237333333335 | -87.601342833333334 | 41.79430062054 | -87.6014497734 | casual | 684 | 4 | 9 | 7 |
+| 0000038F578A7278 | electric_bike | 2022-12-15 15:36:06.000000 UTC | 2022-12-15 15:44:35.000000 UTC | Lakeview Ave & Fullerton Pkwy | TA1309000019 | Clark St & Elm St | TA1307000039 | 41.925825953 | -87.638823032 | 41.902973 | -87.63128 | casual | 509 | 4 | 15 | 12 |
+| 0000047373295F85 | electric_bike | 2022-07-22 16:56:46.000000 UTC | 2022-07-22 17:21:58.000000 UTC | Streeter Dr & Grand Ave | 13022 | Calumet Ave & 18th St | 13102 | 41.892208833333335 | -87.611831166666661 | 41.857611 | -87.619407 | casual | 1512 | 5 | 16 | 7 |
+| 000004C3185FDDE9 | electric_bike | 2022-07-17 13:01:54.000000 UTC | 2022-07-17 13:16:13.000000 UTC | Larrabee St & Webster Ave | 13193 | Honore St & Division St | TA1305000034 | 41.921853781 | -87.64402318 | 41.903119 | -87.673935 | casual | 859 | 7 | 13 | 7 |
 
 ## 4. Analysis
 ### 4.1. Defining the questions
@@ -628,7 +619,7 @@ If it's confirmed, it could help focus the physical marketing assets on a small 
     - Members start their rides in the middle of the city, near universities, etc.
 - The activity of casual riders is clustered. 90% of the rides start in 350 stations (out of 1k+ total).
 
-### 4.7. Routes Taken
+### 4.8. Routes Taken
 Similar to start stations, we are checking for any patterns in what routes the casual riders and members are taking.
 
 [Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#routes-taken-queries)
