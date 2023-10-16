@@ -54,9 +54,8 @@ I chose to work with the data on rides from a full year of 2022.
 
  The first thing to do was to download the data from the original data source, load it into an SQL database and perform cleaning, necessary for my analysis. 
 
-<details>
+<details open>
 <summary> Click here for the detailed data preparation steps</summary>
-<br/>
 
 ### 3.1. Loading Into Database
 The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. For 2022 data, I downloaded the 12 .csv files containing the data for eeach month of 2022. I then uploaded the 12 files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together (the structure of the 12 .csv files was the same).
@@ -106,14 +105,13 @@ Note that in the case of a dataset with a large number of columns, we would need
 
 <span style="color:red;"> **TODO: ADD QUICK SUMMARY of the section and the rest (how I found the issues) should be in collapsed DETAILS section** </span>
 
-<span style="color:red;"> **TODO: Don't forget to list the key issues found: no station names , 1500 stations when divvy says there are 800 (TBD - I can't say I didn't deal with this** </span>
-
-<span style="color:red">**TODO: Remaining issues of:
+**TODO: Remaining issues of**
+```
 - Why we have 1.5k+ stations when website says 800+
 - different lat - long for same station id
 - 25% station IDs having more than one name (duplicate stations)
-need an explanation why I ignored it. Website about station numbers: https://www.chicago.gov/city/en/depts/cdot/provdrs/bike/news/2023/april/divvy-for-the-entire-city--divvy-service-hits-all-50-wards.html**</span>
-
+need an explanation why I ignored it. Website about station numbers: https://www.chicago.gov/city/en/depts/cdot/provdrs/bike/news/2023/april/divvy-for-the-entire-city--divvy-service-hits-all-50-wards.html
+```
 **Duplicates**
 
 I ran a query to check the number of rides per ride_id and there were no IDs having more than 1 ride. 
@@ -137,8 +135,8 @@ I used the following steps to inspect the null values in relevant columns:
     - If some values are null, fill it in, if possible. If not possible, exclude the null values unless they impact the core of the analysis.
 
 Outcomes:
-- Start and end station names and IDs have ~15% of null values. We could potentially fill them using the coordinates but it's too much effort for 15% of the set and it's not the core of our analysis. I left it as-is.
-- End station coordinates (lat and long) have a small amount of null values. It's a small amount so I left it as-is.
+- Start and end station names and IDs have ~15% of null values. Start stations are only empty in case of electric bikes. This is most likely because there were dockless ebikes introduced [starting from 2020](https://divvybikes.com/explore-chicago/expansion-temp). The end station names may be null due to bikes that were not properly returned. These cases represent a rather small number of the rides (15%) and it's not the core of our analysis. I left it as-is.
+- End station coordinates (lat and long) have a small amount of null values. This may mean that the bikes were never returned. It's a small amount so I left it as-is.
 - No other columns had issues with null values
 
 Counting null values (repeat the query for each relevant column)
@@ -173,7 +171,7 @@ LIMIT 5
 
 There are various checks that may be useful depending on the type of data in the column. For example, checking if the dates are in the expected range. Below I will detail the value checks I did.
 
-- Rideable type  
+Rideable type  
 ```sql
 SELECT rideable_type, ROUND(COUNT(*)  / (SELECT COUNT(*) from `phrasal-brand-398306.bikeshare_data.rides`) * 100, 2) as prc_rides
 FROM `phrasal-brand-398306.bikeshare_data.rides`
@@ -186,27 +184,81 @@ SET rideable_type = 'classic_bike'
 WHERE rideable_type = 'docked_bike'
 ```
 
--  Ride Started and Ended dates.
-    - I checked that both dates are within the expected range. I selected the .csv files with 2022 rides. So the expected range for the start date is within 2022 while the end date may also be a little after the last day of 2022. The ride start dates are within range. There is a ride that ended on 02/01/2023 but it's the only one so we will ignore it.
-    ```sql
-    SELECT
-    MIN(started_at) AS min_start_date,
-    MAX(started_at) AS max_start_date,
-    MIN(ended_at) AS min_end_date,
-    MAX(ended_at) AS max_end_date,
-    FROM
-    `phrasal-brand-398306.bikeshare_data.rides`
-    ```
-    - Next, I checked if there were cases where the ride end date and time equals start date/time or is before the start date/time. <br/>  :warning: It turns out there are 531 such cases. While it's a tiny percentage of the overall dataset (5M+ rows), it should not impact our analysis. But it's definitely alarming :triangular_flag_on_post: in terms of overall data quality. 
-    ```sql
-    SELECT started_at, ended_at, * 
+Ride Started and Ended dates.
+- I checked that both dates are within the expected range. I selected the .csv files with 2022 rides. So the expected range for the start date is within 2022 while the end date mayalso be a little after the last day of 2022. The ride start dates are within range. There is a ride that ended on 02/01/2023 but it's the only one so we will ignore it.
+```sql
+SELECT
+MIN(started_at) AS min_start_date,
+MAX(started_at) AS max_start_date,
+MIN(ended_at) AS min_end_date,
+MAX(ended_at) AS max_end_date,
+FROM
+`phrasal-brand-398306.bikeshare_data.rides`
+```
+- Next, I checked if there were cases where the ride end date and time equals start date/time or is before the start date/time. <br/>  :warning: It turns out there are 531 such cases.While it's a tiny percentage of the overall dataset (5M+ rows), it should not impact our analysis. But it's definitely alarming :triangular_flag_on_post: in terms of overall dataquality. 
+```sql
+SELECT started_at, ended_at, * 
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+WHERE ended_at <= started_at
+```
+Start, End Station Names and IDs
+
+:warning: The dataset contains 1313 distinct `start_station_id` and 1645 `start_station_name` values. It's already an issue but it's even more concerning given that the service provider's website mentions only about 800 stations program. Although the stations are not key elements of this analysis, I decided to look into these values as it allowed me to practice data cleanup on string values. I did the following checks to detect anomalies (**Note that same checks and fixes were done to end stations**):
+1. Checking distribution of start_station_id lengths and looking at IDs ofvarious lengths to spot patterns.
+```sql
+SELECT LENGTH(start_station_id) AS str_length, COUNT(DISTINCT start_station_id) AS num_stations
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+GROUP BY str_length
+ORDER BY num_stations DESC
+```
+1. Looking at cases where 1 ID is associated with multiple names (and number of rides associated with each station name)
+```sql
+SELECT * FROM
+(
+    SELECT distinct start_station_id, start_station_name,
+    COUNT(distinct start_station_name) OVER (PARTITION BY start_station_id) as num_station_names_per_ID,
+    COUNT(distinct ride_id) OVER (PARTITION BY start_station_name) as num_rides_per_name
     FROM `phrasal-brand-398306.bikeshare_data.rides`
-    WHERE ended_at <= started_at
-    ```
-- Other
-    - The "category" fields (rideable_type and member_casual) do not contain any whitespaces, typos, or any problems. I checked it by looking at the values manually since they are few.
-    - There is no definition of constraints for station ID and name values provided by the data owner so I didn't do any validation on it. It is not the core of our analysis.
-    - No validation was done on the coordinates as it is not important to the analysis
+)
+WHERE num_station_names_per_ID > 1
+ORDER BY num_station_names_per_ID DESC, start_station_id ASC, num_rides_per_name DESC
+```
+1. Looking at cases where 1 name is associated with multiple ID (and number of rides associated with each ID)
+```sql
+SELECT * FROM
+(
+    SELECT distinct start_station_id, start_station_name,
+    COUNT(distinct start_station_id) OVER (PARTITION BY start_station_name) as num_station_IDs_per_name,
+    COUNT(distinct ride_id) OVER (PARTITION BY start_station_id) as num_rides_per_id
+    FROM `phrasal-brand-398306.bikeshare_data.rides`
+)
+WHERE num_station_IDs_per_name > 1
+ORDER BY start_station_name ASC, num_rides_per_id DESC
+```
+
+1. Looking at stations where rides with 0 or negative length have started
+```sql
+SELECT DISTINCT start_station_id, start_station_name
+FROM `phrasal-brand-398306.bikeshare_data.rides`
+WHERE ride_length <= 0 -- we added ride_length as a calculated field as part of cleanup process
+```
+1. Finding stations that have white space characters at the end
+```sql
+SELECT DISTINCT start_station_id, start_station_name
+FROM `phrasal-brand-398306.bikeshare_data.rides_original`
+WHERE REGEXP_CONTAINS(start_station_name, r' +$')
+```
+
+Fixing Start, End Station Names and IDs values
+
+First, I found that dataset contained rides to / from "Test" stations. So I removed such rides from the dataset. 
+
+
+Other checks
+- The "category" fields (rideable_type and member_casual) do not contain any whitespaces, typos, or any problems. I checked it by looking at the values manually since they are few.
+- No validation was done on the coordinates as it is not important to the analysis
+
+**TODO: Add start / end station IDs and names cleanup steps. Explain that it was not strictly necessary but it helped me practice the string values cleanup which is probably very common**
 
 **Adding calculated columns and renaming columns**
 
@@ -373,8 +425,6 @@ Using the framework mentioned above as a starting point, I decided that these qu
 - Standard deviation
 
 ### 4.2. Ride Length Summary 
-<span style="color:red;">**TODO: add links to relevant queries in these sections**</span>
-
 Summary queries allowed me to explore the distribution of the ride lengths. Note that the ride length values are **expressed in seconds**.
 
 [Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#ride-length-summary-queries)
