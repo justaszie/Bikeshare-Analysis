@@ -177,7 +177,7 @@ WHERE rideable_type = 'docked_bike'
 
 Start, End Station Names and IDs
 
-:warning: The dataset contains 1313 distinct `start_station_id` and 1645 `start_station_name` values. It's already an issue but it's even more concerning given that the service provider's website mentions only about 800 stations program. Although the stations are not key elements of this analysis, I decided to look into these values as it allowed me to practice data cleanup on string values. I did the following checks to detect anomalies (**Note that the same checks were done to end stations**):
+:warning: The dataset contains 1313 distinct `start_station_id` and 1645 `start_station_name` values. It's already an issue but it's even more concerning given that the data owner's website mentions only about 800 stations program. Although the stations are not key elements of this analysis, I decided to look into these values as it allowed me to practice data cleanup on string values. I did the following checks to detect anomalies (**Note that the same checks were done to end stations**):
 - Checking distribution of start_station_id lengths and looking at IDs of various lengths to spot patterns.
 ```sql
 SELECT LENGTH(start_station_id) AS str_length, COUNT(DISTINCT start_station_id) AS num_stations
@@ -224,7 +224,7 @@ WHERE REGEXP_CONTAINS(start_station_name, r' +$')
 
 Fixing Station Names and ID values (note that these fixes were done on both start and end stations). 
 
-First, I found that the dataset contained rides to/from "Test" stations. These could not be found in the service provider's stations map. So I removed such rides from the dataset. 
+First, I found that the dataset contained rides to/from "Test" stations. These could not be found in the data owner's stations map. So I removed such rides from the dataset. 
 ```sql
 DELETE FROM `phrasal-brand-398306.bikeshare_data.rides`
 WHERE start_station_id IN (
@@ -263,7 +263,7 @@ While looking at stations with multiple names for the same ID, I found a list of
 
 <img width="636" alt="start station value errors" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/eb2e48af-5ff0-401e-b05e-ee62fe91db1f">
 
-I checked the correct station names on the service provider's website and made the updates accordingly. 
+I checked the correct station names on the data owner's website and made the updates accordingly. 
 
 A few updates were made using `WHERE` logic
 ```sql
@@ -298,7 +298,7 @@ WHERE start_station_id = '540'
 AND start_station_name = 'Whippie St & 26th St';
 ```
 
-Note that some stations have one ID and multiple names, where the name has various suffixes, such as " - midblock", "Public Rack - ", " SW", etc - see the sample below. This explains most of the cases where 1 ID has multiple name values (300+ cases).  I checked the stations map on the service provider's website and they are actually considered as different stations. So we are leaving them as different stations in the preparation step. I group them in my queries in the Analysis phase, when I'm looking at the geographical distribution of the rides. 
+Note that some stations have one ID and multiple names, where the name has various suffixes, such as " - midblock", "Public Rack - ", " SW", etc - see the sample below. This explains most of the cases where 1 ID has multiple name values (300+ cases).  I checked the [stations map](https://account.divvybikes.com/map) on the data owner's website and they are actually considered as different stations. So we are leaving them as different stations in the preparation step. I group them in my queries in the Analysis phase, when I'm looking at the geographical distribution of the rides. 
 
 <img width="756" alt="station name suffixes" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/137f1fd9-e9d1-4199-ba32-8632e9e54d4b">
 
