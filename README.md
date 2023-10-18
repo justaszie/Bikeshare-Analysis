@@ -685,8 +685,6 @@ Since it was my first data project, I learned a lot from it. Some of my thoughts
 
 ## Appendix A - SQL Queries for Analysis
 This section lists all the SQL queries used in the analysis and the results when they were run. 
-<details open>
-<summary> Click here to see the SQL queries </summary>
 
 ### Ride Length Summary Queries
 **Overall dataset**
@@ -1003,5 +1001,3 @@ GROUP BY rider_type
 ```
 
 <img width="251" alt="res_distinct_routes_num" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/0440996c-c524-417e-9e7d-fffe2aaef8b1">
-
-</details>
