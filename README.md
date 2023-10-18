@@ -12,7 +12,7 @@ Even though the project was an optional part of the certification program, I cho
 ### 1.2. Guide to This Document
 As it's my first data project, this documentation is very detailed and quite chunky. I plan to use it as a knowledge base for future projects. Feel free to skip to the parts that are most interesting to you. 
 
-1. If you're here for a good time, not a long time: [presentation with the solution to the business problem](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-business-case-solution).
+1. If you're here for a good time, not a long time (and want to go straight to the solution): [presentation with the solution to the business problem](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-business-case-solution).
 2. If you're interested in what's under the hood:
 - [Analysis steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#4-analysis)
 - [Data preparation and cleanup steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data)
