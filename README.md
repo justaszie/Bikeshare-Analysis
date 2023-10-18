@@ -17,7 +17,7 @@ As it's my first data project, this documentation is very detailed and quite chu
 - [Analysis steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#4-analysis)
 - [Data preparation and cleanup steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data)
 - [SQL queries used for the analysis](https://github.com/justaszie/Bikeshare-Analysis/tree/main#5-appendix-a---sql-queries-for-analysis)
-3. Finally, I listed some [ideas for improving the dataset](https://github.com/justaszie/Bikeshare-Analysis/#5-ideas-for-future-improvement) and my [lessons learned[]() from this project.
+3. Finally, I listed some [ideas for improving the dataset](https://github.com/justaszie/Bikeshare-Analysis/#5-ideas-for-future-improvement) and my [lessons learned](https://github.com/justaszie/Bikeshare-Analysis/blob/main/README.md#6-lessons-learned) from this project.
 
 ### 1.3. Dataset
 The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is the history of rides of a bikeshare service called [Divvy](https://divvybikes.com/), operated by Lyft in Chicago, and its data is licensed out for public usage. It contains a large amount of data on rides from 2015 up to mid-2023.
