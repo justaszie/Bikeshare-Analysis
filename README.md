@@ -23,7 +23,7 @@ As it's my first data project, this documentation is very detailed and quite chu
 The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is the history of rides of a bikeshare service called [Divvy](https://divvybikes.com/), operated by Lyft in Chicago, and its data is licensed out for public usage. It contains a large amount of data on rides from 2015 up to mid-2023.
 - [Data license](https://divvybikes.com/data-license-agreement)
 - [Original data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
-- [Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note that it's an archived 1GB+ .csv file). See [clean dataset format](https://github.com/justaszie/Bikeshare-Analysis/tree/main#34-final-dataset).
+- **TODO: Update link to clean dataset** [Data after my cleanup]() (note that it's a 1GB+ .csv file). See [clean dataset format](https://github.com/justaszie/Bikeshare-Analysis/tree/main#34-final-dataset).
 
 ### 1.4. Process
 I followed the analysis process provided by the Google program and adjusted it to my preferences. The overall process I followed had 6 phases:
@@ -71,9 +71,9 @@ Note the format of columns (e.g. Float) is as per BigQuery schema definition.
 | started_at | Date and time when the ride started | Date / time |
 | ended_at | Date and time when the ride ended | Date / time |
 | start_station_id | ID of the station where the ride started (bike was picked up). | String |
-| start_station_name | Describes the name of the station | String |
-| end_station_id | ID of the station where the ride started (bike was picked up). | String |
-| end_station_name | Describes the name of the station | String |
+| start_station_name | The name of the station where the ride started | String |
+| end_station_id | ID of the station where the ride ended (bike was left). | String |
+| end_station_name | The name of the station where the ride ended | String |
 | start_lat	 | Latitude coordinate where the ride started | Float |
 | start_lng	 | Longitude coordinate where the ride started | Float |
 | end_lat | Latitude coordinate where the ride ended | Float |
@@ -86,13 +86,15 @@ It is not clear if the original source of these files was a relational DB or a D
 
 #### 3.3.1. Process
 These are the steps I took to clean the data inside the SQL table. 
-1. Creating a backup copy of the table in case something goes wrong. 
-2. Checking for duplicate entries
-3. Checking for null values and % of rows with null values
-4. Validating that the format of the columns
-5. Checking for incorrect values (not as expected)
-6. Renamed columns for clarity
-7. Wrote query to add calculated columns to facilitate the analysis later and performed the checks (Steps 2-5) on them
+1. Created a backup copy of the table in case something goes wrong.
+2. Performed a set of checks to find any issues:
+    1. Checking for duplicate entries
+    1. Checking for null values and % of rows with null values
+    1. Validating that the format of the columns
+    1. Checking for incorrect values (not as expected)
+3. Fixed the issues found during the above checks, where possible
+4. Renamed columns for clarity
+5. Wrote query to add calculated columns to facilitate the analysis later and performed the checks and fixes (Steps under (2)) on them
 
 To ensure completeness and make data cleaning easier in the future, I created a checklist framework. I created a spreadsheet with column names in columns and the types of checks (steps 2-6) in rows. I went through each type of check and ran the check on each column, where it was relevant.
 
@@ -309,7 +311,7 @@ Finally, in some cases, there was nothing to be done.
 
 <img width="1783" alt="Screenshot 2023-10-16 at 11 35 21" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/c364196a-4400-4ba4-b7c9-eab3f0f68d56">
 
-- Some station names have multiple IDs (17 such stations (36k rides)). Again, with no referential information, we can't make a call here. In the analysis, I focus on the station names. There's a risk that these stations are actually different stations but it involves only a small amount of rides so it won't impact the analysis a lot.
+- Some station names have multiple IDs (17 such stations, representing 36k rides - i.e. only ~0.6% of the dataset). Again, with no referential information, we can't make a call here. In the analysis, I focus on the station names. There's a risk that these stations are actually different stations but it involves only a small amount of rides so it won't impact the analysis a lot.
 
 <img width="660" alt="Sample same name multiple IDs" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/8dbfcedd-94ee-42ae-a7a5-4ffb6ad7b726">
 
@@ -416,9 +418,9 @@ The below table  describes the final dataset after the original dataset was clea
 | started_at | Date and time when the ride started | Date / time |
 | ended_at | Date and time when the ride ended | Date / time |
 | start_station_id | ID of the station where the ride started (bike was picked up). | String |
-| start_station_name | Describes the name of the station | String |
-| end_station_id | ID of the station where the ride started (bike was picked up). | String |
-| end_station_name | Describes the name of the station | String |
+| start_station_name | The name of the station where the ride started | String |
+| end_station_id | ID of the station where the ride ended (bike was left). | String |
+| end_station_name | The name of the station where the ride ended | String |
 | start_lat | Latitude coordinate where the ride started | Float |
 | start_lng | Longitude coordinate where the ride started | Float |
 | end_lat | Latitude coordinate where the ride ended | Float |
@@ -555,7 +557,7 @@ We also explore the differences in ride lengths on various days.
 
 
 **:bulb: Key Insights**
-- Overall, the number of rides taken steadily increases as the week goes on, reaching its peak on Saturday. No surprises here.
+- Overall, the number of rides taken steadily increases as the week goes on, reaching its peak on Saturday.
 - The members' rides seem to have a daily commute pattern versus more leisure-centered activity for casual riders. On an average weekday, members take 21% more rides than on a weekend day. Casual riders, on average, take 48% more rides on weekends. 
 
 ### 4.5. Rides by Starting Hour
