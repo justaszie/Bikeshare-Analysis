@@ -4,38 +4,38 @@
 After I completed the Google Data Analytics Certification program on [Coursera](https://www.coursera.org/professional-certificates/google-data-analytics), I was keen to use its material on practical examples. 
 
 The program includes a guided project in which you can solve a business problem for a fictional bike-share service, called Cyclastic, by analyzing a real-life dataset. The dataset contains the ride history data and the **specific business task** of the analysis was to:
-1. find out the differences between the activity of the casual riders and members (riders holding annual membership pass)
-2. based on these insights, make recommendations on how marketing team can convert casual riders into members
+1. find out the differences between the activity of the casual riders and members (riders holding annual membership passes)
+2. based on these insights, make recommendations on how the marketing team can convert casual riders into members
 
 Even though the project was an optional part of the certification program, I chose to complete it because I was interested in using real-life dataset to solve a realistic business problem and it allowed me to brush up on my key data analysis skills.
 
 ### 1.2. Guide to This Document
-As it's my first data project, this documentation is very detailed and quite chunky. I plan to use it as knowledge base for future projects. Feel free to skip to the parts that are most interesting to you. 
+As it's my first data project, this documentation is very detailed and quite chunky. I plan to use it as a knowledge base for future projects. Feel free to skip to the parts that are most interesting to you. 
 
 If you're here for a good time, not a long time: [presentation with the solution to the business problem](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-business-case-solution).
 
-If you're interested what's under the hood:
+If you're interested in what's under the hood:
 - [Analysis steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#4-analysis)
 - [Data preparation and cleanup steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data)
 - [SQL queries used for the analysis](https://github.com/justaszie/Bikeshare-Analysis/tree/main#5-appendix-a---sql-queries-for-analysis)
 
 ### 1.3. Dataset
-The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is history of rides of a bikeshare service called [Divvy](https://divvybikes.com/), operated by Lyft in Chicago, and its data is licensed out for public usage. It contains a large amount of data on rides from 2015 up to mid-2023.
+The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is the history of rides of a bikeshare service called [Divvy](https://divvybikes.com/), operated by Lyft in Chicago, and its data is licensed out for public usage. It contains a large amount of data on rides from 2015 up to mid-2023.
 - [Data license](https://divvybikes.com/data-license-agreement)
 - [Original data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
-- [Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note it's 1GB+ .csv file). See [clean dataset format](https://github.com/justaszie/Bikeshare-Analysis/tree/main#34-final-dataset).
+- [Data after my cleanup](https://storage.googleapis.com/jz_public_data/GDAC_2022_rides_clean) (note that it's an archived 1GB+ .csv file). See [clean dataset format](https://github.com/justaszie/Bikeshare-Analysis/tree/main#34-final-dataset).
 
 ### 1.4. Process
-I followed the analysis process provided by Google program and adjusted it to my preferences. The overall process I followed had 6 phases:
+I followed the analysis process provided by the Google program and adjusted it to my preferences. The overall process I followed had 6 phases:
 1. **Define** - read through guidance material and refined the specific business task for the project based on the guidance document
-2. **Prepare** - collected, evaluated and cleaned the data using SQL to get it ready for analysis
+2. **Prepare** - collected, evaluated, and cleaned the data using SQL to get it ready for analysis
 4. **Analyze** - defined relevant questions, ran SQL queries to answer them using the data, validated my hypotheses, and gained surprising insights
 5. **Share** - created a business case presentation to share the insights with stakeholders, including using visualizations. The stakeholders in this case were the marketing director and the executive team of the fictional company
 
 ### 1.5 Data Tools
 The project material did not impose any tools for the analysis, so I chose the combination of:
 - **SQL**
-    - Data timeframe for analysis was not defined by the project. I wanted to analyze at least 1 year of rides data (5M+ rows) and it was too large for spreadsheets
+    - The data timeframe for analysis was not defined by the project. I wanted to analyze at least 1 year of rides data (5M+ rows) and it was too large for spreadsheets
     - It allowed me to brush up on my SQL skills for data cleanup and analysis
     - To focus on the analysis itself, I used BigQuery - Google's serverless data warehouse solution which was the simplest way to set up a database for storage and analysis.
 - **Google Sheets**
@@ -45,20 +45,20 @@ The project material did not impose any tools for the analysis, so I chose the c
 ## 2. Business Case Solution
 The final presentation that solves the business case can be accessed [here](https://docs.google.com/presentation/d/1bwYGy23ZWJG5qMf0imZLOfAincOCCUbpCrCYMcIStbE/edit?usp=sharing).
 
-As a reminder, the business problem was to convert the casual riders to annual members of the bikeshare service. Specifically, I had to find the differences in the usage of casual riders and annual members of the service, and use this knowledge to make marketing recommendations to help the conversion.
+As a reminder, the business problem was to convert the casual riders to annual members of the bikeshare service. Specifically, I had to find the differences in the usage of casual riders and annual members of the service and use this knowledge to make marketing recommendations to help the conversion.
 
 ## 3. Preparing the data
 I chose to work with the data on rides from a full year of 2022.
  - It's post Covid-19 restrictions, so should represent somewhat normal activity
- - A full year of data allows to explore seasonality
+ - A full year of data allows us to explore seasonality
 
- The first thing to do was to download the data from the original data source, load it into an SQL database and perform cleaning, necessary for my analysis. 
+ The first thing to do was to download the data from the original data source, load it into an SQL database, and perform the cleaning, necessary for my analysis. 
 
 <details open>
 <summary> Click here for the detailed data preparation steps</summary>
 
 ### 3.1. Loading Into Database
-The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. For 2022 data, I downloaded the 12 .csv files containing the data for eeach month of 2022. I then uploaded the 12 files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together (the structure of the 12 .csv files was the same).
+The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. For 2022 data, I downloaded the 12 .csv files containing the data for each month of 2022. I then uploaded the 12 files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together (the structure of the 12 .csv files was the same).
 
 ### 3.2. Data Dictionary
 The dataset does not have any description or data dictionary. So, first, I inspected the data and built a data dictionary to help with cleanup and analysis steps later. For the "category" columns, I ran a `SELECT DISTINCT` query to find possible values.
@@ -126,7 +126,7 @@ I used the following steps to inspect the null values in relevant columns:
     - If some values are null, fill it in, if possible. If not possible, exclude the null values unless they impact the core of the analysis.
 
 Outcomes:
-- Start and end station names and IDs have ~15% of null values. Start stations are only empty in case of electric bikes. This is most likely because there were dockless ebikes introduced [starting from 2020](https://divvybikes.com/explore-chicago/expansion-temp) and these bikes can be picked up and left anywhere. The end station names may be null due to bikes that were not properly returned. We could look into coordinates to fill in these values but these cases represent a rather small number of the rides (15%) and it's not the core of our analysis. I left it as-is.
+- Start and end station names and IDs have ~15% of null values. Start stations are only empty in the case of electric bikes. This is most likely because there were dockless e-bikes introduced [starting from 2020](https://divvybikes.com/explore-chicago/expansion-temp) and these bikes can be picked up and left anywhere. The end station names may be null due to bikes that were not properly returned. We could look into coordinates to fill in these values but these cases represent a rather small number of the rides (15%) and it's not the core of our analysis. I left it as-is.
 - End station coordinates (lat and long) have a small amount of null values. This may mean that the bikes were never returned. It's a small amount so I left it as-is.
 - No other columns had issues with null values
 
@@ -185,7 +185,7 @@ FROM `phrasal-brand-398306.bikeshare_data.rides`
 GROUP BY str_length
 ORDER BY num_stations DESC
 ```
-- Looking at cases where 1 ID is associated with multiple names (and number of rides associated with each station name)
+- Looking at cases where 1 ID is associated with multiple names (and the number of rides associated with each station name)
 ```sql
 SELECT * FROM
 (
@@ -197,7 +197,7 @@ SELECT * FROM
 WHERE num_station_names_per_ID > 1
 ORDER BY num_station_names_per_ID DESC, start_station_id ASC, num_rides_per_name DESC
 ```
-- Looking at cases where 1 name is associated with multiple ID (and number of rides associated with each ID)
+- Looking at cases where 1 name is associated with multiple IDs (and the number of rides associated with each ID)
 ```sql
 SELECT * FROM
 (
@@ -213,7 +213,7 @@ ORDER BY start_station_name ASC, num_rides_per_id DESC
 ```sql
 SELECT DISTINCT start_station_id, start_station_name
 FROM `phrasal-brand-398306.bikeshare_data.rides`
-WHERE ride_length <= 0 -- we added ride_length as a calculated field as part of cleanup process
+WHERE ride_length <= 0 -- we added ride_length as a calculated field as part of the cleanup process
 ```
 - Finding stations that have white space characters at the end
 ```sql
@@ -246,7 +246,7 @@ WHERE r1.start_station_id like '%chargingst%' OR r1.start_station_id like '% - C
 ```
 <img width="800" alt="Charging format stations" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/b96f5e21-5494-41c4-836a-2752f420f9c3">
 
-I have merged them with the stations that have "clean" name.
+I have merged them with the stations that have the "clean" version of the name.
 ```sql
 UPDATE `phrasal-brand-398306.bikeshare_data.rides` as r1
 SET r1.start_station_id = r2.start_station_id,
@@ -263,7 +263,7 @@ While looking at stations with multiple names for the same ID, I found a list of
 
 <img width="636" alt="start station value errors" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/eb2e48af-5ff0-401e-b05e-ee62fe91db1f">
 
-I checked the correct station names on the service providers's website and made the updates accordingly. 
+I checked the correct station names on the service provider's website and made the updates accordingly. 
 
 A few updates were made using `WHERE` logic
 ```sql
@@ -290,7 +290,7 @@ UPDATE `phrasal-brand-398306.bikeshare_data.rides`
 SET start_station_name = REPLACE(start_station_name, ' (Temp)', '')
 WHERE start_station_name like '% (Temp)%';
 ```
-Others had to be udpated case by case.
+Others had to be updated case by case.
 ```sql
 UPDATE `phrasal-brand-398306.bikeshare_data.rides`
 SET start_station_name = 'Whipple St & 26th St' -- correct value based on divvy website
@@ -298,12 +298,12 @@ WHERE start_station_id = '540'
 AND start_station_name = 'Whippie St & 26th St';
 ```
 
-Note that some stations have one ID and multiple names, where the name has various suffixes, such as " - midblock", "Public Rack - ", " SW", etc - see sample below. This explains most of the cases where 1 ID has multiple name values (300+ cases).  I checked the stations map on the service provider's website and they are actually considered as different stations. So we are leaving them as different stations in the preparation step. I group them in my queries in Analysis phase, when I'm looking at geographical distribution of the rides. 
+Note that some stations have one ID and multiple names, where the name has various suffixes, such as " - midblock", "Public Rack - ", " SW", etc - see the sample below. This explains most of the cases where 1 ID has multiple name values (300+ cases).  I checked the stations map on the service provider's website and they are actually considered as different stations. So we are leaving them as different stations in the preparation step. I group them in my queries in the Analysis phase, when I'm looking at the geographical distribution of the rides. 
 
 <img width="756" alt="station name suffixes" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/137f1fd9-e9d1-4199-ba32-8632e9e54d4b">
 
 Finally, in some cases, there was nothing to be done.
-- Cases, where 1 ID value has multiple names associated, with no logic association between them. This accounts for about 80 cases. On the stations map, both stations exist and are far away - see sample below. Since no data reference is provided by the data owner, we can't make a call on which values are correct and we leave it as is. 
+- Cases, where 1 ID value has multiple names associated, with no logical association between them. This accounts for about 80 cases. On the stations map, both stations exist and are far away - see the sample below. Since no data reference is provided by the data owner, we can't make a call on which values are correct and we leave it as is. 
 
 <img width="651" alt="Sample same ID multiple names" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/e4de166a-2bd7-4a73-aa34-dcf37a6add3f">
 
@@ -344,7 +344,7 @@ I ran queries to add and populate 4 calculated columns which would facilitate th
 | Column | Description (assumed) | Format |
 |---|---|---|
 | ride_length | calculated ride length in seconds | Integer |
-| start_day_of_week | day of week, when the ride was started. Note that I used `FORMAT_DATE` SQL function instead of usual `EXTRACT` because it returns '1' for Mondays, which is what I want. `FORMAT_DATE` function returns strings so I transformed it to an Integer for easier analysis. | Integer |
+| start_day_of_week | day of week, when the ride was started. Note that I used the `FORMAT_DATE` SQL function instead of the usual `EXTRACT` because it returns '1' for Mondays, which is what I want. The `FORMAT_DATE` function returns strings so I transformed it to an Integer for easier analysis. | Integer |
 | start_hour | the hour of the day when the ride started. | Integer |
 | ride_month | the month when the ride started. | Integer |
 
@@ -456,7 +456,7 @@ Note that this framework does not give an exhaustive list of relevant questions 
 <br/>
 
 The framework to define the specific questions consists of following a few guiding steps:
-1. Classify the columns in the table: timeseries (e.g. ride month), categories (e.g. rider type, rider type), numerical (e.g. ride length), nominal values (e.g. start station name). Note that BI tools such as Tableau automatically perform similar classification.
+1. Classify the columns in the table: timeseries (e.g. ride month), categories (e.g. rider type, rider type), numerical (e.g. ride length), and nominal values (e.g. start station name). Note that BI tools such as Tableau automatically perform similar classification.
 2. Define the list of timeseries analyses which make sense for the business task. It's a combination of the following questions: 
     - which numerical values should we analyze in the timeseries (e.g. number of rides)
     - what level timeseries (month, week, day, hour, etc.) are interesting  (e.g. number of monthly rides to explore seasonality)
@@ -513,7 +513,7 @@ Summary queries allowed me to explore the distribution of the ride lengths. Note
 
 
 **:bulb: Key Insights**
-- The mean is significantly higher than the median with a high standard deviation, especially for the casual riders' activity. This means that the distribution is heavily skewed due to a long tail with extremely long rides, as seen in [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data) step. We will use the median to describe the typical ride, instead of the mean.
+- The mean is significantly higher than the median with a high standard deviation, especially for the casual riders' activity. This means that the distribution is heavily skewed due to a long tail with extremely long rides, as seen in the [Data Cleanup](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data) step. We will use the median to describe the typical ride, instead of the mean.
 - There are more rides taken by members but without the rider identifier attribute, we don't know if it's due to a higher number of riders or average rides per rider.
 - There is a 60/40 division of data by rider type, which means the data is representative of both populations (casual riders and members).
 - The casual riders are taking significantly longer rides than members (median for casual riders is 47% higher)
@@ -588,7 +588,7 @@ We are exploring if casual riders and members have any preferences in terms of b
 The results are pretty equally distributed in both cases so there are no conclusions to draw here.
 
 ### 4.7. Ride Start Stations
-The next set of queries allows us to see if casual riders and members start their rides in different or similar locations. Since there are over a thousand of stations in the dataset, we look at the TOP 10 stations, where most of the rides start, and look for any patterns there.
+The next set of queries allows us to see if casual riders and members start their rides in different or similar locations. Since there are over a thousand stations in the dataset, we look at the TOP 10 stations, where most of the rides start, and look for any patterns there.
 
 [Link to queries](https://github.com/justaszie/Bikeshare-Analysis/tree/main#ride-start-stations-queries)
 
