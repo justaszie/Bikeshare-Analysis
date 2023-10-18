@@ -3,7 +3,7 @@
 ### 1.1 The What and the Why
 After I completed the Google Data Analytics Certification program on [Coursera](https://www.coursera.org/professional-certificates/google-data-analytics), I was keen to use its material on practical examples. 
 
-The program includes a guided project in which you can solve a business problem for a fictional bike-share service, called Cyclastic, by analyzing a real-life dataset. The dataset contains the ride history data and the **specific business task** of the analysis was to:
+The program includes a guided project in which you can solve a business problem for a fictional bike-share service, called Cyclastic, by analyzing a real-life dataset. The dataset contains the ride history data and the **specific business problem** of the analysis was to:
 1. find out the differences between the activity of the casual riders and members (riders holding annual membership passes)
 2. based on these insights, make recommendations on how the marketing team can convert casual riders into members
 
