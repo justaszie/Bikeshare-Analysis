@@ -404,9 +404,6 @@ ORDER BY bin;
 Although the presence of such values is alarming, the total number of suspicious values is <2.5% of the overall dataset. As the majority of the dataset seems correct, I decided to proceed with the analysis. 
 
 :warning: Note that the outlier values will create a positive skewness in the ride length distribution. I will use median instead of mean in our analysis to negate this.
-
-#### 3.3.3. Ideas for future improvement
-**<span style="color:red"> TODO: list what should be improved to have really clean dataset (Nice to have)**
 </details>
 
 ### 3.4. Final Dataset
@@ -647,7 +644,23 @@ There is no significant difference in the number of different routes taken by di
     - The majority of the most popular routes for casual riders start and end in the same station. This suggests that the purpose of the ride is not transportation but the ride itself.
     - The most popular routes for members have a clear "round-trip" pattern.  
 
-## 5. Appendix A - SQL Queries for Analysis
+## 5. Ideas for future improvement
+There are multiple ways to improve the analysis by improving the data quality of the dataset.
+
+1. Rider ID should be added. This would help with the business problem in multiple ways:
+    1. Analyze the volume and frequency of rides per rider to enhance rider profile for targeting.
+    1. Create and track KPIs such as the (casual riders/members) ratio. This will help measure the performance of conversion marketing campaigns.
+1. Data dictionary should be provided to help understand the following:
+    1. How start and end station values are populated and in what cases will they be Null?
+    1. Are all electric bikes considered dockless? Why in most situations, rides using electric bikes have start and end station values, and in some cases, they don't.
+    1. How is it possible to have a start date > end date? In what cases there will be very short rides and very long rides (multiple days long)
+    1. How is it possible to have a large number of different coordinates associated with the same start/end station?
+    1. Why does the dataset contain 1k+ station IDs, while the website mentions 800 stations?
+1. Data quality should be improved:
+    1. The data around station IDs and names data is not very reliable. The values should be reviewed against referential data and values should be corrected to fix the issues raised in this document.
+    1. The rideable type data should be reviewed against referential and updated based on the current inventory.
+
+## Appendix A - SQL Queries for Analysis
 This section lists all the SQL queries used in the analysis and the results when they were run. 
 <details open>
 <summary> Click here to see the SQL queries </summary>
