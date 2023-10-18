@@ -653,6 +653,7 @@ There are multiple ways to improve the analysis by improving the data quality of
 
 1. Rider ID should be added. This would help with the business problem in multiple ways:
     1. Analyze the volume and frequency of rides per rider to enhance rider profile for targeting.
+    2. We could single out casual riders who fit the member activity profile and target them for conversion to membership.
     1. Create and track KPIs such as the (casual riders/members) ratio. This will help measure the performance of conversion marketing campaigns.
 1. Data dictionary should be provided to help understand the following:
     1. How start and end station values are populated and in what cases will they be Null?
@@ -665,7 +666,7 @@ There are multiple ways to improve the analysis by improving the data quality of
     1. The rideable type data should be reviewed against referential and updated based on the current inventory.
 
 ## 6. Lessons Learned
-Since it was my first data project, I learned a lot from it. Some of my thoughts below.
+Since it was my first data project, I learned a lot from it. Some of my thoughts are listed below. 
 
 **Business side**
 1. Markdown is not the easiest format to publish your projects :sweat_smile: A tool such as Jupyter or R notebook would save tons of time. 
