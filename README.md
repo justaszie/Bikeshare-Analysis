@@ -290,7 +290,7 @@ UPDATE `phrasal-brand-398306.bikeshare_data.rides`
 SET start_station_name = REPLACE(start_station_name, ' (Temp)', '')
 WHERE start_station_name like '% (Temp)%';
 ```
-Others had to be updated case by case.
+Others had to be updated case by case (see example below).
 ```sql
 UPDATE `phrasal-brand-398306.bikeshare_data.rides`
 SET start_station_name = 'Whipple St & 26th St' -- correct value based on divvy website
