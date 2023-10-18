@@ -54,7 +54,7 @@ I chose to work with the data on rides from a full year of 2022.
 
  The first thing to do was to download the data from the original data source, load it into an SQL database, and perform the cleaning, necessary for my analysis. 
 
-<details open>
+<details>
 <summary> Click here for the detailed data preparation and cleanup steps</summary>
 
 ### 3.1. Loading Into Database
@@ -645,6 +645,8 @@ There is no significant difference in the number of different routes taken by di
     - The most popular routes for members have a clear "round-trip" pattern.  
 
 ## 5. Ideas for future improvement
+It's surprising to see so many data quality issues in a dataset provided by a tech-savvy company such as Lyft. 
+
 There are multiple ways to improve the analysis by improving the data quality of the dataset.
 
 1. Rider ID should be added. This would help with the business problem in multiple ways:
@@ -661,6 +663,25 @@ There are multiple ways to improve the analysis by improving the data quality of
     1. The rideable type data should be reviewed against referential and updated based on the current inventory.
 
 ## 6. Lessons Learned
+Since it was my first data project, I learned a lot from it. Some of my thoughts below.
+
+**Business side**
+1. Markdown is not the easiest format to publish your projects :sweat_smile:
+2. In real life, I would follow up with the business stakeholders to better refine the problem. The main question I had was: should the marketing recommendations also include potential changes to the membership plan (to make it more attractive to casual riders), or is it out of the question?
+3. It's very useful to build a framework for the cleanup checklist or to come up with analysis queries but we should always aim to be more creative and not limit the scope to that. As we go through the analysis, new questions come up. For example, we found that members use the service mostly for their short commutes. But there is a good number of weekend rides too. How do those rides look, what patterns do they follow?
+4. The 80/20 principle is a useful angle for analysis. I had a theory that most of the rides would be taken from a small number of stations (e.g. 10-50 stations). It was not true but then I found out that less than 20% of stations covered 90% of rides.
+5. Pretty obvious but having a business understanding helps a lot in the analysis. In this case, understanding what types of bikes are used, how the bikes are picked up and parked, etc., would explain a lot of unusual things in the data (such as varied coordinates for the same station name.
+
+**Technical**
+1. Cleaning string values with no referential data is always painful but a manual look-through, combined with REGEXP functions is super helpful. For example, finding leading or trailing whitespace characters, replacing strings in certain patterns, etc. 
+1. I made a classic rookie mistake by assuming that `EXTRACT DAYOFWEEK` in SQL was returning 1 for Mondays when 1 actually means Sunday. When I realized it rather late, I had to redo a bunch of queries and visualizations. `FORMAT_DATE` is a better option for us, Europeans.
+1. I had forgotten to check if end_date values were always after start_date values during cleanup. I only realized it when looking at the ride_lenght value distribution during analysis.
+1. When structuring the output of our queries, we should think about the story that the visualization will tell. For example, we query aggregated number of rides per member type and per bike type and we want to use the column chart to show contrast. It’s a different story if the member type is in the X axis (ie. the story is casual riders use electrical bikes more often) versus the bike type in the X axis (electrical bikes are more often used by casual riders than by members).
+1. When we aggregate data by multiple variables using SQL, it's useful to do it in a way where one of the aggregation variables is in columns (e.g. `total_rides_member`, `total_rides_casual`). The key dimension of analysis (e.g. rider type in this case) should be in the rows. This way we can build charts immediately on the results data - either in spreadsheets or in a BI tool such as Metabase. However, in the case of many distinct values, the column approach may be inefficient.
+1. I learned some useful methods to look at distribution in SQL: percentile functions, and partition of values into bins.
+1. I had a lot of opportunities to use SQL window functions which are really powerful.
+1. I need to dig deeper into statistical analysis, particularly in measuring seasonality. I struggled to find the right metric to express the magnitude of seasonal peaks for different types of riders.
+1. I need to do technical research on the benefits of different pre-processing approaches in SQL: adding calculated columns, using CTEs, views, or subqueries.
 
 ## Appendix A - SQL Queries for Analysis
 This section lists all the SQL queries used in the analysis and the results when they were run. 
