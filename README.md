@@ -55,7 +55,7 @@ I chose to work with the data on rides from a full year of 2022.
  The first thing to do was to download the data from the original data source, load it into an SQL database, and perform the cleaning, necessary for my analysis. 
 
 <details open>
-<summary> Click here for the detailed data preparation steps</summary>
+<summary> Click here for the detailed data preparation and cleanup steps</summary>
 
 ### 3.1. Loading Into Database
 The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. For 2022 data, I downloaded the 12 .csv files containing the data for each month of 2022. I then uploaded the 12 files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together (the structure of the 12 .csv files was the same).
