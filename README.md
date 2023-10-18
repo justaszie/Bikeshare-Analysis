@@ -26,10 +26,10 @@ The idea is to solve a business problem of a fictional company. But the dataset 
 - **TODO: Update link to clean dataset** [Data after my cleanup]() (note that it's a 1GB+ .csv file). See [clean dataset format](https://github.com/justaszie/Bikeshare-Analysis/tree/main#34-final-dataset).
 
 ### 1.4. Process
-I followed the analysis process provided by the Google program and adjusted it to my preferences. The overall process I followed had 6 phases:
-1. **Define** - read through guidance material and refined the specific business task for the project based on the guidance document
+I followed the analysis process provided by the Google program and adjusted it to my preferences. The overall process I followed had 4 phases:
+1. **Define** - read through guidance material and refined the specific business problem for the project based on the guidance document
 2. **Prepare** - collected, evaluated, and cleaned the data using SQL to get it ready for analysis
-4. **Analyze** - defined relevant questions, ran SQL queries to answer them using the data, validated my hypotheses, and gained surprising insights
+4. **Analyze** - broken the business problem down into detailed questions to be answered with data, ran SQL queries to answer them, validated my hypotheses, and gained surprising insights.
 5. **Share** - created a business case presentation to share the insights with stakeholders, including using visualizations. The stakeholders in this case were the marketing director and the executive team of the fictional company
 
 ### 1.5 Data Tools
@@ -646,7 +646,7 @@ There is no significant difference in the number of different routes taken by di
     - The majority of the most popular routes for casual riders start and end in the same station. This suggests that the purpose of the ride is not transportation but the ride itself.
     - The most popular routes for members have a clear "round-trip" pattern.  
 
-## 5. Ideas for future improvement
+## 5. Ideas for Dataset Improvement
 It's surprising to see so many data quality issues in a dataset provided by a tech-savvy company such as Lyft. 
 
 There are multiple ways to improve the analysis by improving the data quality of the dataset.
@@ -668,14 +668,15 @@ There are multiple ways to improve the analysis by improving the data quality of
 Since it was my first data project, I learned a lot from it. Some of my thoughts below.
 
 **Business side**
-1. Markdown is not the easiest format to publish your projects :sweat_smile:
+1. Markdown is not the easiest format to publish your projects :sweat_smile: A tool such as Jupyter or R notebook would save tons of time. 
 2. In real life, I would follow up with the business stakeholders to better refine the problem. The main question I had was: should the marketing recommendations also include potential changes to the membership plan (to make it more attractive to casual riders), or is it out of the question?
 3. It's very useful to build a framework for the cleanup checklist or to come up with analysis queries but we should always aim to be more creative and not limit the scope to that. As we go through the analysis, new questions come up. For example, we found that members use the service mostly for their short commutes. But there is a good number of weekend rides too. How do those rides look, what patterns do they follow?
 4. The 80/20 principle is a useful angle for analysis. I had a theory that most of the rides would be taken from a small number of stations (e.g. 10-50 stations). It was not true but then I found out that less than 20% of stations covered 90% of rides.
 5. Pretty obvious but having a business understanding helps a lot in the analysis. In this case, understanding what types of bikes are used, how the bikes are picked up and parked, etc., would explain a lot of unusual things in the data (such as varied coordinates for the same station name.
 
 **Technical**
-1. Cleaning string values with no referential data is always painful but a manual look-through, combined with REGEXP functions is super helpful. For example, finding leading or trailing whitespace characters, replacing strings in certain patterns, etc. 
+1. One of the key goals for the project was to practice SQL but Python or R would be 100x more efficient for such analysis. 
+2. Cleaning string values with no referential data is always painful but a manual look-through, combined with REGEXP functions is super helpful. For example, finding leading or trailing whitespace characters, replacing strings in certain patterns, etc. 
 1. I made a classic rookie mistake by assuming that `EXTRACT DAYOFWEEK` in SQL was returning 1 for Mondays when 1 actually means Sunday. When I realized it rather late, I had to redo a bunch of queries and visualizations. `FORMAT_DATE` is a better option for us, Europeans.
 1. I had forgotten to check if end_date values were always after start_date values during cleanup. I only realized it when looking at the ride_lenght value distribution during analysis.
 1. When structuring the output of our queries, we should think about the story that the visualization will tell. For example, we query aggregated number of rides per member type and per bike type and we want to use the column chart to show contrast. It’s a different story if the member type is in the X axis (ie. the story is casual riders use electrical bikes more often) versus the bike type in the X axis (electrical bikes are more often used by casual riders than by members).
