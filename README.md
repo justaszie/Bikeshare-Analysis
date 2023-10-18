@@ -12,12 +12,12 @@ Even though the project was an optional part of the certification program, I cho
 ### 1.2. Guide to This Document
 As it's my first data project, this documentation is very detailed and quite chunky. I plan to use it as a knowledge base for future projects. Feel free to skip to the parts that are most interesting to you. 
 
-If you're here for a good time, not a long time: [presentation with the solution to the business problem](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-business-case-solution).
-
-If you're interested in what's under the hood:
+1. If you're here for a good time, not a long time: [presentation with the solution to the business problem](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-business-case-solution).
+2. If you're interested in what's under the hood:
 - [Analysis steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#4-analysis)
 - [Data preparation and cleanup steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data)
 - [SQL queries used for the analysis](https://github.com/justaszie/Bikeshare-Analysis/tree/main#5-appendix-a---sql-queries-for-analysis)
+3. Finally, I listed some [ideas for improving the dataset](https://github.com/justaszie/Bikeshare-Analysis/#5-ideas-for-future-improvement) and my [lessons learned[]() from this project.
 
 ### 1.3. Dataset
 The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is the history of rides of a bikeshare service called [Divvy](https://divvybikes.com/), operated by Lyft in Chicago, and its data is licensed out for public usage. It contains a large amount of data on rides from 2015 up to mid-2023.
@@ -659,6 +659,8 @@ There are multiple ways to improve the analysis by improving the data quality of
 1. Data quality should be improved:
     1. The data around station IDs and names data is not very reliable. The values should be reviewed against referential data and values should be corrected to fix the issues raised in this document.
     1. The rideable type data should be reviewed against referential and updated based on the current inventory.
+
+## 6. Lessons Learned
 
 ## Appendix A - SQL Queries for Analysis
 This section lists all the SQL queries used in the analysis and the results when they were run. 
