@@ -43,13 +43,13 @@ If you'd like to look at the clean dataset, feel free to go straight to ["Final 
 <summary> Click here for the detailed data preparation and cleanup steps</summary>
 
 ### 3.1. Loading Into Database
-- [Original data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
+The original data was provided in an [AWS S3 bucket](https://divvy-tripdata.s3.amazonaws.com/index.html). The data is stored in a series of archived .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data (see screenshot from the S3 bucket below). 
 
-The data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data (see screenshot from the S3 bucket below). 
 <img width="1171" alt="S3_format" src="https://github.com/justaszie/Bikeshare-Analysis/assets/1820805/bc5e16a3-e6e8-428d-8d99-eb9f0a176de8">
-To load the full 2022 data: 
-1. I downloaded the 12 .csv files containing the data for each month of 2022.
-2. I then uploaded the 12 files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together (the structure of the 12 .csv files was the same). I used BigQuery because it was very simple to set up
+
+To load the full 2022 data, I had to
+1. download the 12 .csv files containing the data for each month of 2022.
+2. upload the 12 files to a Google bucket and create a SQL table `rides` in BigQuery by merging all 12 files together (luckily, the structure of the 12 .csv files was the same). I used BigQuery because it was very simple to set up
 
 ### 3.2. Data Dictionary
 The dataset does not have any description or data dictionary. So, first, I inspected the data and built a data dictionary to help with cleanup and analysis steps later. For the "categorical" columns (e.g. rideable type), I ran a `SELECT DISTINCT` query to find possible values.
