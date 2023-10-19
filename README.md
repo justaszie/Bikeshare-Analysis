@@ -1,16 +1,30 @@
 # Bikeshare rides analysis
 ## 1. Project Summary
-### 1.1 The What and the Why
-After I completed the Google Data Analytics Certification program on [Coursera](https://www.coursera.org/professional-certificates/google-data-analytics), I was keen to use its material on practical examples. 
+In my first analytics project, I did a historical data analysis using SQL and Google Sheets to help a fictional bikeshare service company convert casual riders to annual membership holders. 
 
-The program includes a guided project in which you can solve a business problem for a fictional bike-share service, called Cyclastic, by analyzing a real-life dataset. The dataset contains the ride history data and the **specific business problem** of the analysis was to:
+This guided project was an optional part of the [Google Data Analytics Certification program](https://www.coursera.org/professional-certificates/google-data-analytics). The goal was to solve a business problem by analyzing a dataset of past bike trips from a fictional bikeshare company, called Cyclastic. The specific business problem was defined as:
+
 1. find out the differences between the activity of the casual riders and members (riders holding annual membership passes)
-2. based on these insights, make recommendations on how the marketing team can convert casual riders into members
+2. based on these insights, make recommendations, on how the marketing team can convert casual riders into members
 
-Even though the project was an optional part of the certification program, I chose to complete it because I was interested in using real-life dataset to solve a realistic business problem and it allowed me to brush up on my key data analysis skills.
+I had a free choice of data tools to use so I used this opportunity to practice advanced SQL for data cleaning and analysis (even though tools such as Python pandas library could more efficient). I adjusted the analysis process provided by the Google program to my needs for this project. It had 4 phases:
 
-### 1.2. Guide to This Document
-As it's my first data project, this documentation is very detailed and quite chunky. I plan to use it as a knowledge base for future projects. Feel free to skip to the parts that are most interesting to you. 
+1. Define - read through guiding material and refined the specific business problem for the project.
+2. Prepare - collected, inspected, documented, and cleaned the data using SQL to get it ready for analysis
+3. Analyze - broken the business problem down into detailed questions to be answered with data, ran SQL queries to answer them, validated my hypotheses, and gained surprising insights.
+4. Share - created a business case presentation to share the insights with stakeholders, including using visualizations. The stakeholders in this case were the marketing director and the executive team of the fictional company
+
+This document is structured based on the process mentioned above and is pretty detailed. To save time, feel free to skip straight to the area that iterests you:
+
+1. Solution to business problem - slide deck with the solution, if you’re here for a good time, not a long time 🙂
+2. If you're interested in what's under the hood:
+* Data preparation and cleanup steps - How I loaded and cleaned up the original dataset. It includes the links to download full dataset and samples. 
+* [Analysis steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#4-analysis) - How I structured the analysis using clean data and what insights I found. 
+* SQL queries used for the analysis - **TODO - add link to sql files?**
+1. Some additional thoughts on the project:
+    1. [ideas for improving the dataset](https://github.com/justaszie/Bikeshare-Analysis/#5-ideas-for-future-improvement) and analysis
+    2. my [lessons learned](https://github.com/justaszie/Bikeshare-Analysis/blob/main/README.md#6-lessons-learned) from this project.
+  
 
 1. If you're here for a good time, not a long time (and want to go straight to the solution): [presentation with the solution to the business problem](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-business-case-solution).
 2. If you're interested in what's under the hood:
@@ -19,30 +33,7 @@ As it's my first data project, this documentation is very detailed and quite chu
 - [SQL queries used for the analysis](https://github.com/justaszie/Bikeshare-Analysis/tree/main#5-appendix-a---sql-queries-for-analysis)
 3. Finally, I listed some [ideas for improving the dataset](https://github.com/justaszie/Bikeshare-Analysis/#5-ideas-for-future-improvement) and my [lessons learned](https://github.com/justaszie/Bikeshare-Analysis/blob/main/README.md#6-lessons-learned) from this project.
 
-### 1.3. Dataset
-The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is the history of rides of a bikeshare service called [Divvy](https://divvybikes.com/), operated by Lyft in Chicago, and its data is licensed out for public usage. It contains a large amount of data on rides from 2015 up to mid-2023.
-- [Data license](https://divvybikes.com/data-license-agreement)
-- [Original data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
-- **TODO: Update link to clean dataset** [Data after my cleanup]() (note that it's a 1GB+ .csv file). See [clean dataset format](https://github.com/justaszie/Bikeshare-Analysis/tree/main#34-final-dataset).
-
-### 1.4. Process
-I followed the analysis process provided by the Google program and adjusted it to my preferences. The overall process I followed had 4 phases:
-1. **Define** - read through guidance material and refined the specific business problem for the project based on the guidance document
-2. **Prepare** - collected, evaluated, and cleaned the data using SQL to get it ready for analysis
-4. **Analyze** - broken the business problem down into detailed questions to be answered with data, ran SQL queries to answer them, validated my hypotheses, and gained surprising insights.
-5. **Share** - created a business case presentation to share the insights with stakeholders, including using visualizations. The stakeholders in this case were the marketing director and the executive team of the fictional company
-
-### 1.5 Data Tools
-The project material did not impose any tools for the analysis, so I chose the combination of:
-- **SQL**
-    - The data timeframe for analysis was not defined by the project. I wanted to analyze at least 1 year of rides data (5M+ rows) and it was too large for spreadsheets
-    - It allowed me to brush up on my SQL skills for data cleanup and analysis
-    - To focus on the analysis itself, I used BigQuery - Google's serverless data warehouse solution which was the simplest way to set up a database for storage and analysis.
-- **Google Sheets**
-   - Used for some calculations which are easier to do in spreadsheets than in SQL and to build visualizations
-   - I chose Sheets over Excel as it's free and, from my past experience, it is often used by startups and scaleups. The skills built on Sheets will be easily transferrable to Excel.
-
-## 2. Business Case Solution
+## 2. Solution to Business Problem
 The final presentation that solves the business case can be accessed [here](https://docs.google.com/presentation/d/1bwYGy23ZWJG5qMf0imZLOfAincOCCUbpCrCYMcIStbE/edit?usp=sharing).
 
 As a reminder, the business problem was to convert the casual riders to annual members of the bikeshare service. Specifically, I had to find the differences in the usage of casual riders and annual members of the service and use this knowledge to make marketing recommendations to help the conversion.
@@ -52,10 +43,20 @@ I chose to work with the data on rides from a full year of 2022.
  - It's post Covid-19 restrictions, so should represent somewhat normal activity
  - A full year of data allows us to explore seasonality
 
+**TODO: REVIEW THIS SECTION - make the clean dataset easily available with the format table and links to sample file. Hide the original dataset link etc - only if interested**
+
  The first thing to do was to download the data from the original data source, load it into an SQL database, and perform the cleaning, necessary for my analysis. 
+
+- **TODO: Update link to clean dataset** [Data after my cleanup]() (note that it's a 1GB+ .csv file). See [clean dataset format](https://github.com/justaszie/Bikeshare-Analysis/tree/main#34-final-dataset).
 
 <details>
 <summary> Click here for the detailed data preparation and cleanup steps</summary>
+
+The idea is to solve a business problem of a fictional company. But the dataset to analyze comes from a real-life business. It is the history of rides of a bikeshare service called [Divvy](https://divvybikes.com/), operated by Lyft in Chicago, and its data is licensed out for public usage. It contains a large amount of data on rides from 2015 up to mid-2023.
+- [Data license](https://divvybikes.com/data-license-agreement)
+- [Original data](https://divvy-tripdata.s3.amazonaws.com/index.html) (AWS S3 bucket)
+
+
 
 ### 3.1. Loading Into Database
 The rides data is stored in a series of .csv files. In some cases, the .csv holds a month of data, in others - a whole quarter of data. For 2022 data, I downloaded the 12 .csv files containing the data for each month of 2022. I then uploaded the 12 files to a Google bucket and created a SQL table `rides` in BigQuery by merging all 12 files together (the structure of the 12 .csv files was the same).
