@@ -1,6 +1,6 @@
 # Bikeshare rides analysis
 ## 1. Project Summary
-In my first analytics project, I did a historical data analysis using SQL and Google Sheets to help a fictional bikeshare service company convert casual riders to annual membership holders. 
+In my first analytics project, I did a historical data collection, cleanup and analysis using SQL and Google Sheets to help a fictional bikeshare service company convert casual riders to annual membership holders. 
 
 This guided project was an optional part of the [Google Data Analytics Certification program](https://www.coursera.org/professional-certificates/google-data-analytics). The goal was to solve a business problem by analyzing a dataset of past trips from a fictional bikeshare company, called Cyclastic. The specific business problem was defined as:
 
