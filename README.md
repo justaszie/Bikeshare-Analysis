@@ -16,7 +16,7 @@ I had a free choice of data tools to use so I used this opportunity to practice 
 
 This document is structured based on the process mentioned above and is pretty detailed. To save time, feel free to skip straight to the area that interests you:
 
-1. [Solution to the business problem](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-solution-to-business-problem ) - slide deck with the solution, if you’re here for a good time, not a long time 🙂
+1. [Business problem solution](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-solution-to-business-problem ) - slide deck with the solution, if you’re here for a good time, not a long time 🙂
 2. If you're interested in what's under the hood:
     * [Data preparation and cleanup steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data) - steps I took to get the dataset ready for analysis. It includes the links to download the full dataset and samples. 
     * [Analysis steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#4-analysis) - how I structured the analysis using clean data and the insights I discovered. 
@@ -25,7 +25,7 @@ This document is structured based on the process mentioned above and is pretty d
     1. [ideas for improving the dataset](https://github.com/justaszie/Bikeshare-Analysis/#5-ideas-for-future-improvement) and analysis
     2. my [lessons learned](https://github.com/justaszie/Bikeshare-Analysis/blob/main/README.md#6-lessons-learned) from this project.
 
-## 2. Solution to Business Problem
+## 2. Business Problem Solution
 The final presentation that solves the business case can be accessed [here](https://docs.google.com/presentation/d/1bwYGy23ZWJG5qMf0imZLOfAincOCCUbpCrCYMcIStbE/edit?usp=sharing).
 
 As a reminder, the business problem was to convert the casual riders to annual members of the bikeshare service. Specifically, I had to find the differences in the usage of casual riders and annual members of the service and use this knowledge to make marketing recommendations to help the conversion.
