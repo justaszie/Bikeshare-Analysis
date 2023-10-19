@@ -18,9 +18,9 @@ This document is structured based on the process mentioned above and is pretty d
 
 1. [Business problem solution](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-solution-to-business-problem ) - slide deck with the solution, if you’re here for a good time, not a long time 🙂
 2. If you're interested in what's under the hood:
-    * [Data preparation and cleanup steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data) - steps I took to get the dataset ready for analysis. It includes the links to download the full dataset and samples. 
+    * [Data preparation and cleanup steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data) - how I got the original dataset ready for analysis. It includes the data dictionary, cleanup queries in SQL, and links to download the full dataset and samples. 
     * [Analysis steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#4-analysis) - how I structured the analysis using clean data and the insights I discovered. 
-    * SQL queries used for the analysis - **TODO - add link to sql files?**
+    * [SQL queries used for the analysis](https://github.com/justaszie/Bikeshare-Analysis/tree/main#appendix-a---sql-queries-for-analysis)
 3. Some additional thoughts on the project:
     1. [ideas for improving the dataset](https://github.com/justaszie/Bikeshare-Analysis/#5-ideas-for-future-improvement) and analysis
     2. my [lessons learned](https://github.com/justaszie/Bikeshare-Analysis/blob/main/README.md#6-lessons-learned) from this project.
