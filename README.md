@@ -58,6 +58,8 @@ The dataset does not have any description or data dictionary. So, first, I inspe
 
 The data for 2022 followed the structure defined in the below table. Note the format of columns here (e.g. Float) was defined by BigQuery.
 
+You can download a [sample](Data_Samples/GDAC_sample_original.csv) of the original dataset or the [full dataset](https://storage.googleapis.com/jz_public_data/GDAC_rides_2022_original.csv) (Note it's 1GB+ data)
+
 | Column | Description (assumed) | Format |
 |---|---|---|
 | ride_id | Primary key | String |
@@ -76,7 +78,7 @@ The data for 2022 followed the structure defined in the below table. Note the fo
 
 It is not clear if the original source of these files was a relational DB or a Data Warehouse of some type. The schema contains multiple attributes describing the station. These attributes should not be present in the rides data in a normalized relational DB structure. It creates duplication and can lead to inconsistencies. :warning:
 
-See below a sample of a few rows in the table. You can also [download a sample of the original dataset](Data_Samples/GDAC_sample_original.csv).
+See below a sample of a few rows in the table.
 
 | ride_id | rideable_type | started_at | ended_at | start_station_name | start_station_id | end_station_name | end_station_id | start_lat | start_lng | end_lat | end_lng | member_casual |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -416,6 +418,8 @@ Although the presence of such values is alarming, the total number of suspicious
 ### 3.4. Final Dataset
 The below table  describes the final dataset after the original dataset was cleaned up. This dataset was used in the Analysis phase. 
 
+You can download a [sample](Data_Samples/GDAC_sample_clean.csv) of the clean dataset or the [full dataset](https://storage.googleapis.com/jz_public_data/GDAC_rides_2022_clean.csv) (Note it's 1GB+ data)
+
 | Column | Description (assumed) | Format |
 |---|---|---|
 | ride_id | Primary key | String |
@@ -436,7 +440,7 @@ The below table  describes the final dataset after the original dataset was clea
 | start_hour | Hour (in 24h format) when the ride started | Integer |
 | ride_month | Month when the ride started in numerical format (1 represents January) | Integer |
 
-See a few rows from the table below. You can also [download a sample of the clean dataset](Data_Samples/GDAC_sample_clean.csv).
+See a few rows from the table below.
 
 | ride_id | rideable_type | started_at | ended_at | start_station_name | start_station_id | end_station_name | end_station_id | start_lat | start_lng | end_lat | end_lng | rider_type | ride_length | start_day_of_week | start_hour | ride_month |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
