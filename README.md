@@ -14,24 +14,16 @@ I had a free choice of data tools to use so I used this opportunity to practice 
 3. Analyze - broken the business problem down into detailed questions to be answered with data, ran SQL queries to answer them, validated my hypotheses, and gained surprising insights.
 4. Share - created a business case presentation to share the insights with stakeholders, including using visualizations. The stakeholders in this case were the marketing director and the executive team of the fictional company
 
-This document is structured based on the process mentioned above and is pretty detailed. To save time, feel free to skip straight to the area that iterests you:
+This document is structured based on the process mentioned above and is pretty detailed. To save time, feel free to skip straight to the area that interests you:
 
-1. Solution to business problem - slide deck with the solution, if you’re here for a good time, not a long time 🙂
+1. [Solution to the business problem](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-solution-to-business-problem ) - slide deck with the solution, if you’re here for a good time, not a long time 🙂
 2. If you're interested in what's under the hood:
-* Data preparation and cleanup steps - How I loaded and cleaned up the original dataset. It includes the links to download full dataset and samples. 
-* [Analysis steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#4-analysis) - How I structured the analysis using clean data and what insights I found. 
-* SQL queries used for the analysis - **TODO - add link to sql files?**
-1. Some additional thoughts on the project:
+    * [Data preparation and cleanup steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data) - steps I took to get the dataset ready for analysis. It includes the links to download the full dataset and samples. 
+    * [Analysis steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#4-analysis) - how I structured the analysis using clean data and the insights I discovered. 
+    * SQL queries used for the analysis - **TODO - add link to sql files?**
+3. Some additional thoughts on the project:
     1. [ideas for improving the dataset](https://github.com/justaszie/Bikeshare-Analysis/#5-ideas-for-future-improvement) and analysis
     2. my [lessons learned](https://github.com/justaszie/Bikeshare-Analysis/blob/main/README.md#6-lessons-learned) from this project.
-  
-
-1. If you're here for a good time, not a long time (and want to go straight to the solution): [presentation with the solution to the business problem](https://github.com/justaszie/Bikeshare-Analysis/tree/main#2-business-case-solution).
-2. If you're interested in what's under the hood:
-- [Analysis steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#4-analysis)
-- [Data preparation and cleanup steps](https://github.com/justaszie/Bikeshare-Analysis/tree/main#3-preparing-the-data)
-- [SQL queries used for the analysis](https://github.com/justaszie/Bikeshare-Analysis/tree/main#5-appendix-a---sql-queries-for-analysis)
-3. Finally, I listed some [ideas for improving the dataset](https://github.com/justaszie/Bikeshare-Analysis/#5-ideas-for-future-improvement) and my [lessons learned](https://github.com/justaszie/Bikeshare-Analysis/blob/main/README.md#6-lessons-learned) from this project.
 
 ## 2. Solution to Business Problem
 The final presentation that solves the business case can be accessed [here](https://docs.google.com/presentation/d/1bwYGy23ZWJG5qMf0imZLOfAincOCCUbpCrCYMcIStbE/edit?usp=sharing).
